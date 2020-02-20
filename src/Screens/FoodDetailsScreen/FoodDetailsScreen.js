@@ -6,14 +6,12 @@ import {
   View,
   Text,
   StatusBar,
-  FlatList,
 } from 'react-native';
-import { Tag } from './../../Components';
-import { IngredientsList, CommentsSection } from './Components';
+import { IngredientsList, CommentsSection, AttributeList } from './Components';
 
 class FoodDetailsScreen extends Component {
     render() {
-        const test = ['hello', 'this', 'is', 'a', 'test'];
+        const test = ['hello', 'this', 'is', 'a', 'test', 'will', 'having', 'this', 'many','break?'];
         return (
             <>
         <StatusBar barStyle="dark-content" />
@@ -24,14 +22,7 @@ class FoodDetailsScreen extends Component {
                 <Text>{this.props.food}</Text>
               </View>
               <IngredientsList />
-              <View>
-                <Text>{`What is eating ${this.props.food} like?`}</Text>
-                <FlatList
-                  horizontal={true}
-                  data={test}
-                  renderItem={({ item }) => <Tag text={item}/>}
-                  keyExtractor={item => item}/>
-              </View>
+              <AttributeList food={`Pizza`} test={test} />
               <CommentsSection />             
             </View>            
           </ScrollView>

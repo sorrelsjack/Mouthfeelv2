@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 24,
-        color: Colors.tag.textColor
+        color: Colors.tag.textColor,
+        padding: 5
     }
 });

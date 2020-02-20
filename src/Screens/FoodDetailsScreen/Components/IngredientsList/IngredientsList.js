@@ -13,16 +13,13 @@ class IngredientsList extends Component {
 
     render() {
         return(
-            <View>
+            <View style={styles.wrapper}>
                 <Text style={styles.title}>Ingredients</Text>
                 <View>
                     <TouchableOpacity onPress={this.handlePress}>
                       <Text>READ MORE...</Text>
                     </TouchableOpacity>
-                    <View>
-
-                    </View>
-                  </View>
+                </View>
             </View>
         )
     }
@@ -31,6 +28,9 @@ class IngredientsList extends Component {
 export default IngredientsList;
 
 const styles = StyleSheet.create({
+    wrapper: {
+        padding: 20
+    },
     title: {
         fontSize: 24
     }
