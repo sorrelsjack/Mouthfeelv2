@@ -6,8 +6,10 @@ import {
   View,
   Text,
   StatusBar,
+  Image
 } from 'react-native';
 import { IngredientsList, CommentsSection, AttributeList } from './Components';
+import { Colors } from './../../Common';
 
 class FoodDetailsScreen extends Component {
     render() {
@@ -16,9 +18,9 @@ class FoodDetailsScreen extends Component {
             <>
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
-          <ScrollView contentInsetAdjustmentBehavior="automatic">
-            <View style={styles.wrapper}>
-              <View>
+          <ScrollView style={styles.wrapper} contentInsetAdjustmentBehavior="automatic">
+            <View style={styles.container}>
+              <View style={styles.titleSection}>
                 <Text>{this.props.food}</Text>
               </View>
               <IngredientsList />
@@ -37,6 +39,13 @@ export default FoodDetailsScreen;
 const styles = StyleSheet.create({
     wrapper: {
       height: '100%',
-      paddingHorizontal: 20
+      backgroundColor: Colors.page.backgroundColor
+    },
+    container: {
+      paddingHorizontal: 20,
+    },
+    titleSection: {
+      backgroundColor: Colors.section.backgroundColor,
+      marginVertical: 30
     }
   });

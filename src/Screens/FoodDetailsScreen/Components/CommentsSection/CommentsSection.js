@@ -9,15 +9,16 @@ import {
   FlatList
 } from 'react-native';
 import { Comment } from '../../Components';
+import { Colors } from './../../../../Common';
 
 class CommentsSection extends Component {
     constructor () {
         super();
-        this.state.animation = new Animated.Value(50);
+        this.state.animation = new Animated.Value(60);
     }
 
     state = {
-        collapsedHeight: 50,
+        collapsedHeight: 60,
         expandedHeight: 400,
         expanded: false
     }
@@ -36,7 +37,7 @@ class CommentsSection extends Component {
     render() {
         const test = ['AHHHH', 'OMG', 'THIS IS A COMMENT']
         return(
-            <Animated.View style={[styles.wrapper, { height: this.state.animation, backgroundColor: 'red' }]}>
+            <Animated.View style={[styles.wrapper, { height: this.state.animation, backgroundColor: Colors.section.backgroundColor }]}>
                 <TouchableOpacity onPress={this.handlePress}>
                 <Text>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
                 </TouchableOpacity>

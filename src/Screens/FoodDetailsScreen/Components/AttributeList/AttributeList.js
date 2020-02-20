@@ -31,7 +31,8 @@ const styles = StyleSheet.create({
     },
     text: {
         paddingVertical: 10,
-        paddingHorizontal: 20
+        paddingHorizontal: 20,
+        fontSize: 16
     },
     list: {
         marginHorizontal: -20

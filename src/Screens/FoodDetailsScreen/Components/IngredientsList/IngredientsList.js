@@ -6,6 +6,8 @@ import {
     StyleSheet
   } from 'react-native';
 
+import { Colors } from './../../../../Common';
+
 class IngredientsList extends Component {
     handlePress = () => {
         console.warn('Read more pressed');
@@ -29,7 +31,8 @@ export default IngredientsList;
 
 const styles = StyleSheet.create({
     wrapper: {
-        padding: 20
+        padding: 20,
+        backgroundColor: Colors.section.backgroundColor
     },
     title: {
         fontSize: 24
