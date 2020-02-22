@@ -25,8 +25,9 @@ class FoodDetailsScreen extends Component {
               <Icon name={'heart'} size={20}/>
             </TouchableOpacity>
             <View style={styles.container}>
+              <Image style={styles.image} source={{uri: 'https://publicdomainvectors.org/photos/1514958680.png'}} style={{ height: 100, width: 100 }}/>
               <View style={styles.titleSection}>
-                <Text style={styles.titleText}>{this.props.food}</Text>
+                <Text style={styles.titleText}>{'Pizza'}</Text>
               </View>
               <IngredientsList />
               <AttributeList food={`pizza`} test={test} />
@@ -48,6 +49,12 @@ const styles = StyleSheet.create({
     },
     container: {
       paddingHorizontal: 20,
+    },
+    image: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      height: 200,
+      width: 200
     },
     heartContainer: {
       borderRadius: 50,

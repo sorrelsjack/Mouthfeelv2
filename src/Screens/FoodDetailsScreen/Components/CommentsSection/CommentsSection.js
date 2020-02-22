@@ -30,16 +30,16 @@ class CommentsSection extends Component {
 
         Animated.spring(
             this.state.animation, {
-                toValue: expanded ? collapsedHeight : expandedHeight
+                toValue: expanded ? collapsedHeight : expandedHeight,
         }).start();
     }
 
     render() {
         const test = ['AHHHH', 'OMG', 'THIS IS A COMMENT']
         return(
-            <Animated.View style={[styles.wrapper, { height: this.state.animation, backgroundColor: Colors.section.backgroundColor }]}>
+            <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
                 <TouchableOpacity onPress={this.handlePress}>
-                <Text>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
+                    <Text>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
                 </TouchableOpacity>
                 <FlatList
                     data={test}
@@ -54,6 +54,7 @@ export default CommentsSection;
 
 const styles = StyleSheet.create({
     wrapper: {
+        backgroundColor: Colors.section.backgroundColor,
         padding: 20
     }
 })

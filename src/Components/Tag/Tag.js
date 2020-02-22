@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
         padding: 5
     },
     icon: {
-        padding: 5
+        paddingVertical: 7,
+        paddingHorizontal: 5
     }
 });

@@ -31,6 +31,7 @@ export default IngredientsList;
 
 const styles = StyleSheet.create({
     wrapper: {
+        width: '100%',
         padding: 20,
         backgroundColor: Colors.section.backgroundColor
     },
