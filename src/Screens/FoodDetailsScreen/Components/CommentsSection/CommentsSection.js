@@ -40,7 +40,7 @@ class CommentsSection extends Component {
         return(
             <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
                 <TouchableOpacity onPress={this.handlePress}>
-                    <Text>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
+                    <Text style={styles.headerText}>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
                 </TouchableOpacity>
                 <FlatList
                     data={test}
@@ -57,5 +57,8 @@ const styles = StyleSheet.create({
     wrapper: {
         backgroundColor: Colors.section.backgroundColor,
         padding: 20
+    },
+    headerText: {
+        color: Colors.section.clickableText.textColor
     }
 })

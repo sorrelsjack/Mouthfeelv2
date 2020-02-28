@@ -22,7 +22,7 @@ class FoodDetailsScreen extends Component {
         <SafeAreaView>
           <ScrollView style={styles.wrapper} contentInsetAdjustmentBehavior="automatic">
             <TouchableOpacity style={styles.heartContainer}>
-              <Icon name={'heart'} size={20} />
+              <Icon name={'heart'} solid size={20} color={Colors.heartIcon.heart.color} />
             </TouchableOpacity>
             <View style={styles.container}>
               <View style={styles.imageContainer}>
@@ -58,14 +58,19 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   image: {
+    resizeMode: 'contain',
     height: 150,
     width: 150
   },
   heartContainer: {
     borderRadius: 50,
+    margin: 10,
     width: 40,
     height: 40,
-    backgroundColor: 'red'
+    justifyContent: 'center',
+    alignItems: 'center',
+    textAlign: 'center',
+    backgroundColor: Colors.heartIcon.circleBackground.backgroundColor
   },
   titleSection: {
     padding: 20,

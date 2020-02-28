@@ -28,15 +28,16 @@ export default AttributeList;
 
 const styles = StyleSheet.create({
     wrapper: {
-        paddingVertical: 20
+        paddingTop: 15,
+        paddingBottom: 25
     },
     text: {
-        paddingVertical: 10,
+        paddingBottom: 15,
         paddingHorizontal: 20,
         fontSize: 16
     },
     list: {
-        marginHorizontal: -20
+        marginRight: -20
     }
 })
 

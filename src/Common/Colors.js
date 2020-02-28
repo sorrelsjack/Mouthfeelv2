@@ -3,10 +3,18 @@ const Colors = {
         backgroundColor: '#e5e5e5'
     },
     heartIcon: {
-        color: ''
+        circleBackground: {
+            backgroundColor: '#6200ea'
+        },
+        heart: {
+            color: 'white'
+        }
     },
     section: {
-        backgroundColor: '#ffffff'
+        backgroundColor: '#ffffff',
+        clickableText: {
+            textColor: '#6200ea'
+        }
     },
     tag: {
         backgroundColor: '#6200ea',

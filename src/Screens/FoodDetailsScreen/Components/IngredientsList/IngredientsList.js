@@ -19,7 +19,7 @@ class IngredientsList extends Component {
                 <Text style={styles.title}>Ingredients</Text>
                 <View>
                     <TouchableOpacity onPress={this.handlePress}>
-                      <Text>READ MORE...</Text>
+                      <Text style={styles.readMoreText}>READ MORE...</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
         backgroundColor: Colors.section.backgroundColor
     },
     title: {
+        paddingVertical: 10,
         fontSize: 24
+    },
+    readMoreText: {
+        color: Colors.section.clickableText.textColor
     }
 })
