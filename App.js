@@ -1,9 +1,38 @@
 import React, { Component } from 'react';
 import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
-import { FoodDetailsScreen } from './src/Screens';
+import { LoginScreen, HomeScreen, FoodDetailsScreen } from './src/Screens';
+
+const LoginStack = createStackNavigator({
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
+});
+
+const HomeStack = createStackNavigator({
+  Home: {
+    screen: HomeScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
+});
+
+const FoodDetailsStack = createStackNavigator({
+  FoodDetails: {
+    screen: FoodDetailsScreen,
+    navigationOptions: {
+      header: null
+    }
+  }
+})
 
 const Navigator = createStackNavigator({
+  Login: LoginStack,
+  Home: HomeStack,
   FoodDetails: FoodDetailsScreen
 }, { headerMode: 'none' });
 

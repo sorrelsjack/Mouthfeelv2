@@ -13,6 +13,7 @@ import { IngredientsList, CommentsSection, AttributeList } from './Components';
 import { Colors } from './../../Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
+// TODO: Make the heart not solid when it's unselected
 class FoodDetailsScreen extends Component {
   render() {
     const test = ['hello', 'this', 'is', 'a', 'test', 'will', 'having', 'this', 'many', 'break?'];
@@ -59,8 +60,8 @@ const styles = StyleSheet.create({
   },
   image: {
     resizeMode: 'contain',
-    height: 150,
-    width: 150
+    height: 175,
+    width: 175
   },
   heartContainer: {
     borderRadius: 50,
