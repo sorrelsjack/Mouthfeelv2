@@ -5,11 +5,12 @@ import {
   TouchableOpacity,
   StyleSheet,
   Animated,
-  Easing,
   FlatList
 } from 'react-native';
 import { Comment } from '../../Components';
 import { Colors } from './../../../../Common';
+
+// TODO: Do some calculations to make the comments section only as big as it needs to be
 
 class CommentsSection extends Component {
     constructor () {
