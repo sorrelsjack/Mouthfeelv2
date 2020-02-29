@@ -7,7 +7,7 @@ const LoginStack = createStackNavigator({
   Login: {
     screen: LoginScreen,
     navigationOptions: {
-      header: null
+      header: false
     }
   }
 });
@@ -16,7 +16,7 @@ const HomeStack = createStackNavigator({
   Home: {
     screen: HomeScreen,
     navigationOptions: {
-      header: null
+      header: false
     }
   }
 });
@@ -25,7 +25,7 @@ const FoodDetailsStack = createStackNavigator({
   FoodDetails: {
     screen: FoodDetailsScreen,
     navigationOptions: {
-      header: null
+      header: false
     }
   }
 })
@@ -33,7 +33,7 @@ const FoodDetailsStack = createStackNavigator({
 const Navigator = createStackNavigator({
   Login: LoginStack,
   Home: HomeStack,
-  FoodDetails: FoodDetailsScreen
+  FoodDetails: FoodDetailsStack
 }, { headerMode: 'none' });
 
 const AppContainer = createAppContainer(Navigator);

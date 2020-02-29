@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { InputField } from './../../Components';
+import LinearGradient from 'react-native-linear-gradient';
+import { Colors } from './../../Common';
 
 class LoginScreen extends Component {
     render() {
         return (
-            <View style={styles.wrapper}>
+            <LinearGradient colors={[Colors.loginScreen.gradient.topColor, Colors.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
                 <View style={styles.container}>
                     <Text style={styles.title}>Mouthfeel</Text>
                     <View style={styles.inputFieldsContainer}>
@@ -14,20 +16,20 @@ class LoginScreen extends Component {
                     </View>
                     <TouchableOpacity style={styles.loginButton}>
                         <View>
-                            <Text style={styles.buttonText}>
+                            <Text style={styles.loginButtonText}>
                                 Log In
                         </Text>
                         </View>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.registerButton}>
                         <View>
-                            <Text style={styles.buttonText}>
+                            <Text style={styles.registerButtonText}>
                                 Register
                         </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
-            </View>
+            </LinearGradient>
         )
     }
 
@@ -37,7 +39,6 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: 'cyan',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
@@ -51,6 +52,7 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     title: {
+        color: Colors.loginScreen.title.textColor,
         fontSize: 48
     },
     inputFieldsContainer: {
@@ -59,23 +61,30 @@ const styles = StyleSheet.create({
     loginButton: {
         borderRadius: 30,
         marginVertical: 25,
-        backgroundColor: 'pink',
+        backgroundColor: Colors.loginScreen.loginButton.backgroundColor,
         width: '100%',
         paddingVertical: 10
     },
+    loginButtonText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: Colors.loginScreen.loginButton.textColor
+    },
     registerButton: {
+        backgroundColor: Colors.loginScreen.registerButton.backgroundColor,
+        borderColor: Colors.loginScreen.registerButton.backgroundColor,
         borderRadius: 30,
         position: 'absolute',
         width: '100%',
         paddingVertical: 10,
-        borderColor: '#000',
         borderWidth: 1,
         alignItems: 'center',
         justifyContent: 'center',
         bottom: 0
     },
-    buttonText: {
+    registerButtonText: {
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
+        color: Colors.loginScreen.registerButton.textColor
     },
 });

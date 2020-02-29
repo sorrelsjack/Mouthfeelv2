@@ -1,4 +1,21 @@
 const Colors = {
+    loginScreen: {
+        gradient: {
+            topColor: '#e71d36',
+            bottomColor: '#ff9f1c'
+        },
+        title: {
+            textColor: '#fdfffc'
+        },
+        loginButton: {
+            backgroundColor: '#2ec4b6',
+            textColor: '#fdfffc'
+        },
+        registerButton: {
+            backgroundColor: '#fdfffc',
+            textColor: 'black'
+        }
+    },
     page: {
         backgroundColor: '#e5e5e5'
     },
@@ -15,6 +32,11 @@ const Colors = {
         clickableText: {
             textColor: '#6200ea'
         }
+    },
+    textInput: {
+        lineColor: '#fdfffc',
+        placeholderColor: '#fdfffc',
+        textColor:'#fdfffc'
     },
     tag: {
         backgroundColor: '#6200ea',
