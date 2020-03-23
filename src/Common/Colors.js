@@ -39,8 +39,14 @@ const Colors = {
         textColor:'#fdfffc'
     },
     tag: {
-        backgroundColor: '#6200ea',
-        textColor: 'white',
+        unselected: {
+            backgroundColor: '#6200ea',
+            textColor: 'white'
+        },
+        selected: {
+            backgroundColor: 'yellow',
+            textColor: 'black'
+        },
         icon: {
             color: 'white'
         }

@@ -1,27 +1,25 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  FlatList,
-  Dimensions
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Animated,
+    FlatList,
+    Dimensions
 } from 'react-native';
 import { Comment } from '../../Components';
 import { Colors } from './../../../../Common';
 
-// TODO: Do some calculations to make the comments section only as big as it needs to be
-
 class CommentsSection extends Component {
-    constructor () {
+    constructor() {
         super();
         this.state.animation = new Animated.Value(60);
     }
 
     state = {
         collapsedHeight: 60,
-        expandedHeight: 400,
+        expandedHeight: 0,
         expanded: false
     }
 
@@ -32,22 +30,27 @@ class CommentsSection extends Component {
 
         Animated.spring(
             this.state.animation, {
-                toValue: expanded ? collapsedHeight : expandedHeight,
+            toValue: expanded ? collapsedHeight : expandedHeight,
         }).start();
     }
 
     render() {
-        const test = ['AHHHH', 'OMG', 'THIS IS A COMMENT']
-        return(
-            <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
+        const test = ['AHHHH', 'OMG', 'THIS IS A COMMENT', 'Another one', 'Filling up space', 'Thats our job']
+        return (
+            <Animated.View
+                style={[styles.wrapper, { height: this.state.animation }]} >
                 <TouchableOpacity onPress={this.handlePress}>
-                    <Text style={styles.headerText}>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
+                    <Text style={styles.headerText}>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
                 </TouchableOpacity>
-                <FlatList
-                    data={test}
-                    renderItem={({item}) => <Comment text={item}/>}
-                    keyExtractor={item => item} />
-            </Animated.View> 
+                <View style={{ flex: 1 }}>
+                    <FlatList
+                        style={{ backgroundColor: 'cyan', flex: 0 }}
+                        onContentSizeChange={(contentHeight) => { this.setState({ expandedHeight: contentHeight + this.state.expandedHeight }) }}
+                        data={test}
+                        renderItem={({ item }) => <Comment text={item} />}
+                        keyExtractor={item => item} />
+                </View>
+            </Animated.View>
         )
     }
 }
@@ -56,7 +59,9 @@ export default CommentsSection;
 
 const styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: Colors.section.backgroundColor,
+        flex: 1,
+        //Colors.section.backgroundColor
+        backgroundColor: 'red',
         padding: 20
     },
     headerText: {

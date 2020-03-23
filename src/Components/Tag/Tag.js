@@ -4,11 +4,34 @@ import { Colors } from './../../Common';
 
 // TODO: Add conditional to turn plus into minus if item is already selected. Or, display a number instead of a plus honestly
 class Tag extends Component {
+    state = {
+        isPressed: false
+    }
+
+    setWrapperStyle = () => {
+        if (this.state.isPressed)
+            return { ...styles.wrapper, backgroundColor: Colors.tag.selected.backgroundColor }
+        else
+            return { ...styles.wrapper, backgroundColor: Colors.tag.unselected.backgroundColor }
+    }
+
+    setTextStyle = () => {
+        if (this.state.isPressed)
+            return { ...styles.text, color: Colors.tag.selected.textColor }
+        else
+            return { ...styles.text, color: Colors.tag.unselected.textColor }
+
+    }
+
+    handlePress = () => {
+        this.setState({ isPressed: !this.state.isPressed })
+    }
+
     render() {
         return (
-            <TouchableOpacity onPress={this.props.handlePress}>
-                <View style={styles.wrapper}>
-                    <Text style={styles.text}>{'+ ' + this.props.text.toUpperCase()}</Text>    
+            <TouchableOpacity onPress={this.handlePress}>
+                <View style={this.setWrapperStyle()}>
+                    <Text style={this.setTextStyle()}>{'+ ' + this.props.text.toUpperCase()}</Text>    
                 </View>                
             </TouchableOpacity>
         )
@@ -20,7 +43,6 @@ export default Tag;
 const styles = StyleSheet.create({
     wrapper: {
         flexDirection: 'row',
-        backgroundColor: Colors.tag.backgroundColor,
         borderRadius: 20,
         paddingVertical: 5,
         paddingHorizontal: 30,
@@ -28,11 +50,6 @@ const styles = StyleSheet.create({
     },
     text: {
         fontSize: 18,
-        color: Colors.tag.textColor,
         padding: 5
-    },
-    /*icon: {
-        paddingVertical: 7,
-        paddingHorizontal: 5
-    }*/
+    }
 });
