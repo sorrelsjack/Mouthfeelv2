@@ -23,10 +23,12 @@ export default Comment;
 
 const styles = StyleSheet.create({
     wrapper: {
+        alignItems: 'center',
         flexDirection: 'row',
         marginVertical: 20
     },
     arrowContainer: {
+        paddingRight: 5,
         flexDirection: 'column'
     },
     icon: {
