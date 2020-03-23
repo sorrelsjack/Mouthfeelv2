@@ -1,53 +1,33 @@
 import React, { Component } from 'react';
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Animated,
-  FlatList,
-  Dimensions
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet,
+    Animated,
+    FlatList,
+    Dimensions
 } from 'react-native';
 import { Comment } from '../../Components';
 import { Colors } from './../../../../Common';
 
-// TODO: Do some calculations to make the comments section only as big as it needs to be
-
 class CommentsSection extends Component {
-    constructor () {
-        super();
-        this.state.animation = new Animated.Value(60);
-    }
-
     state = {
-        collapsedHeight: 60,
-        expandedHeight: 400,
         expanded: false
-    }
-
-    handlePress = () => {
-        const { expanded, collapsedHeight, expandedHeight } = this.state;
-
-        this.setState({ expanded: !expanded });
-
-        Animated.spring(
-            this.state.animation, {
-                toValue: expanded ? collapsedHeight : expandedHeight,
-        }).start();
     }
 
     render() {
         const test = ['AHHHH', 'OMG', 'THIS IS A COMMENT']
-        return(
-            <Animated.View style={[styles.wrapper, { height: this.state.animation }]}>
-                <TouchableOpacity onPress={this.handlePress}>
-                    <Text style={styles.headerText}>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS' }</Text>
-                </TouchableOpacity>
-                <FlatList
-                    data={test}
-                    renderItem={({item}) => <Comment text={item}/>}
-                    keyExtractor={item => item} />
-            </Animated.View> 
+        return (
+                <View style={styles.wrapper}>
+                    <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
+                        <Text style={styles.headerText}>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
+                    </TouchableOpacity>
+                    { this.state.expanded && <FlatList
+                        data={test}
+                        renderItem={({ item }) => <Comment text={item} />}
+                        keyExtractor={item => item} /> }
+                </View>
         )
     }
 }
