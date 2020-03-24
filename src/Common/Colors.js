@@ -64,10 +64,10 @@ const Colors = {
                 color: '#8d8f8e'
             },
             down: {
-                color: '#659923'
+                color: '#6200ea'
             },
             up: {
-                color: '#9beb34'
+                color: '#6200ea'
             }
         }
     }
