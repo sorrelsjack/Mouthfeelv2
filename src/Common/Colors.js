@@ -19,12 +19,19 @@ const Colors = {
     page: {
         backgroundColor: '#e5e5e5'
     },
-    heartIcon: {
+    circleButton: {
         circleBackground: {
             backgroundColor: '#6200ea'
         },
-        heart: {
-            color: 'white'
+        icon: {
+            unselected: {
+                color: 'white'
+            },
+            selected: {
+                heart: {
+                    color: 'red'
+                }
+            }
         }
     },
     section: {

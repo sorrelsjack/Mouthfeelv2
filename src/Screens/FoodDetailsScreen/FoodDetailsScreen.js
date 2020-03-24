@@ -6,14 +6,16 @@ import {
   View,
   Text,
   StatusBar,
-  Image,
-  TouchableOpacity
+  Image
 } from 'react-native';
-import { IngredientsList, CommentsSection, AttributeList } from './Components';
+import { 
+  IngredientsList, 
+  CommentsSection, 
+  AttributeList
+} from './Components';
 import { Colors } from './../../Common';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { CircleButton } from './../../Components';
 
-// TODO: Make the heart not solid when it's unselected
 class FoodDetailsScreen extends Component {
   render() {
     const test = ['hello', 'this', 'is', 'a', 'test', 'will', 'having', 'this', 'many', 'break?'];
@@ -22,9 +24,7 @@ class FoodDetailsScreen extends Component {
         <StatusBar barStyle="dark-content" />
         <SafeAreaView>
           <ScrollView style={styles.wrapper} contentInsetAdjustmentBehavior="automatic">
-            <TouchableOpacity style={styles.heartContainer}>
-              <Icon name={'heart'} solid size={20} color={Colors.heartIcon.heart.color} />
-            </TouchableOpacity>
+            <CircleButton icon={'heart'} iconSelectedColor={Colors.circleButton.icon.selected.heart.color} />
             <View style={styles.container}>
               <View style={styles.imageContainer}>
                 <Image source={{ uri: 'https://publicdomainvectors.org/photos/1514958680.png' }} style={styles.image} />
@@ -62,16 +62,6 @@ const styles = StyleSheet.create({
     resizeMode: 'contain',
     height: 175,
     width: 175
-  },
-  heartContainer: {
-    borderRadius: 50,
-    margin: 10,
-    width: 40,
-    height: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-    textAlign: 'center',
-    backgroundColor: Colors.heartIcon.circleBackground.backgroundColor
   },
   titleSection: {
     padding: 20,
