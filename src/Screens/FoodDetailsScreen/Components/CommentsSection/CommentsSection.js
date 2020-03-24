@@ -17,7 +17,7 @@ class CommentsSection extends Component {
     }
 
     render() {
-        const test = ['AHHHH', 'OMG', 'THIS IS A COMMENT']
+        const test = ['ahhh', 'omg', 'this is a comment']
         return (
                 <View style={styles.wrapper}>
                     <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>

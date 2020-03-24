@@ -3,6 +3,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { LoginScreen, HomeScreen, FoodDetailsScreen } from './src/Screens';
 
+console.disableYellowBox = true;
+
 const LoginStack = createStackNavigator({
   Login: {
     screen: LoginScreen,

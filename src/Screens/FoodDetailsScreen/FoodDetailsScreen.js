@@ -18,7 +18,11 @@ import { CircleButton } from './../../Components';
 
 class FoodDetailsScreen extends Component {
   render() {
-    const test = ['hello', 'this', 'is', 'a', 'test', 'will', 'having', 'this', 'many', 'break?'];
+    const food = 'pizza';
+    const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
+    const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'];
+    const misc = ['vegetarian', 'boneless'];
+
     return (
       <>
         <StatusBar barStyle="dark-content" />
@@ -32,8 +36,11 @@ class FoodDetailsScreen extends Component {
               <View style={styles.titleSection}>
                 <Text style={styles.titleText}>{'Pizza'}</Text>
               </View>
-              <IngredientsList />
-              <AttributeList food={`pizza`} test={test} />
+              <IngredientsList items={ingredients} />
+              <View style={styles.attributeListsContainer}>
+                <AttributeList title={`What is eating ${food} like?`} items={experience} />
+                <AttributeList title={`What makes ${food} unique?`} items={misc} />
+              </View>
               <CommentsSection />
             </View>
           </ScrollView>
@@ -53,6 +60,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingBottom: 20
+  },
+  attributeListsContainer: {
+    paddingTop: 15,
+    paddingBottom: 5
   },
   imageContainer: {
     justifyContent: 'center',

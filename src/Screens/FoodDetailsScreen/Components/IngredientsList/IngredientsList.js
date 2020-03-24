@@ -3,25 +3,30 @@ import {
     View,
     Text,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    FlatList
   } from 'react-native';
 
 import { Colors } from './../../../../Common';
 
 class IngredientsList extends Component {
-    handlePress = () => {
-        console.warn('Read more pressed');
+    state = {
+        expanded: false
     }
 
     render() {
         return(
             <View style={styles.wrapper}>
                 <Text style={styles.title}>Ingredients</Text>
-                <View>
-                    <TouchableOpacity onPress={this.handlePress}>
-                      <Text style={styles.readMoreText}>READ MORE...</Text>
-                    </TouchableOpacity>
-                </View>
+                <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
+                    <Text style={styles.readMoreText}>{this.state.expanded ? `` : `READ MORE...`}</Text>
+                </TouchableOpacity>
+                { this.state.expanded && <FlatList
+                    style={styles.listContainer}
+                    showsHorizontalScrollIndicator={false}
+                    data={this.props.items}
+                    renderItem={({ item }) => <Text style={styles.ingredientText}>{`• ${item}`}</Text>}
+                    keyExtractor={item => item} /> }
             </View>
         )
     }
@@ -41,5 +46,11 @@ const styles = StyleSheet.create({
     },
     readMoreText: {
         color: Colors.section.clickableText.textColor
+    },
+    listContainer: {
+        marginTop: -10
+    },
+    ingredientText: {
+        fontSize: 16
     }
 })

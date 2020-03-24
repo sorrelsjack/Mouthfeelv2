@@ -11,13 +11,13 @@ const Comment = (props) => {
         <View style={styles.wrapper}>
             <View style={styles.arrowContainer}>
                 <TouchableOpacity onPress={() => { setUpvoted(!upvoted); setDownvoted(false); }}>
-                    <Icon style={styles.icon} name={'arrow-up'} color={upvoted ? Colors.comment.arrow.up.color : Colors.comment.arrow.default.color} />
+                    <Icon style={styles.icon} fontSize={16} name={'arrow-up'} color={upvoted ? Colors.comment.arrow.up.color : Colors.comment.arrow.default.color} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { setDownvoted(!downvoted); setUpvoted(false); }}>
-                    <Icon style={styles.icon} name={'arrow-down'} color={downvoted ? Colors.comment.arrow.down.color : Colors.comment.arrow.default.color} />
+                    <Icon style={styles.icon} fontSize={16} name={'arrow-down'} color={downvoted ? Colors.comment.arrow.down.color : Colors.comment.arrow.default.color} />
                 </TouchableOpacity>
             </View>
-            <Text>{props.text}</Text>
+            <Text style={styles.text}>{props.text}</Text>
         </View>
     )
 }
@@ -37,5 +37,8 @@ const styles = StyleSheet.create({
     icon: {
         paddingVertical: 2.5,
         paddingHorizontal: 5
+    },
+    text: {
+        fontSize: 16
     }
 })

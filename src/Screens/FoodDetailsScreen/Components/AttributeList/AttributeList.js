@@ -11,12 +11,12 @@ class AttributeList extends Component {
     render() {
         return (
             <View style={styles.wrapper}>
-                <Text style={styles.text}>{`What is eating ${this.props.food} like?`}</Text>
+                <Text style={styles.text}>{this.props.title}</Text>
                 <FlatList
                     showsHorizontalScrollIndicator={false}
                     style={styles.list}
                     horizontal={true}
-                    data={this.props.test}
+                    data={this.props.items}
                     renderItem={({ item }) => <Tag text={item} />}
                     keyExtractor={item => item} />
             </View>
@@ -28,8 +28,7 @@ export default AttributeList;
 
 const styles = StyleSheet.create({
     wrapper: {
-        paddingTop: 15,
-        paddingBottom: 25
+        paddingBottom: 15
     },
     text: {
         paddingBottom: 15,
