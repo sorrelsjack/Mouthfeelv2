@@ -8,6 +8,7 @@ class Tag extends Component {
         isPressed: false
     }
 
+    //TODO: Implement tooltip
     setWrapperStyle = () => {
         if (this.state.isPressed)
             return { ...styles.wrapper, backgroundColor: Colors.tag.selected.backgroundColor }
@@ -48,7 +49,7 @@ class Tag extends Component {
                 </TouchableOpacity>
                 <View style={styles.iconContainer}>
                     <TouchableOpacity>
-                        <Icon name={'question-circle'} fontSize={18} solid color={this.state.isPressed ? Colors.tag.icon.selected.color : Colors.tag.icon.unselected.color}/>
+                        <Icon name={'question-circle'} fontSize={18} solid color={this.state.isPressed ? Colors.tag.icon.selected.color : Colors.tag.icon.unselected.color} />
                     </TouchableOpacity>
                 </View>
             </View>
