@@ -55,7 +55,20 @@ const Colors = {
             textColor: 'black'
         },
         icon: {
-            color: 'white'
+            unselected: {
+                color: 'white'
+            },
+            selected: {
+                color: 'black'
+            }
+        },
+        counter: {
+            unselected: {
+                backgroundColor: 'rgba(255, 255, 255, .3)'
+            },
+            selected: {
+                backgroundColor: 'rgba(0, 0, 0, .1)'
+            }
         }
     },
     comment: {

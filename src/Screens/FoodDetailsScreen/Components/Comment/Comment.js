@@ -7,6 +7,8 @@ const Comment = (props) => {
     let [upvoted, setUpvoted] = useState(false);
     let [downvoted, setDownvoted] = useState(false);
 
+    console.log(props)
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.arrowContainer}>
@@ -17,7 +19,10 @@ const Comment = (props) => {
                     <Icon style={styles.icon} fontSize={16} name={'arrow-down'} color={downvoted ? Colors.comment.arrow.down.color : Colors.comment.arrow.default.color} />
                 </TouchableOpacity>
             </View>
-            <Text style={styles.text}>{props.text}</Text>
+            <View style={{ flexDirection: 'column' }}>
+                <Text style={[styles.usernameText, styles.text]}>{props.details.username}</Text>
+                <Text style={styles.text}>{props.details.body}</Text>
+            </View>
         </View>
     )
 }
@@ -28,7 +33,8 @@ const styles = StyleSheet.create({
     wrapper: {
         alignItems: 'center',
         flexDirection: 'row',
-        marginVertical: 20
+        marginVertical: 20,
+        paddingRight: 45
     },
     arrowContainer: {
         paddingRight: 5,
@@ -37,6 +43,9 @@ const styles = StyleSheet.create({
     icon: {
         paddingVertical: 2.5,
         paddingHorizontal: 5
+    },
+    usernameText: {
+        fontWeight: 'bold'
     },
     text: {
         fontSize: 16

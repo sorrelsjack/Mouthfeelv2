@@ -19,14 +19,16 @@ class IngredientsList extends Component {
             <View style={styles.wrapper}>
                 <Text style={styles.title}>Ingredients</Text>
                 <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
-                    <Text style={styles.readMoreText}>{this.state.expanded ? `` : `READ MORE...`}</Text>
+                    <Text style={styles.readMoreText}>{this.state.expanded ? null : `READ MORE...`}</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
                 { this.state.expanded && <FlatList
                     style={styles.listContainer}
                     showsHorizontalScrollIndicator={false}
                     data={this.props.items}
                     renderItem={({ item }) => <Text style={styles.ingredientText}>{`• ${item}`}</Text>}
                     keyExtractor={item => item} /> }
+                </TouchableOpacity>
             </View>
         )
     }

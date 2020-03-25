@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { InputField } from './../../Components';
 import LinearGradient from 'react-native-linear-gradient';
-import { Colors } from './../../Common';
+import { Colors, Routes } from './../../Common';
 
 class LoginScreen extends Component {
     render() {
@@ -14,7 +14,7 @@ class LoginScreen extends Component {
                         <InputField placeholder={'Username'} secureTextEntry={false}></InputField>
                         <InputField placeholder={'Password'} secureTextEntry={true}></InputField>
                     </View>
-                    <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate('FoodDetails')}>
+                    <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.navigate(Routes.FoodDetails)}>
                         <View>
                             <Text style={styles.loginButtonText}>
                                 Log In
