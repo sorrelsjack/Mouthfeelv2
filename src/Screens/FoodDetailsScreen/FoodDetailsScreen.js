@@ -25,7 +25,6 @@ class FoodDetailsScreen extends Component {
 
     return (
       <>
-        <StatusBar barStyle="dark-content" />
         <SafeAreaView>
           <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
             <CircleButton icon={'heart'} iconSelectedColor={Colors.circleButton.icon.selected.heart.color} />
