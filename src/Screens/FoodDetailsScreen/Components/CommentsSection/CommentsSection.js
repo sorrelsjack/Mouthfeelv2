@@ -4,9 +4,7 @@ import {
     Text,
     TouchableOpacity,
     StyleSheet,
-    Animated,
     FlatList,
-    Dimensions
 } from 'react-native';
 import { Comment } from '../../Components';
 import { Colors } from './../../../../Common';

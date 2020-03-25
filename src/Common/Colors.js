@@ -83,6 +83,11 @@ const Colors = {
                 color: '#6200ea'
             }
         }
+    },
+    homeScreenList: {
+        itemSeparator: {
+            backgroundColor: 'black'
+        }
     }
 }
 

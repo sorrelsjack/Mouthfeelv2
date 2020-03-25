@@ -21,7 +21,7 @@ class FoodDetailsScreen extends Component {
     const food = 'pizza';
     const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
     const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'];
-    const misc = ['vegetarian', 'boneless'];
+    const misc = ['vegetarian', 'boneless', 'toppings common'];
 
     return (
       <>
