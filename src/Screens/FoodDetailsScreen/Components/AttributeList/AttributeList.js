@@ -9,15 +9,19 @@ import { Tag } from '../../../../Components';
 
 class AttributeList extends Component {
     render() {
+        const { title, items } = this.props;
+
+        sortItems = (items) => items.sort((a, b) => (a.votes < b.votes) ? 1 : -1);
+
         return (
             <View style={styles.wrapper}>
-                <Text style={styles.text}>{this.props.title}</Text>
+                <Text style={styles.text}>{title}</Text>
                 <FlatList
                     showsHorizontalScrollIndicator={false}
                     style={styles.list}
                     horizontal={true}
-                    data={this.props.items}
-                    renderItem={({ item }) => <Tag text={item} />}
+                    data={sortItems(items)}
+                    renderItem={({ item }) => <Tag item={item} />}
                     keyExtractor={item => item} />
             </View>
         )

@@ -1,12 +1,24 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
-import { Routes } from './../../../Common';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 class HomeListItem extends Component {
     render() {
+        const { onPress, item } = this.props;
+
         return (
-            <TouchableOpacity onPress={this.props.onPress}>
-                    <Text style={styles.text}>{this.props.item}</Text>
+            <TouchableOpacity onPress={onPress}>
+                <View style={styles.container}>
+                    <View style={styles.content}>
+                        <View style={styles.iconContainer}>
+                            <Icon name={item.icon} size={20} />
+                        </View>
+                        <Text style={styles.text}>{item.text}</Text>
+                    </View>
+                    <View style={styles.iconContainer}>
+                        <Icon name={'chevron-right'} size={20} />
+                    </View>
+                </View>
             </TouchableOpacity>
         )
     }
@@ -15,7 +27,20 @@ class HomeListItem extends Component {
 export default HomeListItem;
 
 const styles = StyleSheet.create({
+    container: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
+    content: {
+        flexDirection: 'row'
+    },
     text: {
+        fontSize: 20,
         padding: 20
+    },
+    iconContainer: {
+        paddingHorizontal: 10,
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 })

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Colors, Routes } from './../../Common';
+import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
 
 class HomeScreen extends Component {
@@ -20,7 +21,11 @@ class HomeScreen extends Component {
     }
 
     render() {
-        const items = ['Liked', 'Recommended', 'To Try']
+        const items = [
+            { icon: 'heart', text: 'Liked' },
+            { icon: 'location-arrow', text: 'Recommended' },
+            { icon: 'list-ul', text: 'To Try' }
+        ]
 
         return (
             <View style={styles.wrapper}>
@@ -36,6 +41,7 @@ class HomeScreen extends Component {
                     ItemSeparatorComponent={this.renderItemSeparator}
                     renderItem={({item}) => <HomeListItem item={item} onPress={() => this.props.navigation.navigate(Routes.FoodDetails)} />}
                     keyExtractor={item => item} />
+                <FoodList />
             </View>
         )
     }

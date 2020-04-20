@@ -5,7 +5,6 @@ import {
   ScrollView,
   View,
   Text,
-  StatusBar,
   Image
 } from 'react-native';
 import { 
@@ -20,8 +19,8 @@ class FoodDetailsScreen extends Component {
   render() {
     const food = 'pizza';
     const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
-    const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'];
-    const misc = ['vegetarian', 'boneless', 'toppings common'];
+    const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
+    const misc = ['vegetarian', 'boneless', 'toppings common'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
 
     return (
       <>

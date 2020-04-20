@@ -37,14 +37,16 @@ class Tag extends Component {
     }
 
     render() {
+        const { text, votes } = this.props.item;
+
         return (
             <View style={this.setWrapperStyle()}>
                 <TouchableOpacity onPress={this.handlePress}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={this.setCounterContainerStyle()}>
-                            <Text style={this.setTextStyle()}>12</Text>
+                            <Text style={this.setTextStyle()}>{votes}</Text>
                         </View>
-                        <Text style={this.setTextStyle()}>{this.props.text.toUpperCase()}</Text>
+                        <Text style={this.setTextStyle()}>{text.toUpperCase()}</Text>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.iconContainer}>
