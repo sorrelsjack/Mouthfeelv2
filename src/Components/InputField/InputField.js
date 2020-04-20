@@ -4,9 +4,16 @@ import { Colors } from './../../Common';
 
 class InputField extends Component {
     render() {
-        return(
+        const { secureTextEntry, placeholder } = this.props;
+
+        return (
             <View>
-                <TextInput style={styles.textInput} placeholderTextColor={Colors.textInput.placeholderColor} numberOfLines={1} secureTextEntry={this.props.secureTextEntry} placeholder={this.props.placeholder}></TextInput>
+                <TextInput 
+                    style={styles.textInput} 
+                    placeholderTextColor={Colors.textInput.placeholderColor} 
+                    numberOfLines={1} 
+                    secureTextEntry={secureTextEntry} 
+                    placeholder={placeholder} />
             </View>
         )
     }

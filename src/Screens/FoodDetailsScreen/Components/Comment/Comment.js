@@ -7,8 +7,6 @@ const Comment = (props) => {
     let [upvoted, setUpvoted] = useState(false);
     let [downvoted, setDownvoted] = useState(false);
 
-    console.log(props)
-
     return (
         <View style={styles.wrapper}>
             <View style={styles.arrowContainer}>

@@ -14,7 +14,7 @@ class LoginScreen extends Component {
                         <InputField placeholder={'Username'} secureTextEntry={false}></InputField>
                         <InputField placeholder={'Password'} secureTextEntry={true}></InputField>
                     </View>
-                    <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.replace(Routes.Home)}>
+                    <TouchableOpacity style={styles.loginButton} onPress={() => this.props.navigation.replace(Routes.FoodDetails)}>
                         <View>
                             <Text style={styles.loginButtonText}>
                                 Log In
