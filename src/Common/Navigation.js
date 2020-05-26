@@ -1,7 +1,10 @@
 const Routes = {
     Login: 'Login',
     Home: 'Home',
-    FoodDetails: 'FoodDetails'
+    FoodDetails: 'FoodDetails',
+    SubmitFood: 'SubmitFood',
+    Settings: 'Settings',
+    Tags: 'Tags'
 }
 
 export default Routes;

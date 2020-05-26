@@ -23,8 +23,10 @@ class HomeScreen extends Component {
     render() {
         const items = [
             { icon: 'heart', text: 'Liked' },
+            { icon: 'heart-broken', text: 'Disliked' },
             { icon: 'location-arrow', text: 'Recommended' },
-            { icon: 'list-ul', text: 'To Try' }
+            { icon: 'list-ul', text: 'To Try' },
+            { icon: 'plus-circle', text: 'Submit New Food'}
         ]
 
         return (
@@ -41,7 +43,6 @@ class HomeScreen extends Component {
                     ItemSeparatorComponent={this.renderItemSeparator}
                     renderItem={({item}) => <HomeListItem item={item} onPress={() => this.props.navigation.navigate(Routes.FoodDetails)} />}
                     keyExtractor={item => item} />
-                <FoodList />
             </View>
         )
     }
