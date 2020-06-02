@@ -26,7 +26,7 @@ class HomeScreen extends Component {
             { icon: 'heart-broken', text: 'Disliked' },
             { icon: 'location-arrow', text: 'Recommended' },
             { icon: 'list-ul', text: 'To Try' },
-            { icon: 'plus-circle', text: 'Submit New Food'}
+            { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
         ]
 
         return (
@@ -41,7 +41,7 @@ class HomeScreen extends Component {
                 <FlatList
                     data={items}
                     ItemSeparatorComponent={this.renderItemSeparator}
-                    renderItem={({item}) => <HomeListItem item={item} onPress={() => this.props.navigation.navigate(Routes.FoodDetails)} />}
+                    renderItem={({item}) => <HomeListItem item={item} onPress={() => this.props.navigation.navigate(item.route || Routes.FoodDetails)} />}
                     keyExtractor={item => item} />
             </View>
         )
