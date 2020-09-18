@@ -30,6 +30,9 @@ const Colors = {
             selected: {
                 heart: {
                     color: 'red'
+                },
+                heartBroken: {
+                    color: 'black'
                 }
             }
         }

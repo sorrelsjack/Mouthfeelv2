@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import React, { useEffect } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import { GetFoodDetailsAction } from '../../Redux/Actions';
 import {
   SafeAreaView,
@@ -9,49 +9,53 @@ import {
   Text,
   Image
 } from 'react-native';
-import { 
-  IngredientsList, 
-  CommentsSection, 
+import {
+  IngredientsList,
+  CommentsSection,
   AttributeList,
 } from './Components';
 import { Colors } from './../../Common';
 import { CircleButton } from '../../Components';
 
-class FoodDetailsScreen extends Component {
-  componentDidMount() {
-    this.props.dispatch(GetFoodDetailsAction(1));
-  }
-  render() {
-    const { food, textures, flavors, } = this.props;
-    //const food = 'pizza';
-    const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
-    const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
-    const misc = ['vegetarian', 'boneless', 'toppings common'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
+const FoodDetailsScreen = (props) => {
+  const { food, textures, flavors } = props;
+  const dispatch = useDispatch();
 
-    return (
-      <>
-        <SafeAreaView>
-          <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
-            <CircleButton icon={'heart'} iconSelectedColor={Colors.circleButton.icon.selected.heart.color} />
-            <View style={styles.container}>
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: 'https://publicdomainvectors.org/photos/1514958680.png' }} style={styles.image} />
-              </View>
-              <View style={styles.titleSection}>
-                <Text style={styles.titleText}>{food?.name}</Text>
-              </View>
-              <IngredientsList items={ingredients} />
-              <View style={styles.attributeListsContainer}>
-                <AttributeList title={`What is eating ${food?.name} like?`} items={experience} />
-                <AttributeList title={`What makes ${food?.name} unique?`} items={misc} />
-              </View>
-              <CommentsSection />
+  useEffect(() => {
+    dispatch(GetFoodDetailsAction(1));
+  })
+
+  //const food = 'pizza';
+  const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
+  const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
+  const misc = ['vegetarian', 'boneless', 'toppings common'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
+
+  return (
+    <>
+      <SafeAreaView>
+        <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
+          <View style={styles.heartsContainer}>
+            <CircleButton icon='heart' iconSelectedColor={Colors.circleButton.icon.selected.heart.color} />
+            <CircleButton icon='heart-broken' iconSelectedColor={Colors.circleButton.icon.selected.heartBroken.color} />
+          </View>
+          <View style={styles.container}>
+            <View style={styles.imageContainer}>
+              <Image source={{ uri: 'https://publicdomainvectors.org/photos/1514958680.png' }} style={styles.image} />
             </View>
-          </ScrollView>
-        </SafeAreaView>
-      </>
-    )
-  }
+            <View style={styles.titleSection}>
+              <Text style={styles.titleText}>{food?.name}</Text>
+            </View>
+            <IngredientsList items={ingredients} />
+            <View style={styles.attributeListsContainer}>
+              <AttributeList title={`What is eating ${food?.name} like?`} items={experience} />
+              <AttributeList title={`What makes ${food?.name} unique?`} items={misc} />
+            </View>
+            <CommentsSection />
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    </>
+  )
 }
 
 export default connect(state => {
@@ -74,6 +78,10 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingBottom: 20
+  },
+  heartsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
   attributeListsContainer: {
     paddingTop: 15,

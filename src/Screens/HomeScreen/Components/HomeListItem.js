@@ -1,27 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-class HomeListItem extends Component {
-    render() {
-        const { onPress, item } = this.props;
+const HomeListItem = (props) => {
+    const { onPress, item } = props;
 
-        return (
-            <TouchableOpacity onPress={onPress}>
-                <View style={styles.container}>
-                    <View style={styles.content}>
-                        <View style={styles.iconContainer}>
-                            <Icon name={item.icon} size={20} />
-                        </View>
-                        <Text style={styles.text}>{item.text}</Text>
-                    </View>
+    return (
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.container}>
+                <View style={styles.content}>
                     <View style={styles.iconContainer}>
-                        <Icon name={'chevron-right'} size={20} />
+                        <Icon name={item.icon} size={20} />
                     </View>
+                    <Text style={styles.text}>{item.text}</Text>
                 </View>
-            </TouchableOpacity>
-        )
-    }
+                <View style={styles.iconContainer}>
+                    <Icon name={'chevron-right'} size={20} />
+                </View>
+            </View>
+        </TouchableOpacity>
+    )
 }
 
 export default HomeListItem;

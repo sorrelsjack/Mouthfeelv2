@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -9,29 +9,26 @@ import {
 
 import { Colors } from './../../../../Common';
 
-class IngredientsList extends Component {
-    state = {
-        expanded: false
-    }
+const IngredientsList = (props) => {
+    const { items } = props;
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    render() {
         return(
             <View style={styles.wrapper}>
                 <Text style={styles.title}>Ingredients</Text>
-                <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
-                    <Text style={styles.readMoreText}>{this.state.expanded ? null : `READ MORE...`}</Text>
+                <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
+                    <Text style={styles.readMoreText}>{isExpanded ? null : `READ MORE...`}</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
-                { this.state.expanded && <FlatList
+                <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
+                { isExpanded && <FlatList
                     style={styles.listContainer}
                     showsHorizontalScrollIndicator={false}
-                    data={this.props.items}
+                    data={items}
                     renderItem={({ item }) => <Text style={styles.ingredientText}>{`• ${item}`}</Text>}
                     keyExtractor={item => item} /> }
                 </TouchableOpacity>
             </View>
         )
-    }
 }
 
 export default IngredientsList;

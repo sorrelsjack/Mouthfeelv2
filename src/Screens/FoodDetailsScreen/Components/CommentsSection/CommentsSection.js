@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -9,12 +9,9 @@ import {
 import { Comment } from '../../Components';
 import { Colors } from './../../../../Common';
 
-class CommentsSection extends Component {
-    state = {
-        expanded: false
-    }
+const CommentsSection = (props) => {
+    const [isExpanded, setIsExpanded] = useState(false);
 
-    render() {
         const test = [
             {
                 username: 'nara',
@@ -31,16 +28,15 @@ class CommentsSection extends Component {
         ]
         return (
                 <View style={styles.wrapper}>
-                    <TouchableOpacity onPress={() => this.setState({ expanded: !this.state.expanded })}>
-                        <Text style={styles.headerText}>{this.state.expanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
+                    <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
+                        <Text style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
                     </TouchableOpacity>
-                    { this.state.expanded && <FlatList
+                    { isExpanded && <FlatList
                         data={test}
                         renderItem={({ item }) => <Comment details={item} />}
                         keyExtractor={item => item} /> }
                 </View>
         )
-    }
 }
 
 export default CommentsSection;

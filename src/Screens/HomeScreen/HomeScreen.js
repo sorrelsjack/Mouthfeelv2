@@ -1,26 +1,22 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { Colors, Routes } from './../../Common';
 import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
 
-class HomeScreen extends Component {
-    state = {
-        search: ''
-    }
+const HomeScreen = (props) => {
+    const [searchQuery, setSearchQuery] = useState('');
 
-    updateSearch = search => {
-        this.setState({ search })
-    };
+    const updateSearch = search => setSearchQuery(search);
 
-    renderItemSeparator = () => {
+
+    const renderItemSeparator = () => {
         return (
             <View style={styles.itemSeparator} />
         )
     }
 
-    render() {
         const items = [
             { icon: 'heart', text: 'Liked' },
             { icon: 'heart-broken', text: 'Disliked' },
@@ -35,17 +31,16 @@ class HomeScreen extends Component {
                     <SearchBar
                         platform={Platform.OS}
                         placeholder={'Food name, ingredient, or attribute'}
-                        onChangeText={this.updateSearch}
-                        value={this.state.search} />
+                        onChangeText={updateSearch}
+                        value={searchQuery} />
                 </View>
                 <FlatList
                     data={items}
-                    ItemSeparatorComponent={this.renderItemSeparator}
-                    renderItem={({item}) => <HomeListItem item={item} onPress={() => this.props.navigation.navigate(item.route || Routes.FoodDetails)} />}
+                    ItemSeparatorComponent={renderItemSeparator}
+                    renderItem={({item}) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
                     keyExtractor={item => item} />
             </View>
         )
-    }
 }
 
 export default HomeScreen;
