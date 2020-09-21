@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from './../../Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+//import { Tooltip } from '..';
+import { Tooltip } from 'react-native-elements';
 
 const Tag = (props) => {
     const { text, votes } = props.item;
@@ -37,9 +39,9 @@ const Tag = (props) => {
                 </View>
             </TouchableOpacity>
             <View style={styles.iconContainer}>
-                <TouchableOpacity>
+                <Tooltip overlayColor={'transparent'} skipAndroidStatusBar popover={<Text>Testing!</Text>}>
                     <Icon name={'question-circle'} size={18} solid color={isPressed ? Colors.tag.icon.selected.color : Colors.tag.icon.unselected.color} />
-                </TouchableOpacity>
+                </Tooltip>
             </View>
         </View>
     )
