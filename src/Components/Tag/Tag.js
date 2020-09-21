@@ -2,21 +2,18 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Colors } from './../../Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-//import { Tooltip } from '..';
 import { Tooltip } from 'react-native-elements';
 
 const Tag = (props) => {
     const { text, votes } = props.item;
-
     const [isPressed, setIsPressed] = useState(false);
 
-    // TODO: Implement tooltip
-    const setWrapperStyle = () => isPressed 
-        ? { ...styles.wrapper, backgroundColor: Colors.tag.selected.backgroundColor } 
+    const setWrapperStyle = () => isPressed
+        ? { ...styles.wrapper, backgroundColor: Colors.tag.selected.backgroundColor }
         : { ...styles.wrapper, backgroundColor: Colors.tag.unselected.backgroundColor }
 
-    const setTextStyle = () => isPressed 
-        ? { ...styles.text, color: Colors.tag.selected.textColor } 
+    const setTextStyle = () => isPressed
+        ? { ...styles.text, color: Colors.tag.selected.textColor }
         : { ...styles.text, color: Colors.tag.unselected.textColor }
 
     const setCounterContainerStyle = () => isPressed
@@ -28,18 +25,24 @@ const Tag = (props) => {
         setIsPressed(!isPressed);
     }
 
+    // TODO: Populate tooltip with desc of flavor or texture
+
     return (
         <View style={setWrapperStyle()}>
             <TouchableOpacity onPress={handlePress}>
                 <View style={{ flexDirection: 'row' }}>
                     <View style={setCounterContainerStyle()}>
-                        <Text style={setTextStyle()}>{votes}</Text>
+                        <Text style={setTextStyle()}>{votes || 0}</Text>
                     </View>
                     <Text style={setTextStyle()}>{text}</Text>
                 </View>
             </TouchableOpacity>
             <View style={styles.iconContainer}>
-                <Tooltip overlayColor={'transparent'} skipAndroidStatusBar popover={<Text>Testing!</Text>}>
+                <Tooltip
+                    overlayColor='transparent'
+                    backgroundColor='rgba(0, 0, 0, .7)'
+                    skipAndroidStatusBar
+                    popover={<Text style={{ color: 'white' }}>{text}</Text>}>
                     <Icon name={'question-circle'} size={18} solid color={isPressed ? Colors.tag.icon.selected.color : Colors.tag.icon.unselected.color} />
                 </Tooltip>
             </View>

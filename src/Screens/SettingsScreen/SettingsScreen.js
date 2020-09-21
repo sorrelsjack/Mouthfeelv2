@@ -1,9 +1,9 @@
 import React from 'react';
-import { 
-    View, 
-    Text, 
-    TouchableOpacity, 
-    StyleSheet 
+import {
+    View,
+    Text,
+    TouchableOpacity,
+    StyleSheet
 } from 'react-native';
 
 const SettingsScreen = (props) => {
@@ -16,12 +16,12 @@ const SettingsScreen = (props) => {
     }
 
     return (
-        <View>
-            <TouchableOpacity onPress={handleLogOutPressed}>
-                <Text>Log Out</Text>
-            </TouchableOpacity>
+        <View style={styles.wrapper}>
             <TouchableOpacity onPress={handleAboutPressed}>
-                <Text>About</Text>
+                <Text style={styles.title}>About</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={handleLogOutPressed}>
+                <Text style={styles.title}>Log Out</Text>
             </TouchableOpacity>
         </View>
     )
@@ -30,5 +30,12 @@ const SettingsScreen = (props) => {
 export default SettingsScreen;
 
 const styles = StyleSheet.create({
-
+    wrapper: {
+        padding: 20,
+        height: '100%',
+        justifyContent: 'space-between'
+    },
+    title: {
+        textAlign: 'center'
+    }
 });

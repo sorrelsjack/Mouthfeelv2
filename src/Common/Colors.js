@@ -16,6 +16,10 @@ const Colors = {
             textColor: 'black'
         }
     },
+    button: {
+        backgroundColor: '#6200ea',
+        textColor: 'white'
+    },
     page: {
         backgroundColor: '#e5e5e5'
     },
