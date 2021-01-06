@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { GetFoodDetailsAction } from '../../Redux/Actions';
 import {
@@ -16,12 +16,19 @@ import {
 } from './Components';
 import { Colors } from './../../Common';
 import { CircleButton } from '../../Components';
+import { getColorFromURL } from 'rn-dominant-color';
 
 const FoodDetailsScreen = (props) => {
   const { food, textures, flavors } = props;
+  const [themeColor, setThemeColor] = useState('white');
   const dispatch = useDispatch();
 
   useEffect(() => {
+    const GetThemeColor = async () => {
+      res = await getColorFromURL('https://publicdomainvectors.org/photos/1514958680.png');
+      setThemeColor(res.primary);
+    }
+    GetThemeColor();
     dispatch(GetFoodDetailsAction(1));
   })
 
