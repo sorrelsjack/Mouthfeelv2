@@ -6,6 +6,7 @@ import {
     FlatList,
 } from 'react-native';
 import { Tag } from '../../../../Components';
+import { AttributeListAddButton } from '../AttributeListAddButton';
 
 const AttributeList = (props) => {
     const { title, items } = props;
@@ -15,13 +16,16 @@ const AttributeList = (props) => {
     return (
         <View style={styles.wrapper}>
             <Text style={styles.text}>{title}</Text>
-            <FlatList
-                showsHorizontalScrollIndicator={false}
-                style={styles.list}
-                horizontal={true}
-                data={sortItems(items)}
-                renderItem={({ item }) => <Tag item={item} />}
-                keyExtractor={item => item} />
+            <View style={{ flexDirection: 'row' }}>
+                <AttributeListAddButton />
+                <FlatList
+                    showsHorizontalScrollIndicator={false}
+                    style={styles.list}
+                    horizontal={true}
+                    data={sortItems(items)}
+                    renderItem={({ item }) => <Tag item={item} />}
+                    keyExtractor={item => item} />
+            </View>
         </View>
     )
 }
@@ -39,7 +43,6 @@ const styles = StyleSheet.create({
     },
     list: {
         marginRight: -20,
-        marginLeft: -20
     }
 })
 

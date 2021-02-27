@@ -1,4 +1,4 @@
-const rootUrl = 'http:/10.0.2.2:3000';
+const rootUrl = 'https://mouthfeel-api.azurewebsites.net/api';
 
 export const Urls = {
     foods: {

@@ -7,7 +7,7 @@ import {
     FlatList
   } from 'react-native';
 
-import { Colors } from './../../../../Common';
+import { GetColor } from './../../../../Common';
 
 const IngredientsList = (props) => {
     const { items } = props;
@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     wrapper: {
         width: '100%',
         padding: 20,
-        backgroundColor: Colors.section.backgroundColor
+        backgroundColor: GetColor().section.backgroundColor
     },
     title: {
         paddingVertical: 10,
         fontSize: 24
     },
     readMoreText: {
-        color: Colors.section.clickableText.textColor
+        color: GetColor().section.clickableText.textColor
     },
     listContainer: {
         marginTop: -10

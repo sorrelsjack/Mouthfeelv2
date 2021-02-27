@@ -1,3 +1,5 @@
+export let primaryThemeColor = '#6200ea';
+
 const Colors = {
     loginScreen: {
         gradient: {
@@ -17,7 +19,7 @@ const Colors = {
         }
     },
     button: {
-        backgroundColor: '#6200ea',
+        backgroundColor: primaryThemeColor,
         textColor: 'white'
     },
     page: {
@@ -25,7 +27,7 @@ const Colors = {
     },
     circleButton: {
         circleBackground: {
-            backgroundColor: '#6200ea'
+            backgroundColor: primaryThemeColor
         },
         icon: {
             unselected: {
@@ -44,7 +46,7 @@ const Colors = {
     section: {
         backgroundColor: '#ffffff',
         clickableText: {
-            textColor: '#6200ea'
+            textColor: primaryThemeColor
         }
     },
     textInput: {
@@ -54,7 +56,7 @@ const Colors = {
     },
     tag: {
         unselected: {
-            backgroundColor: '#6200ea',
+            backgroundColor: primaryThemeColor,
             textColor: 'white'
         },
         selected: {
@@ -84,10 +86,10 @@ const Colors = {
                 color: '#8d8f8e'
             },
             down: {
-                color: '#6200ea'
+                color: primaryThemeColor
             },
             up: {
-                color: '#6200ea'
+                color: primaryThemeColor
             }
         }
     },
@@ -98,4 +100,6 @@ const Colors = {
     }
 }
 
-export default Colors;
+export const GetColor = () => Colors;
+
+export const SetPrimaryThemeColor = (newColor) => primaryThemeColor = newColor;

@@ -1,31 +1,31 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { Colors } from './../../Common';
+import { GetColor } from './../../Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Tooltip } from 'react-native-elements';
 
 const Tag = (props) => {
-    const { text, votes } = props.item;
+    const { text, votes, tooltipText } = props.item;
     const [isPressed, setIsPressed] = useState(false);
 
     const setWrapperStyle = () => isPressed
-        ? { ...styles.wrapper, backgroundColor: Colors.tag.selected.backgroundColor }
-        : { ...styles.wrapper, backgroundColor: Colors.tag.unselected.backgroundColor }
+        ? { ...styles.wrapper, backgroundColor: GetColor().tag.selected.backgroundColor }
+        : { ...styles.wrapper, backgroundColor: GetColor().tag.unselected.backgroundColor }
 
     const setTextStyle = () => isPressed
-        ? { ...styles.text, color: Colors.tag.selected.textColor }
-        : { ...styles.text, color: Colors.tag.unselected.textColor }
+        ? { ...styles.text, color: GetColor().tag.selected.textColor }
+        : { ...styles.text, color: GetColor().tag.unselected.textColor }
 
     const setCounterContainerStyle = () => isPressed
-        ? { ...styles.counterContainer, backgroundColor: Colors.tag.counter.selected.backgroundColor }
-        : { ...styles.counterContainer, backgroundColor: Colors.tag.counter.unselected.backgroundColor }
+        ? { ...styles.counterContainer, backgroundColor: GetColor().tag.counter.selected.backgroundColor }
+        : { ...styles.counterContainer, backgroundColor: GetColor().tag.counter.unselected.backgroundColor }
 
     const handlePress = () => {
         // TODO Increase or decrease the number
         setIsPressed(!isPressed);
     }
 
-    // TODO: Populate tooltip with desc of flavor or texture
+    // TODO: Fix tooltip so it expands with the text
 
     return (
         <View style={setWrapperStyle()}>
@@ -42,8 +42,9 @@ const Tag = (props) => {
                     overlayColor='transparent'
                     backgroundColor='rgba(0, 0, 0, .7)'
                     skipAndroidStatusBar
-                    popover={<Text style={{ color: 'white' }}>{text}</Text>}>
-                    <Icon name={'question-circle'} size={18} solid color={isPressed ? Colors.tag.icon.selected.color : Colors.tag.icon.unselected.color} />
+                    height={60}
+                    popover={<Text style={{ color: 'white' }}>{tooltipText}</Text>}>
+                    <Icon name={'question-circle'} size={18} solid color={isPressed ? GetColor().tag.icon.selected.color : GetColor().tag.icon.unselected.color} />
                 </Tooltip>
             </View>
         </View>

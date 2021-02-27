@@ -14,25 +14,39 @@ import {
   CommentsSection,
   AttributeList,
 } from './Components';
-import { Colors } from './../../Common';
+import { SetPrimaryThemeColor, GetColor, FormatAsTitleCase } from './../../Common';
 import { CircleButton } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
+import LottieView from 'lottie-react-native';
 
 const FoodDetailsScreen = (props) => {
-  const { food, textures, flavors } = props;
+  const { loading } = props.selected;
+  const { id, name, imageUrl, textures, flavors, miscellaneous } = props.selected.data;
+
   const [themeColor, setThemeColor] = useState('white');
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(GetFoodDetailsAction(1));
+  }, [])
+
+  useEffect(() => {
+    if (!imageUrl) return;
+
+    // TODO: Propogate theme color to the state
     const GetThemeColor = async () => {
-      res = await getColorFromURL('https://publicdomainvectors.org/photos/1514958680.png');
-      setThemeColor(res.primary);
+      res = await getColorFromURL(imageUrl);
+      console.log(res)
+      SetPrimaryThemeColor(res.primary);
+      console.log(GetColor())
+      //setThemeColor(res.primary);
     }
     GetThemeColor();
-    dispatch(GetFoodDetailsAction(1));
-  })
 
-  //const food = 'pizza';
+  }, [imageUrl])
+
+  // TODO: What if flavor and texture have the same values?
+  // TODO: Show pizza loader instead of entire screen
   const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
   const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
   const misc = ['vegetarian', 'boneless', 'toppings common'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
@@ -42,20 +56,22 @@ const FoodDetailsScreen = (props) => {
       <SafeAreaView>
         <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
           <View style={styles.heartsContainer}>
-            <CircleButton icon='heart' iconSelectedColor={Colors.circleButton.icon.selected.heart.color} />
-            <CircleButton icon='heart-broken' iconSelectedColor={Colors.circleButton.icon.selected.heartBroken.color} />
+            <CircleButton icon='heart' iconSelectedColor={GetColor().circleButton.icon.selected.heart.color} />
+            <CircleButton icon='heart-broken' iconSelectedColor={GetColor().circleButton.icon.selected.heartBroken.color} />
           </View>
           <View style={styles.container}>
             <View style={styles.imageContainer}>
-              <Image source={{ uri: 'https://publicdomainvectors.org/photos/1514958680.png' }} style={styles.image} />
+              {loading && <LottieView source={require('../../Assets/loading_pizza.json')} autoPlay />}
+              <Image source={{ uri: imageUrl }} style={styles.image} />
             </View>
             <View style={styles.titleSection}>
-              <Text style={styles.titleText}>{food?.name}</Text>
+              <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>
             </View>
             <IngredientsList items={ingredients} />
             <View style={styles.attributeListsContainer}>
-              <AttributeList title={`What is eating ${food?.name} like?`} items={experience} />
-              <AttributeList title={`What makes ${food?.name} unique?`} items={misc} />
+              <AttributeList title={`What textures does ${name} have?`} items={textures ? textures.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
+              <AttributeList title={`What flavors does ${name} have?`} items={flavors ? flavors.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
+              <AttributeList title={`What makes ${name} unique?`} items={miscellaneous ? miscellaneous.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
             </View>
             <CommentsSection />
           </View>
@@ -66,13 +82,8 @@ const FoodDetailsScreen = (props) => {
 }
 
 export default connect(state => {
-  const { food, flavors, textures, misc } = state.foods.selected;
-
   return {
-    food,
-    flavors,
-    textures,
-    misc
+    selected: state.foods.selected
   }
 
 })(FoodDetailsScreen);
@@ -80,7 +91,7 @@ export default connect(state => {
 const styles = StyleSheet.create({
   wrapper: {
     height: '100%',
-    backgroundColor: Colors.page.backgroundColor
+    backgroundColor: GetColor().page.backgroundColor
   },
   container: {
     paddingHorizontal: 20,
@@ -101,11 +112,11 @@ const styles = StyleSheet.create({
   image: {
     resizeMode: 'contain',
     height: 175,
-    width: 175
+    width: '80%'
   },
   titleSection: {
     padding: 20,
-    backgroundColor: Colors.section.backgroundColor,
+    backgroundColor: GetColor().section.backgroundColor,
     marginVertical: 30
   },
   titleText: {

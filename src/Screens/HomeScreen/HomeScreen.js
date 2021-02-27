@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { Colors, Routes } from './../../Common';
+import { GetColor, Routes } from './../../Common';
 import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
 
@@ -51,6 +51,6 @@ const styles = StyleSheet.create({
     },
     itemSeparator: {
         height: 1,
-        backgroundColor: Colors.homeScreenList.itemSeparator.backgroundColor
+        backgroundColor: GetColor().homeScreenList.itemSeparator.backgroundColor
     }
 })

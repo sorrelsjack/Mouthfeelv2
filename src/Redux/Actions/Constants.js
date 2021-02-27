@@ -1,4 +1,6 @@
 export const Actions = {
+    SetSelectedFood: 'SET_SELECTED_FOOD',
+
     GetAllFoods: 'GET_ALL_FOODS',
     GetAllFoodsLoading: 'GET_ALL_FOODS_LOADING',
     GetAllFoodsSuccess: 'GET_ALL_FOODS_SUCCESS',

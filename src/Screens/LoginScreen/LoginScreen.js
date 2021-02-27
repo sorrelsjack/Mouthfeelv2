@@ -2,11 +2,11 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { InputField } from './../../Components';
 import LinearGradient from 'react-native-linear-gradient';
-import { Colors, Routes } from './../../Common';
+import { GetColor, Routes } from './../../Common';
 
 const LoginScreen = (props) => {
     return (
-        <LinearGradient colors={[Colors.loginScreen.gradient.topColor, Colors.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
+        <LinearGradient colors={[GetColor().loginScreen.gradient.topColor, GetColor().loginScreen.gradient.bottomColor]} style={styles.wrapper}>
             <View style={styles.container}>
                 <Text style={styles.title}>Mouthfeel</Text>
                 <View style={styles.inputFieldsContainer}>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     title: {
-        color: Colors.loginScreen.title.textColor,
+        color: GetColor().loginScreen.title.textColor,
         fontSize: 48
     },
     inputFieldsContainer: {
@@ -59,18 +59,18 @@ const styles = StyleSheet.create({
     loginButton: {
         borderRadius: 30,
         marginVertical: 25,
-        backgroundColor: Colors.loginScreen.loginButton.backgroundColor,
+        backgroundColor: GetColor().loginScreen.loginButton.backgroundColor,
         width: '100%',
         paddingVertical: 10
     },
     loginButtonText: {
         fontSize: 20,
         textAlign: 'center',
-        color: Colors.loginScreen.loginButton.textColor
+        color: GetColor().loginScreen.loginButton.textColor
     },
     registerButton: {
-        backgroundColor: Colors.loginScreen.registerButton.backgroundColor,
-        borderColor: Colors.loginScreen.registerButton.backgroundColor,
+        backgroundColor: GetColor().loginScreen.registerButton.backgroundColor,
+        borderColor: GetColor().loginScreen.registerButton.backgroundColor,
         borderRadius: 30,
         position: 'absolute',
         width: '100%',
@@ -83,6 +83,6 @@ const styles = StyleSheet.create({
     registerButtonText: {
         fontSize: 20,
         textAlign: 'center',
-        color: Colors.loginScreen.registerButton.textColor
+        color: GetColor().loginScreen.registerButton.textColor
     },
 });

@@ -3,7 +3,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
-import { Colors } from './../../Common';
+import { GetColor } from './../../Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
 const CircleButton = props => {
@@ -12,7 +12,7 @@ const CircleButton = props => {
 
     return (
         <TouchableOpacity style={styles.heartContainer} onPress={() => setSelected(!selected)}>
-            <Icon name={icon} solid size={20} color={selected ? props.iconSelectedColor : Colors.circleButton.icon.unselected.color} />
+            <Icon name={icon} solid size={20} color={selected ? props.iconSelectedColor : GetColor().circleButton.icon.unselected.color} />
         </TouchableOpacity>
     )
 }
@@ -28,6 +28,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         textAlign: 'center',
-        backgroundColor: Colors.circleButton.circleBackground.backgroundColor
+        backgroundColor: GetColor().circleButton.circleBackground.backgroundColor
       }
 })

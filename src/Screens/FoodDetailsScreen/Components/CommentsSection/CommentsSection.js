@@ -7,7 +7,7 @@ import {
     FlatList,
 } from 'react-native';
 import { Comment } from '../../Components';
-import { Colors } from './../../../../Common';
+import { GetColor } from './../../../../Common';
 
 const CommentsSection = (props) => {
     const [isExpanded, setIsExpanded] = useState(false);
@@ -43,10 +43,10 @@ export default CommentsSection;
 
 const styles = StyleSheet.create({
     wrapper: {
-        backgroundColor: Colors.section.backgroundColor,
+        backgroundColor: GetColor().section.backgroundColor,
         padding: 20
     },
     headerText: {
-        color: Colors.section.clickableText.textColor
+        color: GetColor().section.clickableText.textColor
     }
 })

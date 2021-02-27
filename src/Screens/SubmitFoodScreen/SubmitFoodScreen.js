@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { Tag } from '../../Components';
-import { Colors } from '../../Common';
+import { GetColor } from '../../Common';
 
 // Put a touchable opacity with a stock image that you can tap to upload an image
 // Selecting textures / flavors / misc will cause them to appear on the screen
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         marginVertical: 10
     },
     submitButton: {
-        backgroundColor: Colors.button.backgroundColor,
+        backgroundColor: GetColor().button.backgroundColor,
         borderRadius: 30,
         marginVertical: 25,
         width: '100%',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
 
     },
     submitButtonText: {
-        color: Colors.button.textColor,
+        color: GetColor().button.textColor,
         fontSize: 20,
         textAlign: 'center',
         textTransform: 'uppercase',
