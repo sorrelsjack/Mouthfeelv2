@@ -5,25 +5,35 @@ import {
     Text,
     FlatList,
 } from 'react-native';
-import { Tag } from '../../../../Components';
-import { AttributeListAddButton } from '../AttributeListAddButton';
+import { Tag } from '..';
+import { AttributeListAddButton } from '..';
 
 const AttributeList = (props) => {
-    const { title, items } = props;
+    const { 
+        title, 
+        includeAddButton = true, 
+        horizontal = true, 
+        contentContainerStyle = {}, 
+        tagStyle = {}, 
+        items 
+    } = props;
 
     sortItems = (items) => items.sort((a, b) => (a.votes < b.votes) ? 1 : -1);
 
+    // TODO: Is the add button here supposed to bring up TagsScreen?
+
     return (
         <View style={styles.wrapper}>
-            <Text style={styles.text}>{title}</Text>
+            {title && <Text style={styles.text}>{title}</Text>}
             <View style={{ flexDirection: 'row' }}>
-                <AttributeListAddButton />
+                {includeAddButton && <AttributeListAddButton />}
                 <FlatList
                     showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={contentContainerStyle}
                     style={styles.list}
-                    horizontal={true}
+                    horizontal={horizontal}
                     data={sortItems(items)}
-                    renderItem={({ item }) => <Tag item={item} />}
+                    renderItem={({ item }) => <Tag style={tagStyle} item={item} />}
                     keyExtractor={item => item} />
             </View>
         </View>

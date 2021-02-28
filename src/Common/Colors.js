@@ -1,6 +1,7 @@
-export let primaryThemeColor = '#6200ea';
+export const Colors = {
+    primaryThemeColor: '#6200ea',
+    primaryThemeTextColor: 'white',
 
-const Colors = {
     loginScreen: {
         gradient: {
             topColor: '#e71d36',
@@ -18,21 +19,11 @@ const Colors = {
             textColor: 'black'
         }
     },
-    button: {
-        backgroundColor: primaryThemeColor,
-        textColor: 'white'
-    },
     page: {
         backgroundColor: '#e5e5e5'
     },
     circleButton: {
-        circleBackground: {
-            backgroundColor: primaryThemeColor
-        },
         icon: {
-            unselected: {
-                color: 'white'
-            },
             selected: {
                 heart: {
                     color: 'red'
@@ -44,10 +35,7 @@ const Colors = {
         }
     },
     section: {
-        backgroundColor: '#ffffff',
-        clickableText: {
-            textColor: primaryThemeColor
-        }
+        backgroundColor: '#ffffff'
     },
     textInput: {
         lineColor: '#fdfffc',
@@ -55,18 +43,11 @@ const Colors = {
         textColor:'#fdfffc'
     },
     tag: {
-        unselected: {
-            backgroundColor: primaryThemeColor,
-            textColor: 'white'
-        },
         selected: {
             backgroundColor: 'yellow',
             textColor: 'black'
         },
         icon: {
-            unselected: {
-                color: 'white'
-            },
             selected: {
                 color: 'black'
             }
@@ -84,12 +65,6 @@ const Colors = {
         arrow: {
             default: {
                 color: '#8d8f8e'
-            },
-            down: {
-                color: primaryThemeColor
-            },
-            up: {
-                color: primaryThemeColor
             }
         }
     },
@@ -102,4 +77,6 @@ const Colors = {
 
 export const GetColor = () => Colors;
 
-export const SetPrimaryThemeColor = (newColor) => primaryThemeColor = newColor;
+export const GetDefaultPrimaryThemeColor = () => '#6200ea';
+
+export const GetDefaultPrimaryThemeTextColor = () => 'white';

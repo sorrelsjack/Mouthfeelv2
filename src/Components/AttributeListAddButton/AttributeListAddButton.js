@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { GetColor } from '../../../../Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { withTheme } from 'react-native-elements';
 
 // TODO: Add functionality to add more flavors and textures on press of this button
 const AttributeListAddButton = (props) => {
+    const { theme } = props;
     const [isPressed, setIsPressed] = useState(false);
 
     const setWrapperStyle = () => isPressed
-        ? { ...styles.wrapper, backgroundColor: GetColor().tag.selected.backgroundColor }
-        : { ...styles.wrapper, backgroundColor: GetColor().tag.unselected.backgroundColor }
-
-    const setCounterContainerStyle = () => isPressed
-        ? { ...styles.counterContainer, backgroundColor: GetColor().tag.counter.selected.backgroundColor }
-        : { ...styles.counterContainer, backgroundColor: GetColor().tag.counter.unselected.backgroundColor }
+        ? { ...styles.wrapper, backgroundColor: theme.tag.selected.backgroundColor }
+        : { ...styles.wrapper, backgroundColor: theme.primaryThemeColor }
 
     const handlePress = () => {
         // TODO Increase or decrease the number
@@ -24,14 +21,14 @@ const AttributeListAddButton = (props) => {
         <View style={setWrapperStyle()}>
             <TouchableOpacity onPress={handlePress}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Icon name='plus' size={14} color={GetColor().tag.icon.unselected.color} />
+                    <Icon name='plus' size={14} color={theme.primaryThemeTextColor} />
                 </View>
             </TouchableOpacity>
         </View>
     )
 }
 
-export default AttributeListAddButton;
+export default withTheme(AttributeListAddButton);
 
 const styles = StyleSheet.create({
     wrapper: {

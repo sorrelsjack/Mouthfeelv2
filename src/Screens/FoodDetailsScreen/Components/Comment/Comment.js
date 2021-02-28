@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { GetColor } from './../../../../Common';
+import { withTheme } from 'react-native-elements';
 
 const Comment = (props) => {
+    const { theme } = props;
     let [upvoted, setUpvoted] = useState(false);
     let [downvoted, setDownvoted] = useState(false);
 
@@ -11,10 +12,10 @@ const Comment = (props) => {
         <View style={styles.wrapper}>
             <View style={styles.arrowContainer}>
                 <TouchableOpacity onPress={() => { setUpvoted(!upvoted); setDownvoted(false); }}>
-                    <Icon style={styles.icon} fontSize={20} name={'arrow-up'} color={upvoted ? GetColor().comment.arrow.up.color : GetColor().comment.arrow.default.color} />
+                    <Icon style={styles.icon} fontSize={20} name={'arrow-up'} color={upvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => { setDownvoted(!downvoted); setUpvoted(false); }}>
-                    <Icon style={styles.icon} fontSize={20} name={'arrow-down'} color={downvoted ? GetColor().comment.arrow.down.color : GetColor().comment.arrow.default.color} />
+                    <Icon style={styles.icon} fontSize={20} name={'arrow-down'} color={downvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'column' }}>
@@ -25,7 +26,7 @@ const Comment = (props) => {
     )
 }
 
-export default Comment;
+export default withTheme(Comment);
 
 const styles = StyleSheet.create({
     wrapper: {

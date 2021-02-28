@@ -1,67 +1,113 @@
 import React from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    StyleSheet,
+    TouchableOpacity,
+    ScrollView,
+    Image
+} from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Tag } from '../../Components';
-import { GetColor } from '../../Common';
+import { Tag, AttributeList } from '../../Components';
+import { withTheme } from 'react-native-elements';
 
 // Put a touchable opacity with a stock image that you can tap to upload an image
 // Selecting textures / flavors / misc will cause them to appear on the screen
-const SubmitFoodScreen = () => {
+// TODO: Might want to add some styling so that the tags are smaller
+const SubmitFoodScreen = (props) => {
     const dummyData = [
         { text: "crunchy" },
-        { text: "soft" }
+        { text: "2" },
+        { text: "soft" },
+        { text: "test" },
+        { text: "test2" }
     ];
 
+    const { theme } = props;
+    const styles = createStyles(theme);
+
     return (
-        <View style={styles.wrapper}>
-            <TextInput placeholder={'Name'} />
-            <Text style={styles.title}>Flavors</Text>
-            <FlatList
-                showsHorizontalScrollIndicator={false}
-                data={dummyData}
-                renderItem={({ item }) => <Tag item={item} />}
-                keyExtractor={item => item}
-                horizontal />
-            <Text style={styles.title}>Textures</Text>
-            <FlatList
-                showsHorizontalScrollIndicator={false}
-                data={dummyData}
-                renderItem={({ item }) => <Tag item={item} />}
-                keyExtractor={item => item}
-                horizontal />
-            <Text style={styles.title}>Misc</Text>
-            <FlatList
-                showsHorizontalScrollIndicator={false}
-                data={dummyData}
-                renderItem={({ item }) => <Tag item={item} />}
-                keyExtractor={item => item}
-                horizontal />
-            <TouchableOpacity style={styles.submitButton}>
-                <Text style={styles.submitButtonText}>Submit</Text>
-            </TouchableOpacity>
-        </View>
+        <ScrollView>
+            <View style={styles.wrapper}>
+                <TextInput placeholder={'Name'} />
+                <TouchableOpacity style={styles.imageContainer}>
+                    <Image source={require('../../Assets/plate.png')} style={styles.image} />
+                </TouchableOpacity>
+                <View>
+                    <Text style={styles.title}>Flavors</Text>
+                    <AttributeList
+                        includeAddButton={false}
+                        horizontal={false}
+                        contentContainerStyle={styles.attributeListContainer}
+                        tagStyle={styles.tagStyle}
+                        items={dummyData} />
+                    <Text style={styles.title}>Textures</Text>
+                    <AttributeList
+                        includeAddButton={false}
+                        horizontal={false}
+                        contentContainerStyle={styles.attributeListContainer}
+                        tagStyle={styles.tagStyle}
+                        items={dummyData} />
+                    <Text style={styles.title}>Misc</Text>
+                    <AttributeList
+                        includeAddButton={false}
+                        horizontal={false}
+                        contentContainerStyle={styles.attributeListContainer}
+                        tagStyle={styles.tagStyle}
+                        items={dummyData} />
+                </View>
+                <View style={styles.submitButtonContainer}>
+                    <TouchableOpacity style={styles.submitButton}>
+                        <Text style={styles.submitButtonText}>Submit</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </ScrollView>
     )
 }
 
-export default SubmitFoodScreen;
+export default withTheme(SubmitFoodScreen);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     wrapper: {
+        height: '100%',
         padding: 20
     },
-    title: {
-        marginVertical: 10
+    imageContainer: {
+        borderWidth: 5, 
+        borderColor: 'black', // TODO: Put this in colors constant
+        marginBottom: 10
     },
-    submitButton: {
-        backgroundColor: GetColor().button.backgroundColor,
-        borderRadius: 30,
-        marginVertical: 25,
-        width: '100%',
-        paddingVertical: 10,
+    image: {
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        height: 175,
+        width: '80%'
+    },
+    title: {
 
     },
+    attributeListContainer: {
+        flexDirection: "row",
+        flexWrap: "wrap"
+    },
+    tagStyle: {
+        marginTop: 10
+    },
+    submitButtonContainer: {
+        flex: 1,
+        marginTop: 40,
+        justifyContent: 'flex-end'
+    },
+    submitButton: {
+        backgroundColor: theme.primaryThemeColor,
+        borderRadius: 30,
+        width: '100%',
+        paddingVertical: 10
+    },
     submitButtonText: {
-        color: GetColor().button.textColor,
+        color: theme.primaryThemeTextColor,
         fontSize: 20,
         textAlign: 'center',
         textTransform: 'uppercase',

@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { GetColor, Routes } from './../../Common';
+import { Routes } from './../../Common';
 import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
+import { withTheme } from 'react-native-elements';
 
 const HomeScreen = (props) => {
+    const { theme } = props;
     const [searchQuery, setSearchQuery] = useState('');
+
+    const styles = createStyles(theme);
 
     const updateSearch = search => setSearchQuery(search);
 
@@ -38,19 +42,19 @@ const HomeScreen = (props) => {
                     data={items}
                     ItemSeparatorComponent={renderItemSeparator}
                     renderItem={({item}) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
-                    keyExtractor={item => item} />
+                    keyExtractor={item => item.text} />
             </View>
         )
 }
 
-export default HomeScreen;
+export default withTheme(HomeScreen);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     wrapper: {
         height: '100%'
     },
     itemSeparator: {
         height: 1,
-        backgroundColor: GetColor().homeScreenList.itemSeparator.backgroundColor
+        backgroundColor: theme.homeScreenList.itemSeparator.backgroundColor
     }
 })

@@ -7,11 +7,13 @@ import {
     FlatList,
 } from 'react-native';
 import { Comment } from '../../Components';
-import { GetColor } from './../../../../Common';
+import { withTheme } from 'react-native-elements';
 
 const CommentsSection = (props) => {
+    const { theme } = props;
     const [isExpanded, setIsExpanded] = useState(false);
 
+    const styles = createStyles(theme)
         const test = [
             {
                 username: 'nara',
@@ -39,14 +41,14 @@ const CommentsSection = (props) => {
         )
 }
 
-export default CommentsSection;
+export default withTheme(CommentsSection);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     wrapper: {
-        backgroundColor: GetColor().section.backgroundColor,
+        backgroundColor: theme.section.backgroundColor,
         padding: 20
     },
     headerText: {
-        color: GetColor().section.clickableText.textColor
+        color: theme.primaryThemeColor
     }
 })

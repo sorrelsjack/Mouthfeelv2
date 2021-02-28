@@ -8,14 +8,14 @@ import {
     StyleSheet
 } from 'react-native';
 
-// TODO: Finish this. Will be used on Liked, Recommended, and To Try. Should include basic summary info. Picture, name, most rated attributes
-// TODO: Maybe do a cool color picking thing where we use the majority color of the food for the theme color B)
+// TODO: Finish this. Will be used on Liked, Disliked, Recommended, and To Try. Should include basic summary info. Picture, name, most rated attributes
+// TODO: For each food, have "sub-foods" -- e.g., you can rate a specific recipe. The "parent food" will serve as a general page for that food
 const FoodList = (props) => {
     const test = [{ name: 'Testing Food', tags: ['tag', 'too', 'welp', 'salty'], url: 'https://publicdomainvectors.org/photos/1514958680.png' }, { name: 'Testing Food', tags: ['tag', 'too', 'welp', 'salty'], url: 'https://static8.depositphotos.com/1409882/1021/v/450/depositphotos_10213598-stock-illustration-broccoli.jpg' }]
 
     const Cell = props => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onClick={() => { console.log('Set selected food here. Then, navigate to Food Details screen, sending the id of the food with it') }}>
                 <View style={{ flexDirection: 'row', backgroundColor: 'white', marginBottom: 10, padding: 20 }}>
                     <Image style={styles.image} source={{ uri: props.item.url }} />
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>

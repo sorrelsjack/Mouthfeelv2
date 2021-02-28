@@ -1,15 +1,16 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
-import { GetColor } from './../../Common';
+import { withTheme } from 'react-native-elements';
 
 const InputField = (props) => {
-    const { secureTextEntry, placeholder } = props;
+    const { theme, secureTextEntry, placeholder } = props;
+    const styles = createStyles(theme);
 
     return (
         <View>
             <TextInput
                 style={styles.textInput}
-                placeholderTextColor={GetColor().textInput.placeholderColor}
+                placeholderTextColor={theme.textInput.placeholderColor}
                 numberOfLines={1}
                 secureTextEntry={secureTextEntry}
                 placeholder={placeholder} />
@@ -17,12 +18,12 @@ const InputField = (props) => {
     )
 }
 
-export default InputField;
+export default withTheme(InputField);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     textInput: {
-        color: GetColor().textInput.textColor,
-        borderBottomColor: GetColor().textInput.lineColor,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        color: theme.textInput.textColor, 
+        borderBottomColor: theme.textInput.lineColor
     }
 })

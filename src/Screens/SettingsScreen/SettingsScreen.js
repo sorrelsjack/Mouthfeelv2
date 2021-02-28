@@ -5,9 +5,11 @@ import {
     TouchableOpacity,
     StyleSheet
 } from 'react-native';
-import { GetColor } from '../../Common';
+import { withTheme } from 'react-native-elements';
 
 const SettingsScreen = (props) => {
+    const { theme } = props;
+    
     const handleLogOutPressed = () => {
 
     }
@@ -15,6 +17,8 @@ const SettingsScreen = (props) => {
     const handleAboutPressed = () => {
 
     }
+
+    const styles = createStyles(theme);
 
     return (
         <View style={styles.wrapper}>
@@ -30,9 +34,9 @@ const SettingsScreen = (props) => {
     )
 }
 
-export default SettingsScreen;
+export default withTheme(SettingsScreen);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     wrapper: {
         padding: 20,
         height: '100%',
@@ -42,11 +46,11 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     logoutButton: {
-        backgroundColor: GetColor().button.backgroundColor,
+        backgroundColor: theme.primaryThemeColor,
         padding: 15
     },
     logoutButtonText: {
         textAlign: 'center',
-        color: GetColor().button.textColor
+        color: theme.primaryThemeTextColor
     }
 });

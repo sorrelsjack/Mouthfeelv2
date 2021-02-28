@@ -6,12 +6,13 @@ import {
     StyleSheet,
     FlatList
   } from 'react-native';
-
-import { GetColor } from './../../../../Common';
+import { withTheme } from 'react-native-elements';
 
 const IngredientsList = (props) => {
-    const { items } = props;
+    const { theme, items } = props;
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const styles = createStyles(theme);
 
         return(
             <View style={styles.wrapper}>
@@ -31,20 +32,20 @@ const IngredientsList = (props) => {
         )
 }
 
-export default IngredientsList;
+export default withTheme(IngredientsList);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     wrapper: {
         width: '100%',
         padding: 20,
-        backgroundColor: GetColor().section.backgroundColor
+        backgroundColor: theme.section.backgroundColor
     },
     title: {
         paddingVertical: 10,
         fontSize: 24
     },
     readMoreText: {
-        color: GetColor().section.clickableText.textColor
+        color: theme.primaryThemeColor
     },
     listContainer: {
         marginTop: -10

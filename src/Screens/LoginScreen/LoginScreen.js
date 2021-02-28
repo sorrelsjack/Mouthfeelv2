@@ -2,11 +2,16 @@ import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { InputField } from './../../Components';
 import LinearGradient from 'react-native-linear-gradient';
-import { GetColor, Routes } from './../../Common';
+import { Routes } from './../../Common';
+import { withTheme } from 'react-native-elements';
 
 const LoginScreen = (props) => {
+    const { theme } = props;
+
+    const styles = createStyles(theme);
+
     return (
-        <LinearGradient colors={[GetColor().loginScreen.gradient.topColor, GetColor().loginScreen.gradient.bottomColor]} style={styles.wrapper}>
+        <LinearGradient colors={[theme.loginScreen.gradient.topColor, theme.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
             <View style={styles.container}>
                 <Text style={styles.title}>Mouthfeel</Text>
                 <View style={styles.inputFieldsContainer}>
@@ -33,9 +38,9 @@ const LoginScreen = (props) => {
 
 }
 
-export default LoginScreen;
+export default withTheme(LoginScreen);
 
-const styles = StyleSheet.create({
+const createStyles = (theme) => StyleSheet.create({
     wrapper: {
         flex: 1,
         alignItems: 'center',
@@ -50,7 +55,7 @@ const styles = StyleSheet.create({
         width: '80%'
     },
     title: {
-        color: GetColor().loginScreen.title.textColor,
+        color: theme.loginScreen.title.textColor,
         fontSize: 48
     },
     inputFieldsContainer: {
@@ -59,18 +64,18 @@ const styles = StyleSheet.create({
     loginButton: {
         borderRadius: 30,
         marginVertical: 25,
-        backgroundColor: GetColor().loginScreen.loginButton.backgroundColor,
+        backgroundColor: theme.loginScreen.loginButton.backgroundColor,
         width: '100%',
         paddingVertical: 10
     },
     loginButtonText: {
         fontSize: 20,
         textAlign: 'center',
-        color: GetColor().loginScreen.loginButton.textColor
+        color: theme.loginScreen.loginButton.textColor
     },
     registerButton: {
-        backgroundColor: GetColor().loginScreen.registerButton.backgroundColor,
-        borderColor: GetColor().loginScreen.registerButton.backgroundColor,
+        backgroundColor: theme.loginScreen.registerButton.backgroundColor,
+        borderColor: theme.loginScreen.registerButton.backgroundColor,
         borderRadius: 30,
         position: 'absolute',
         width: '100%',
@@ -83,6 +88,6 @@ const styles = StyleSheet.create({
     registerButtonText: {
         fontSize: 20,
         textAlign: 'center',
-        color: GetColor().loginScreen.registerButton.textColor
+        color: theme.loginScreen.registerButton.textColor
     },
 });
