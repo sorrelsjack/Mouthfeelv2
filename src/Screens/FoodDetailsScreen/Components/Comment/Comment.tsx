@@ -2,9 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../../../Models';
 
-const Comment = (props) => {
-    const { theme } = props;
+interface CommentProps {
+    theme: ThemeProp,
+    details: {
+        body: string,
+        username: string
+    }
+}
+
+const Comment = (props: CommentProps) => {
+    const { theme, details } = props;
     let [upvoted, setUpvoted] = useState(false);
     let [downvoted, setDownvoted] = useState(false);
 
@@ -19,8 +28,8 @@ const Comment = (props) => {
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'column' }}>
-                <Text style={[styles.usernameText, styles.text]}>{props.details.username}</Text>
-                <Text style={styles.text}>{props.details.body}</Text>
+                <Text style={[styles.usernameText, styles.text]}>{details.username}</Text>
+                <Text style={styles.text}>{details.body}</Text>
             </View>
         </View>
     )

@@ -1,6 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import store from '../src/Redux/ConfigureStore';
+import store from './Redux/ConfigureStore';
 import {
   LoginScreen,
   HomeScreen,

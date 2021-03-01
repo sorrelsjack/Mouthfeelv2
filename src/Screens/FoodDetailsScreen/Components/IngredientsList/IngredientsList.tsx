@@ -7,8 +7,14 @@ import {
     FlatList
   } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../../../Models';
 
-const IngredientsList = (props) => {
+interface IngredientsListProp {
+    theme: ThemeProp,
+    items: string[]
+}
+
+const IngredientsList = (props: IngredientsListProp) => {
     const { theme, items } = props;
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -34,7 +40,7 @@ const IngredientsList = (props) => {
 
 export default withTheme(IngredientsList);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         width: '100%',
         padding: 20,

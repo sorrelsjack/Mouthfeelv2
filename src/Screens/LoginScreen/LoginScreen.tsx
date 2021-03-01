@@ -1,11 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { InputField } from './../../Components';
+import { InputField } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
-import { Routes } from './../../Common';
+import { Routes } from '../../Common';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
 
-const LoginScreen = (props) => {
+interface LoginScreenProps {
+    theme: ThemeProp,
+    navigation: any // TODO: Fix
+}
+
+const LoginScreen = (props: LoginScreenProps) => {
     const { theme } = props;
 
     const styles = createStyles(theme);
@@ -40,7 +46,7 @@ const LoginScreen = (props) => {
 
 export default withTheme(LoginScreen);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         flex: 1,
         alignItems: 'center',

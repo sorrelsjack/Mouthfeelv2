@@ -1,8 +1,15 @@
 import React from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
 
-const InputField = (props) => {
+interface InputFieldProps {
+    theme: ThemeProp,
+    secureTextEntry?: boolean,
+    placeholder: string
+}
+
+const InputField = (props: InputFieldProps) => {
     const { theme, secureTextEntry, placeholder } = props;
     const styles = createStyles(theme);
 
@@ -20,7 +27,7 @@ const InputField = (props) => {
 
 export default withTheme(InputField);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     textInput: {
         borderBottomWidth: 1,
         color: theme.textInput.textColor, 

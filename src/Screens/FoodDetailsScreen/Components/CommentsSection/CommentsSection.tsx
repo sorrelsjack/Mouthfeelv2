@@ -6,10 +6,15 @@ import {
     StyleSheet,
     FlatList,
 } from 'react-native';
-import { Comment } from '../../Components';
+import { Comment } from '..';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../../../Models';
 
-const CommentsSection = (props) => {
+interface CommentsSectionProps {
+    theme: ThemeProp
+}
+
+const CommentsSection = (props: CommentsSectionProps) => {
     const { theme } = props;
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -36,14 +41,14 @@ const CommentsSection = (props) => {
                     { isExpanded && <FlatList
                         data={test}
                         renderItem={({ item }) => <Comment details={item} />}
-                        keyExtractor={item => item} /> }
+                        keyExtractor={item => item.username} /> }
                 </View>
         )
 }
 
 export default withTheme(CommentsSection);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         backgroundColor: theme.section.backgroundColor,
         padding: 20

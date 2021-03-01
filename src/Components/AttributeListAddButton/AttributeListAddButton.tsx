@@ -2,9 +2,14 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
+
+interface AttributeListAddButton {
+    theme: ThemeProp
+}
 
 // TODO: Add functionality to add more flavors and textures on press of this button
-const AttributeListAddButton = (props) => {
+const AttributeListAddButton = (props: AttributeListAddButton) => {
     const { theme } = props;
     const [isPressed, setIsPressed] = useState(false);
 

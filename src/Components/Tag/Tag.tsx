@@ -2,11 +2,22 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Tooltip } from 'react-native-elements';
-import { withTheme } from 'react-native-elements';
+import { withTheme, Theme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
 
-const Tag = (props) => {
-    const { theme, style } = props;
-    const { text, votes, tooltipText } = props.item;
+interface TagProps {
+    theme: ThemeProp,
+    style?: object,
+    item: {
+        text: string,
+        votes?: number,
+        tooltipText: string
+    }
+}
+
+const Tag = (props: TagProps) => {
+    const { theme, style, item } = props;
+    const { text, votes, tooltipText } = item;
     const [isPressed, setIsPressed] = useState(false);
 
     // TODO: Selected color could be the inverted version of unselected
@@ -30,6 +41,7 @@ const Tag = (props) => {
     }
 
     // TODO: Fix tooltip so it expands with the text
+    // TODO: Move the loose colors into colors constant
 
     return (
         <View style={[setWrapperStyle(), style]}>

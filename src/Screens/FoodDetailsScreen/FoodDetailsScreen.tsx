@@ -13,14 +13,32 @@ import {
   IngredientsList,
   CommentsSection,
 } from './Components';
-import { SetPrimaryThemeColor, FormatAsTitleCase } from './../../Common';
+import { FormatAsTitleCase } from '../../Common';
 import { AttributeList, CircleButton } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
 import LottieView from 'lottie-react-native';
-import { withTheme } from 'react-native-elements';
+import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
+import { ThemeProp } from '../../Models';
+import { VotableAttribute, MouthfeelState } from '../../Redux/Models';
 
-const FoodDetailsScreen = (props) => {
+interface FoodDetailsScreenProps {
+    theme: ThemeProp,
+    updateTheme: UpdateTheme,
+    navigation: any, // TODO, fix
+    selected: {
+      loading: boolean,
+      data: {
+          id: number,
+          name: string,
+          textures: VotableAttribute[],
+          flavors: VotableAttribute[],
+          miscellaneous: VotableAttribute[]
+      }
+    }
+}
+
+const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { theme, updateTheme, navigation } = props;
   const { loading } = props.selected;
   const { id, name, textures, flavors, miscellaneous } = props.selected.data; //imageUrl
@@ -42,7 +60,7 @@ const FoodDetailsScreen = (props) => {
     if (!imageUrl) return;
 
     const GetThemeColor = async () => {
-      res = await getColorFromURL(imageUrl);
+      const res = await getColorFromURL(imageUrl);
       updateTheme({ ...theme, primaryThemeColor: res.primary })
       navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
     }
@@ -86,14 +104,14 @@ const FoodDetailsScreen = (props) => {
   )
 }
 
-export default withNavigation(withTheme(connect(state => {
+export default withNavigation(withTheme(connect((state: MouthfeelState) => {
   return {
     selected: state.foods.selected
   }
 
 })(FoodDetailsScreen)));
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
   wrapper: {
     height: '100%',
     backgroundColor: theme.page.backgroundColor

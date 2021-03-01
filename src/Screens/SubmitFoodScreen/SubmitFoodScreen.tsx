@@ -11,17 +11,23 @@ import {
 import { FlatList } from 'react-native-gesture-handler';
 import { Tag, AttributeList } from '../../Components';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
+
+interface SubmitFoodScreenProps {
+    theme: ThemeProp,
+    items: string[]
+}
 
 // Put a touchable opacity with a stock image that you can tap to upload an image
 // Selecting textures / flavors / misc will cause them to appear on the screen
 // TODO: Might want to add some styling so that the tags are smaller
-const SubmitFoodScreen = (props) => {
+const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const dummyData = [
-        { text: "crunchy" },
-        { text: "2" },
-        { text: "soft" },
-        { text: "test" },
-        { text: "test2" }
+        { text: "crunchy", tooltipText: 'Testing' },
+        { text: "2", tooltipText: 'Testing' },
+        { text: "soft", tooltipText: 'Testing' },
+        { text: "test", tooltipText: 'Testing' },
+        { text: "test2", tooltipText: 'Testing' }
     ];
 
     const { theme } = props;
@@ -69,7 +75,7 @@ const SubmitFoodScreen = (props) => {
 
 export default withTheme(SubmitFoodScreen);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         height: '100%',
         padding: 20

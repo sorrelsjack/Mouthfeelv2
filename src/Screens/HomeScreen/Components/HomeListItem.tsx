@@ -2,7 +2,15 @@ import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 
-const HomeListItem = (props) => {
+interface HomeListItemProps {
+    onPress: () => any;
+    item: {
+        text: string,
+        icon: string
+    }
+}
+
+const HomeListItem = (props: HomeListItemProps) => {
     const { onPress, item } = props;
 
     return (

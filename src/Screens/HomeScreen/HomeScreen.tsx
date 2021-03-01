@@ -1,18 +1,24 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar } from 'react-native-elements';
-import { Routes } from './../../Common';
+import { Routes } from '../../Common';
 import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
 
-const HomeScreen = (props) => {
+interface HomeScreenProps {
+    theme: ThemeProp,
+    navigation: any // TODO: Fix
+}
+
+const HomeScreen = (props: HomeScreenProps) => {
     const { theme } = props;
     const [searchQuery, setSearchQuery] = useState('');
 
     const styles = createStyles(theme);
 
-    const updateSearch = search => setSearchQuery(search);
+    const updateSearch = (search: string) => setSearchQuery(search);
 
 
     const renderItemSeparator = () => {
@@ -49,7 +55,7 @@ const HomeScreen = (props) => {
 
 export default withTheme(HomeScreen);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         height: '100%'
     },

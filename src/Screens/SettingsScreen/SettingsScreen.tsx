@@ -6,8 +6,13 @@ import {
     StyleSheet
 } from 'react-native';
 import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
 
-const SettingsScreen = (props) => {
+interface SettingsScreenProps {
+    theme: ThemeProp
+}
+
+const SettingsScreen = (props: SettingsScreenProps) => {
     const { theme } = props;
     
     const handleLogOutPressed = () => {
@@ -36,7 +41,7 @@ const SettingsScreen = (props) => {
 
 export default withTheme(SettingsScreen);
 
-const createStyles = (theme) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         padding: 20,
         height: '100%',

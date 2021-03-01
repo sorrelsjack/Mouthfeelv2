@@ -8,7 +8,22 @@ import {
 import { Tag } from '..';
 import { AttributeListAddButton } from '..';
 
-const AttributeList = (props) => {
+interface Item {
+    text: string,
+    votes?: number,
+    tooltipText: string
+}
+
+interface AttributeListProps {
+    title?: string,
+    includeAddButton?: boolean,
+    horizontal?: boolean,
+    contentContainerStyle?: object,
+    tagStyle?: object,
+    items: Item[]
+}
+
+const AttributeList = (props: AttributeListProps) => {
     const { 
         title, 
         includeAddButton = true, 
@@ -18,7 +33,7 @@ const AttributeList = (props) => {
         items 
     } = props;
 
-    sortItems = (items) => items.sort((a, b) => (a.votes < b.votes) ? 1 : -1);
+    const sortItems = (items: Item[]) => items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
 
     // TODO: Is the add button here supposed to bring up TagsScreen?
 
@@ -34,7 +49,7 @@ const AttributeList = (props) => {
                     horizontal={horizontal}
                     data={sortItems(items)}
                     renderItem={({ item }) => <Tag style={tagStyle} item={item} />}
-                    keyExtractor={item => item} />
+                    keyExtractor={item => item.text} />
             </View>
         </View>
     )
