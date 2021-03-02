@@ -1,18 +1,19 @@
-import { Actions } from '../Actions';
+import { Actions } from '.';
 import axios from 'axios';
+import { Dispatch } from 'redux';
 import { Urls } from '../../Common';
 
-export const SetSelectedFood = (id) => {
-    return async dispatch => {
+export const SetSelectedFood = (id: number) => {
+    return async (dispatch: Dispatch) => {
         dispatch({ type: Actions.SetSelectedFood, data: id });
     }
 }
 
 export const GetAllFoodsAction = () => {
-    return async dispatch => {
+    return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.GetAllFoodsLoading });
-            const foods = await axios.get(Urls.foods.getAllFoods());
+            const foods = await axios.get(Urls.foods.getAll());
             dispatch({ type: Actions.GetAllFoodsSuccess, data: foods });
         }
         catch (error) {
@@ -21,8 +22,8 @@ export const GetAllFoodsAction = () => {
     }
 }
 
-export const GetFoodDetailsAction = (id) => {
-    return async dispatch => {
+export const GetFoodDetailsAction = (id: number) => {
+    return async (dispatch: Dispatch) => {
         try {
             axios.defaults.headers.common['Accept'] = 'application/json';
             axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';

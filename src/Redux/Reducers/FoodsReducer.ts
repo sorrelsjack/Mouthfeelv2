@@ -1,14 +1,7 @@
 import { Actions } from '../Actions';
+import { FoodsState, ReduxAction } from '../Models';
 
-const defaultState = {
-    foods: [],
-    selected: {
-        loading: false,
-        data: {}
-    }
-}
-
-export const Foods = (state = defaultState, action) => {
+export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction) => {
     switch(action.type) {
         case Actions.SetSelectedFood:
             return {

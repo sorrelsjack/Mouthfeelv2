@@ -1,6 +1,7 @@
 export const Colors = {
     primaryThemeColor: '#6200ea',
     primaryThemeTextColor: 'white',
+    halfTransparent: 'rgba(0, 0, 0, 0.5)',
 
     loginScreen: {
         gradient: {
@@ -17,7 +18,12 @@ export const Colors = {
         registerButton: {
             backgroundColor: '#fdfffc',
             textColor: 'black'
-        }
+        },
+        textInput: {
+            lineColor: '#fdfffc',
+            placeholderColor: '#fdfffc',
+            textColor:'#fdfffc'
+        },
     },
     page: {
         backgroundColor: '#e5e5e5'
@@ -36,11 +42,6 @@ export const Colors = {
     },
     section: {
         backgroundColor: '#ffffff'
-    },
-    textInput: {
-        lineColor: '#fdfffc',
-        placeholderColor: '#fdfffc',
-        textColor:'#fdfffc'
     },
     tag: {
         selected: {
@@ -70,7 +71,13 @@ export const Colors = {
     },
     homeScreenList: {
         itemSeparator: {
-            backgroundColor: 'black'
+            backgroundColor: 'rgba(0, 0, 0, .3)'
+        }
+    },
+    submitFoodScreen: {
+        submitButton: {
+            backgroundColor: '#4ABD02',
+            textColor: 'white'
         }
     }
 }

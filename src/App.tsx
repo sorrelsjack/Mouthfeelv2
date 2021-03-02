@@ -15,6 +15,7 @@ import { Routes, Urls, Colors } from './Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
+import { GlobalFontName } from './Config/SetTypography';
 import axios from 'axios';
 
 console.disableYellowBox = true;
@@ -29,14 +30,20 @@ const App = () => {
     <ThemeProvider theme={Colors}>
       <Provider store={store}>
         <NavigationContainer>
-          <Stack.Navigator initialRouteName={Routes.Login}>
+          <Stack.Navigator 
+          screenOptions={{
+            headerTitleAlign: 'center',
+            headerTitleStyle: {
+              fontFamily: GlobalFontName
+            }
+          }} 
+          initialRouteName={Routes.Login}>
             <Stack.Screen name={Routes.Login} component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen
               name={Routes.Home}
               component={HomeScreen}
               options={({ navigation }) =>
               ({
-                headerTitleAlign: 'center',
                 headerRight: () => (
                   <View style={{ padding: 15 }}>
                     <TouchableOpacity onPress={() => navigation.navigate(Routes.Settings)}>
@@ -46,10 +53,10 @@ const App = () => {
                 )
               })}
             />
-            <Stack.Screen name={Routes.FoodDetails} component={FoodDetailsScreen} options={{ headerTitleAlign: 'center' }} />
-            <Stack.Screen name={Routes.SubmitFood} component={SubmitFoodScreen} options={{ headerTitleAlign: 'center', title: 'Submit Food' }} />
-            <Stack.Screen name={Routes.Settings} component={SettingsScreen} options={{ headerTitleAlign: 'center', title: 'Settings' }} />
-            <Stack.Screen name={Routes.Tags} component={TagsScreen} options={{ headerTitleAlign: 'center', title: 'Tags' }} />
+            <Stack.Screen name={Routes.FoodDetails} component={FoodDetailsScreen} />
+            <Stack.Screen name={Routes.SubmitFood} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
+            <Stack.Screen name={Routes.Settings} component={SettingsScreen} options={{ title: 'Settings' }} />
+            <Stack.Screen name={Routes.Tags} component={TagsScreen} options={{ title: 'Tags' }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>

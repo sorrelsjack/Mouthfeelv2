@@ -6,6 +6,7 @@ import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
+import { GlobalFontName } from '../../Config';
 
 interface HomeScreenProps {
     theme: ThemeProp,
@@ -40,6 +41,7 @@ const HomeScreen = (props: HomeScreenProps) => {
                 <View style={{ padding: 15 }}>
                     <SearchBar
                         platform={Platform.OS}
+                        inputStyle={{ fontFamily: GlobalFontName }}
                         placeholder={'Food name, ingredient, or attribute'}
                         onChangeText={updateSearch}
                         value={searchQuery} />

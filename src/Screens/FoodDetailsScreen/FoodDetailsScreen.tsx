@@ -14,7 +14,7 @@ import {
   CommentsSection,
 } from './Components';
 import { FormatAsTitleCase } from '../../Common';
-import { AttributeList, CircleButton } from '../../Components';
+import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
 import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
@@ -41,7 +41,7 @@ interface FoodDetailsScreenProps {
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { theme, updateTheme, navigation } = props;
   const { loading } = props.selected;
-  const { id, name, textures, flavors, miscellaneous } = props.selected.data; //imageUrl
+  const { id, name, textures, flavors, miscellaneous } = props.selected.data ?? {}; // imageUrl
   const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg';
 
   const dispatch = useDispatch();
@@ -84,7 +84,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
           </View>
           <View style={styles.container}>
             <View style={styles.imageContainer}>
-              {loading && <LottieView style={styles.image} source={require('../../Assets/loading_pizza.json')} autoPlay />}
+              {loading && <LoadingSpinner />}
               <Image source={{ uri: imageUrl }} style={styles.image} />
             </View>
             <View style={styles.titleSection}>
@@ -105,6 +105,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 }
 
 export default withNavigation(withTheme(connect((state: MouthfeelState) => {
+
   return {
     selected: state.foods.selected
   }

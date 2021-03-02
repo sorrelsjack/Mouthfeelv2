@@ -5,8 +5,11 @@ import { Tooltip } from 'react-native-elements';
 import { withTheme, Theme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 
+type TagSize = 'small' | 'regular';
+
 interface TagProps {
     theme: ThemeProp,
+    size?: TagSize,
     style?: object,
     item: {
         text: string,
@@ -14,11 +17,20 @@ interface TagProps {
         tooltipText: string
     }
 }
+// TODO: Type def here to have small vs normal sized tags
 
+// TODO: Let's get the descriptions standardized in terms of case
+// TODO: Put size defualt back to regular
 const Tag = (props: TagProps) => {
-    const { theme, style, item } = props;
+    const { theme, size = 'regular', style, item } = props;
     const { text, votes, tooltipText } = item;
     const [isPressed, setIsPressed] = useState(false);
+
+    const styles = createStyles(size);
+
+    const iconSize = size === 'regular' ? 18 : 14;
+    // TODO: Make the height vary on how much text there is
+    const tooltipHeight = size === 'regular' ? 60 : 40;
 
     // TODO: Selected color could be the inverted version of unselected
     const setWrapperStyle = () => isPressed
@@ -58,9 +70,9 @@ const Tag = (props: TagProps) => {
                     overlayColor='transparent'
                     backgroundColor='rgba(0, 0, 0, .7)'
                     skipAndroidStatusBar
-                    height={60}
+                    height={tooltipHeight}
                     popover={<Text style={{ color: 'white' }}>{tooltipText}</Text>}>
-                    <Icon name={'question-circle'} size={18} solid color={isPressed ? theme.tag.icon.selected.color : theme.primaryThemeTextColor} />
+                    <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? theme.tag.icon.selected.color : theme.primaryThemeTextColor} />
                 </Tooltip>
             </View>
         </View>
@@ -69,7 +81,7 @@ const Tag = (props: TagProps) => {
 
 export default withTheme(Tag);
 
-const styles = StyleSheet.create({
+const createStyles = (size: TagSize) => StyleSheet.create({
     wrapper: {
         justifyContent: 'center',
         alignItems: 'center',
@@ -81,7 +93,7 @@ const styles = StyleSheet.create({
     },
     text: {
         textTransform: 'uppercase',
-        fontSize: 18,
+        fontSize: size === 'regular' ? 18 : 14,
         padding: 5
     },
     counterContainer: {

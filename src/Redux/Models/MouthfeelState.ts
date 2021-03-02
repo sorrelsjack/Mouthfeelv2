@@ -1,3 +1,8 @@
+import { FoodsState, VotableAttributeState } from '../Models';
+
 export interface MouthfeelState {
-    foods: any; // TODO: Fix
+    flavors: VotableAttributeState;
+    foods: FoodsState;
+    miscellaneous: VotableAttributeState;
+    textures: VotableAttributeState;
 }

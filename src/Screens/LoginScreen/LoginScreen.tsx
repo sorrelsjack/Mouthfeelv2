@@ -21,8 +21,16 @@ const LoginScreen = (props: LoginScreenProps) => {
             <View style={styles.container}>
                 <Text style={styles.title}>Mouthfeel</Text>
                 <View style={styles.inputFieldsContainer}>
-                    <InputField placeholder={'Username'} secureTextEntry={false}></InputField>
-                    <InputField placeholder={'Password'} secureTextEntry={true}></InputField>
+                    <InputField 
+                        style={styles.inputField} 
+                        placeholder={'Username'} 
+                        placeholderTextColor={theme.loginScreen.textInput.placeholderColor} 
+                        secureTextEntry={false} />
+                    <InputField 
+                        style={styles.inputField} 
+                        placeholder={'Password'} 
+                        placeholderTextColor={theme.loginScreen.textInput.placeholderColor} 
+                        secureTextEntry={true} />
                 </View>
                 <TouchableOpacity style={styles.loginButton} onPress={() => props.navigation.replace(Routes.Home)}>
                     <View>
@@ -63,6 +71,11 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     title: {
         color: theme.loginScreen.title.textColor,
         fontSize: 48
+    },
+    inputField: {
+        borderBottomWidth: 1,
+        color: theme.loginScreen.textInput.textColor, 
+        borderBottomColor: theme.loginScreen.textInput.lineColor
     },
     inputFieldsContainer: {
         width: '100%'

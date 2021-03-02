@@ -5,26 +5,19 @@ import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 
 interface AttributeListAddButton {
-    theme: ThemeProp
+    theme: ThemeProp,
+    onPress: () => any;
 }
 
 // TODO: Add functionality to add more flavors and textures on press of this button
 const AttributeListAddButton = (props: AttributeListAddButton) => {
-    const { theme } = props;
-    const [isPressed, setIsPressed] = useState(false);
+    const { theme, onPress } = props;
 
-    const setWrapperStyle = () => isPressed
-        ? { ...styles.wrapper, backgroundColor: theme.tag.selected.backgroundColor }
-        : { ...styles.wrapper, backgroundColor: theme.primaryThemeColor }
-
-    const handlePress = () => {
-        // TODO Increase or decrease the number
-        setIsPressed(!isPressed);
-    }
+    const styles = createStyles(theme);
 
     return (
-        <View style={setWrapperStyle()}>
-            <TouchableOpacity onPress={handlePress}>
+        <View style={styles.wrapper}>
+            <TouchableOpacity onPress={onPress}>
                 <View style={{ flexDirection: 'row' }}>
                     <Icon name='plus' size={14} color={theme.primaryThemeTextColor} />
                 </View>
@@ -35,13 +28,14 @@ const AttributeListAddButton = (props: AttributeListAddButton) => {
 
 export default withTheme(AttributeListAddButton);
 
-const styles = StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         alignItems: 'center',
         flexDirection: 'row',
         borderRadius: 30,
         paddingHorizontal: 15,
         flexGrow: 0,
-        marginRight: 7
+        marginRight: 7,
+        backgroundColor: theme.primaryThemeColor
     },
 });

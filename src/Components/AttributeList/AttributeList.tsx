@@ -7,6 +7,8 @@ import {
 } from 'react-native';
 import { Tag } from '..';
 import { AttributeListAddButton } from '..';
+import { Routes } from '../../Common';
+import { useNavigation } from '@react-navigation/native';
 
 interface Item {
     text: string,
@@ -19,8 +21,9 @@ interface AttributeListProps {
     includeAddButton?: boolean,
     horizontal?: boolean,
     contentContainerStyle?: object,
+    tagSize?: 'small' | 'regular',
     tagStyle?: object,
-    items: Item[]
+    items: Item[],
 }
 
 const AttributeList = (props: AttributeListProps) => {
@@ -28,12 +31,16 @@ const AttributeList = (props: AttributeListProps) => {
         title, 
         includeAddButton = true, 
         horizontal = true, 
-        contentContainerStyle = {}, 
+        contentContainerStyle = {},
+        tagSize = 'regular',
         tagStyle = {}, 
-        items 
+        items,
     } = props;
 
-    const sortItems = (items: Item[]) => items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
+    const navigation = useNavigation();
+
+    const sortItems = (items: Item[]) => 
+        items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
 
     // TODO: Is the add button here supposed to bring up TagsScreen?
 
@@ -41,14 +48,14 @@ const AttributeList = (props: AttributeListProps) => {
         <View style={styles.wrapper}>
             {title && <Text style={styles.text}>{title}</Text>}
             <View style={{ flexDirection: 'row' }}>
-                {includeAddButton && <AttributeListAddButton />}
+                {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags)} />}
                 <FlatList
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={contentContainerStyle}
                     style={styles.list}
                     horizontal={horizontal}
                     data={sortItems(items)}
-                    renderItem={({ item }) => <Tag style={tagStyle} item={item} />}
+                    renderItem={({ item }) => <Tag style={tagStyle} size={tagSize} item={item} />}
                     keyExtractor={item => item.text} />
             </View>
         </View>
