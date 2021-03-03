@@ -39,7 +39,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const AutismSection = () => {
         return (
             <>
-                <Text style={[styles.text, styles.header]}>
+                <Text style={styles.header}>
                     What is autism?
                 </Text>
                 <Text style={styles.text}>
@@ -60,7 +60,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const ArfidSection = () => {
         return (
             <>
-                <Text style={[styles.text, styles.header]}>
+                <Text style={styles.header}>
                     What is ARFID?
                 </Text>
                 <Text style={styles.text}>
@@ -73,7 +73,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const SensoryProcessingDisorderSection = () => {
         return (
             <>
-                <Text style={[styles.text, styles.header]}>
+                <Text style={styles.header}>
                     What is Sensory Processing Disorder?
                 </Text>
                 <Text style={styles.text}>
@@ -122,6 +122,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         textAlign: 'center'
     },
     header: {
+        marginTop: 10,
         textAlign: 'center',
         fontWeight: 'bold'
     },

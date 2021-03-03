@@ -6,3 +6,4 @@ export { default as CircleButton } from './CircleButton';
 export { default as FoodList } from './FoodList';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as RegisterForm } from './RegisterForm';
+export { default as Button } from './Button';

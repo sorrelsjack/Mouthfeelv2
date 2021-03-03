@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
-import { SearchBar } from 'react-native-elements';
+import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
 import { FoodList } from '../../Components';
 import { HomeListItem } from './Components';
@@ -28,31 +28,36 @@ const HomeScreen = (props: HomeScreenProps) => {
         )
     }
 
-        const items = [
-            { icon: 'heart', text: 'Liked' },
-            { icon: 'heart-broken', text: 'Disliked' },
-            { icon: 'location-arrow', text: 'Recommended' },
-            { icon: 'list-ul', text: 'To Try' },
-            { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
-        ]
+    const items = [
+        { icon: 'heart', text: 'Liked' },
+        { icon: 'heart-broken', text: 'Disliked' },
+        { icon: 'location-arrow', text: 'Recommended' },
+        { icon: 'list-ul', text: 'To Try' },
+        { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
+    ]
 
-        return (
-            <View style={styles.wrapper}>
-                <View style={{ padding: 15 }}>
-                    <SearchBar
-                        platform={Platform.OS}
-                        inputStyle={{ fontFamily: GlobalFontName }}
-                        placeholder={'Food name, ingredient, or attribute'}
-                        onChangeText={updateSearch}
-                        value={searchQuery} />
+    return (
+        <View style={styles.wrapper}>
+            <View style={{ padding: 15 }}>
+                <SearchBar
+                    platform={Platform.OS}
+                    inputStyle={{ fontFamily: GlobalFontName }}
+                    placeholder={'Food name, ingredient, or attribute'}
+                    onChangeText={updateSearch}
+                    value={searchQuery} />
+                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 0, marginRight: -15, marginTop: 5, marginBottom: -5 }}>
+                    <CheckBox title='Name' checked={true} size={16} checkedColor={theme.primaryThemeColor} containerStyle={{ marginLeft: 0, marginRight: 0 }} />
+                    <CheckBox title='Ingredients' checked={true} size={16} checkedColor={theme.primaryThemeColor} containerStyle={{ marginRight: 0 }} />
+                    <CheckBox title='Attributes' checked={true} size={16} checkedColor={theme.primaryThemeColor} />
                 </View>
-                <FlatList
-                    data={items}
-                    ItemSeparatorComponent={renderItemSeparator}
-                    renderItem={({item}) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
-                    keyExtractor={item => item.text} />
             </View>
-        )
+            <FlatList
+                data={items}
+                ItemSeparatorComponent={renderItemSeparator}
+                renderItem={({ item }) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
+                keyExtractor={item => item.text} />
+        </View>
+    )
 }
 
 export default withTheme(HomeScreen);

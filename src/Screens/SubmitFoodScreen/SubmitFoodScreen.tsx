@@ -31,6 +31,7 @@ interface SubmitFoodScreenProps {
 // TODO: Include "subtypes" of food - e.g., chicken nuggets, then chicken nuggets from wendy's, or chicken nuggets from a pinterest recipe. in the DB, this would be a string representing location. could be a URL or a location
 // TODO: Add "parent food" input
 // TODO: Probably import InputField here instead of using TextInput
+// TODO: Handle errors here, for if a name is already being used or something else...
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { theme, /*flavors, textures, misc*/ } = props;
 
