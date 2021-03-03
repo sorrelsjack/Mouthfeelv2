@@ -1,6 +1,12 @@
 export const Actions = {
     SetSelectedFood: 'SET_SELECTED_FOOD',
 
+    LoginLoading: 'LOGIN_LOADING',
+    LoginSuccess: 'LOGIN_SUCCESS',
+    LoginFailed: 'LOGIN_FAILED',
+
+    Logout: 'LOGOUT',
+
     GetAllFoodsLoading: 'GET_ALL_FOODS_LOADING',
     GetAllFoodsSuccess: 'GET_ALL_FOODS_SUCCESS',
     GetAllFoodsFailed: 'GET_ALL_FOODS_FAILED',

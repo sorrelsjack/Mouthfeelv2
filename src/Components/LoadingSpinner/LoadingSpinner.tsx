@@ -12,7 +12,6 @@ export default LoadingSpinner;
 
 const styles = StyleSheet.create({
     image: {
-        resizeMode: 'contain',
         height: 175,
         width: '80%'
     }

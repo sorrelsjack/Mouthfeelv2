@@ -1,4 +1,5 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
     View,
     Text,
@@ -9,17 +10,24 @@ import {
 } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
+import { withNavigation } from 'react-navigation';
+import { Routes } from '../../Common';
+import { Actions } from '../../Redux/Actions';
 
 interface SettingsScreenProps {
-    theme: ThemeProp
+    theme: ThemeProp,
+    navigation: any // TODO; Fix
 }
 
 // TODO: Maybe make each section "hideable"
 const SettingsScreen = (props: SettingsScreenProps) => {
-    const { theme } = props;
+    const { theme, navigation } = props;
+
+    const dispatch = useDispatch();
 
     const handleLogOutPressed = () => {
-
+        dispatch({ type: Actions.Logout }); // TODO: Make this into an actual action once we have login
+        navigation.navigate(Routes.Login);
     }
 
     const handleAboutPressed = () => {
@@ -97,7 +105,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     )
 }
 
-export default withTheme(SettingsScreen);
+export default withNavigation(withTheme(SettingsScreen));
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

@@ -15,11 +15,11 @@ import { Routes, Urls, Colors } from './Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
-import { GlobalFontName } from './Config/SetTypography';
-import axios from 'axios';
+import { Startup, GlobalFontName } from './Config'
 
 console.disableYellowBox = true;
 
+//Startup();
 const Stack = createStackNavigator();
 
 // TODO: Need screens for Liked, Disliked, Recommended, To Try

@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import { InputField } from '../../Components';
+import { InputField, RegisterForm } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
 import { Routes } from '../../Common';
 import { withTheme } from 'react-native-elements';
@@ -14,32 +14,55 @@ interface LoginScreenProps {
 const LoginScreen = (props: LoginScreenProps) => {
     const { theme } = props;
 
+    const [showLoginForm, setShowLoginForm] = useState(false);
+    const [showRegisterForm, setShowRegisterForm] = useState(false);
+
     const styles = createStyles(theme);
+
+    const handleLoginPressed = () => {
+        setShowLoginForm(true);
+        setShowRegisterForm(false);
+        props.navigation.replace(Routes.Home);
+    }
+
+    const handleRegisterPressed = () => {
+        setShowRegisterForm(true);
+        setShowLoginForm(false);
+    }
+
+    const LoginForm = () => {
+        return (
+            <>
+                <InputField
+                    style={styles.inputField}
+                    placeholder={'Username'}
+                    placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
+                    secureTextEntry={false} />
+                <InputField
+                    style={styles.inputField}
+                    placeholder={'Password'}
+                    placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
+                    secureTextEntry={true} />
+            </>
+        )
+    }
 
     return (
         <LinearGradient colors={[theme.loginScreen.gradient.topColor, theme.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
             <View style={styles.container}>
                 <Text style={styles.title}>Mouthfeel</Text>
                 <View style={styles.inputFieldsContainer}>
-                    <InputField 
-                        style={styles.inputField} 
-                        placeholder={'Username'} 
-                        placeholderTextColor={theme.loginScreen.textInput.placeholderColor} 
-                        secureTextEntry={false} />
-                    <InputField 
-                        style={styles.inputField} 
-                        placeholder={'Password'} 
-                        placeholderTextColor={theme.loginScreen.textInput.placeholderColor} 
-                        secureTextEntry={true} />
+                    {showLoginForm && <LoginForm />}
+                    {showRegisterForm && <RegisterForm />}
                 </View>
-                <TouchableOpacity style={styles.loginButton} onPress={() => props.navigation.replace(Routes.Home)}>
+                <TouchableOpacity style={styles.loginButton} onPress={handleLoginPressed}>
                     <View>
                         <Text style={styles.loginButtonText}>
                             Log In
                         </Text>
                     </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.registerButton}>
+                <TouchableOpacity style={styles.registerButton} onPress={handleRegisterPressed}>
                     <View>
                         <Text style={styles.registerButtonText}>
                             Register
@@ -74,7 +97,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     },
     inputField: {
         borderBottomWidth: 1,
-        color: theme.loginScreen.textInput.textColor, 
+        color: theme.loginScreen.textInput.textColor,
         borderBottomColor: theme.loginScreen.textInput.lineColor
     },
     inputFieldsContainer: {
