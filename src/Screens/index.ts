@@ -4,3 +4,4 @@ export { default as FoodDetailsScreen } from './FoodDetailsScreen';
 export { default as SubmitFoodScreen } from './SubmitFoodScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as TagsScreen } from './TagsScreen';
+export { default as ContactUsScreen } from './ContactUsScreen';

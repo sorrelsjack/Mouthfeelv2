@@ -4,7 +4,8 @@ const Routes = {
     FoodDetails: 'FoodDetails',
     SubmitFood: 'SubmitFood',
     Settings: 'Settings',
-    Tags: 'Tags'
+    Tags: 'Tags',
+    ContactUs: 'ContactUs'
 }
 
 export default Routes;

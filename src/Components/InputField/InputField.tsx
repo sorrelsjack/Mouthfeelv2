@@ -10,10 +10,23 @@ interface InputFieldProps {
     secureTextEntry?: boolean,
     placeholder: string,
     placeholderTextColor?: string
+    multiline?: boolean;
+    value?: string
+    onTextChange?: (value: string) => any;
 }
 
 const InputField = (props: InputFieldProps) => {
-    const { theme, style, secureTextEntry, placeholder, placeholderTextColor } = props;
+    const { 
+        theme, 
+        style, 
+        secureTextEntry, 
+        placeholder, 
+        placeholderTextColor,
+        multiline,
+        value,
+        onTextChange
+    } = props;
+
     const styles = createStyles(theme);
 
     return (
@@ -21,9 +34,12 @@ const InputField = (props: InputFieldProps) => {
             <TextInput
                 style={[styles.textInput, style]}
                 placeholderTextColor={placeholderTextColor}
-                numberOfLines={1}
+                multiline={multiline}
+                numberOfLines={multiline ? 4 : 1}
                 secureTextEntry={secureTextEntry}
-                placeholder={placeholder} />
+                placeholder={placeholder}
+                value={value}
+                onChangeText={onTextChange} />
         </View>
     )
 }

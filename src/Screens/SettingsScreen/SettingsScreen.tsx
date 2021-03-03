@@ -97,10 +97,15 @@ const SettingsScreen = (props: SettingsScreenProps) => {
                 <ArfidSection />
                 <AutismSection />
                 <SensoryProcessingDisorderSection />
+                <View style={{ marginTop: 20 }}>
+                    <TouchableOpacity style={[styles.button, { marginBottom: 15 }]} onPress={() => navigation.navigate(Routes.ContactUs)}>
+                        <Text style={styles.buttonText}>Contact Us</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={handleLogOutPressed}>
+                        <Text style={styles.buttonText}>Log Out</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-            <TouchableOpacity style={styles.logoutButton} onPress={handleLogOutPressed}>
-                <Text style={styles.logoutButtonText}>Log Out</Text>
-            </TouchableOpacity>
         </ScrollView>
     )
 }
@@ -127,11 +132,11 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         color: theme.primaryThemeColor,
         textAlign: 'center',
     },
-    logoutButton: {
+    button: {
         backgroundColor: theme.primaryThemeColor,
         padding: 15
     },
-    logoutButtonText: {
+    buttonText: {
         textAlign: 'center',
         color: theme.primaryThemeTextColor
     }

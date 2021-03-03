@@ -7,7 +7,8 @@ import {
   FoodDetailsScreen,
   SubmitFoodScreen,
   SettingsScreen,
-  TagsScreen
+  TagsScreen,
+  ContactUsScreen
 } from './Screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -19,13 +20,13 @@ import { Startup, GlobalFontName } from './Config'
 
 console.disableYellowBox = true;
 
-//Startup();
 const Stack = createStackNavigator();
 
 // TODO: Need screens for Liked, Disliked, Recommended, To Try
 // TODO: From list on Liked, etc. screens, go to Details screen
+// TODO: Change font
 
-const App = () => {
+export const App = () => {
   return (
     <ThemeProvider theme={Colors}>
       <Provider store={store}>
@@ -57,6 +58,7 @@ const App = () => {
             <Stack.Screen name={Routes.SubmitFood} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
             <Stack.Screen name={Routes.Settings} component={SettingsScreen} options={{ title: 'Settings' }} />
             <Stack.Screen name={Routes.Tags} component={TagsScreen} options={{ title: 'Tags' }} />
+            <Stack.Screen name={Routes.ContactUs} component={ContactUsScreen} options={{ title: 'Contact Us' }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
@@ -64,4 +66,4 @@ const App = () => {
   );
 };
 
-export default App;
+Startup();

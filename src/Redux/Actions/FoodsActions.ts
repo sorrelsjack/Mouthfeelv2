@@ -25,8 +25,6 @@ export const GetAllFoodsAction = () => {
 export const GetFoodDetailsAction = (id: number) => {
     return async (dispatch: Dispatch) => {
         try {
-            axios.defaults.headers.common['Accept'] = 'application/json';
-            axios.defaults.headers.common['Content-Type'] = 'application/json; charset=utf-8';
             dispatch({ type: Actions.GetFoodDetailsLoading });
             const food = await axios.get(Urls.foods.getFoodDetails(id));
             dispatch({ type: Actions.GetFoodDetailsSuccess, data: food });
