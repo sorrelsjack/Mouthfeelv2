@@ -37,8 +37,6 @@ const Tag = (props: TagProps) => {
         ? { ...styles.wrapper, backgroundColor: theme.tag.selected.backgroundColor }
         : { ...styles.wrapper, backgroundColor: theme.primaryThemeColor }
 
-    console.log(setWrapperStyle())
-
     const setTextStyle = () => isPressed
         ? { ...styles.text, color: theme.tag.selected.textColor }
         : { ...styles.text, color: theme.primaryThemeTextColor }

@@ -29,6 +29,23 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     data: action.data.data
                 }
             }
+        case Actions.SearchFoodsLoading:
+            return {
+                ...state,
+                searchResults: {
+                    ...state.searchResults,
+                    loading: true
+                }
+            }
+        case Actions.SearchFoodsSuccess:
+            return {
+                ...state,
+                searchResults: {
+                    ...state.searchResults,
+                    loading: false,
+                    data: action.data.data
+                }
+            }
         default:
             return state;
     }

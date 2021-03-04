@@ -11,6 +11,10 @@ export const Actions = {
     GetAllFoodsSuccess: 'GET_ALL_FOODS_SUCCESS',
     GetAllFoodsFailed: 'GET_ALL_FOODS_FAILED',
 
+    SearchFoodsLoading: 'SEARCH_FOODS_LOADING',
+    SearchFoodsSuccess: 'SEARCH_FOODS_SUCCESS',
+    SearchFoodsFailed: 'SEARCH_FOODS_FAILED',
+
     CreateFoodLoading: 'CREATE_FOOD_LOADING',
     CreateFoodSuccess: 'CREATE_FOOD_SUCCESS',
     CreateFoodFailed: 'CREATE_FOOD_FAILED',

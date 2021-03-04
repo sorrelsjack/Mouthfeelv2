@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
-import { FoodList } from '../../Components';
+import { FoodList, SearchInterface } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
@@ -15,12 +15,8 @@ interface HomeScreenProps {
 
 const HomeScreen = (props: HomeScreenProps) => {
     const { theme } = props;
-    const [searchQuery, setSearchQuery] = useState('');
 
     const styles = createStyles(theme);
-
-    const updateSearch = (search: string) => setSearchQuery(search);
-
 
     const renderItemSeparator = () => {
         return (
@@ -38,19 +34,7 @@ const HomeScreen = (props: HomeScreenProps) => {
 
     return (
         <View style={styles.wrapper}>
-            <View style={{ padding: 15 }}>
-                <SearchBar
-                    platform={Platform.OS}
-                    inputStyle={{ fontFamily: GlobalFontName }}
-                    placeholder={'Food name, ingredient, or attribute'}
-                    onChangeText={updateSearch}
-                    value={searchQuery} />
-                <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 0, marginRight: -15, marginTop: 5, marginBottom: -5 }}>
-                    <CheckBox title='Name' checked={true} size={16} checkedColor={theme.primaryThemeColor} containerStyle={{ marginLeft: 0, marginRight: 0 }} />
-                    <CheckBox title='Ingredients' checked={true} size={16} checkedColor={theme.primaryThemeColor} containerStyle={{ marginRight: 0 }} />
-                    <CheckBox title='Attributes' checked={true} size={16} checkedColor={theme.primaryThemeColor} />
-                </View>
-            </View>
+            <SearchInterface />
             <FlatList
                 data={items}
                 ItemSeparatorComponent={renderItemSeparator}

@@ -3,7 +3,8 @@ const rootUrl = 'https://mouthfeel-api.azurewebsites.net/api';
 export const Urls = {
     foods: {
         getAll: () => `${rootUrl}/foods`,
-        getFoodDetails: (id: number) => `${rootUrl}/foods/${id}`
+        getDetails: (id: number) => `${rootUrl}/foods/${id}`,
+        search: (query: string, filter?: string[]) => `${rootUrl}/foods/search?query=${query}${filter ? `&filter=${filter.join(',')}` : ''}`
     },
     flavors: {
         getAll: () => `${rootUrl}/flavors`

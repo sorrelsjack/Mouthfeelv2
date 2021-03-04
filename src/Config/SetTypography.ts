@@ -14,8 +14,6 @@ export const SetTypography = () => {
 
         const isBold = origin.props.style['fontWeight'] === 'bold';
 
-        console.log(origin.props)
-
         return React.cloneElement(origin, {
             style: [styles.defaultText, origin.props.style, isBold ? styles.boldText : { }],
         })

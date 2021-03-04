@@ -5,6 +5,10 @@ import { CreateFoodRequest } from './CreateFoodRequest';
 export class FoodsState {
     all: Food[];
     new: CreateFoodRequest;
+    searchResults: {
+        loading: boolean;
+        data: Food[];
+    }
     selected: {
         loading: boolean;
         data: FoodDetails | null;
@@ -13,6 +17,10 @@ export class FoodsState {
     constructor () {
         this.all = [];
         this.new = new CreateFoodRequest(),
+        this.searchResults = {
+            loading: false,
+            data: []
+        },
         this.selected = {
             loading: false,
             data: null

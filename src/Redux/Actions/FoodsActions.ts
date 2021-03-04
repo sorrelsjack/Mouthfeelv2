@@ -26,11 +26,24 @@ export const GetFoodDetailsAction = (id: number) => {
     return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.GetFoodDetailsLoading });
-            const food = await axios.get(Urls.foods.getFoodDetails(id));
+            const food = await axios.get(Urls.foods.getDetails(id));
             dispatch({ type: Actions.GetFoodDetailsSuccess, data: food });
         }
         catch (error) {
             dispatch({ type: Actions.GetFoodDetailsFailed, data: error })
+        }
+    }
+}
+
+export const SearchFoodsAction = (query: string, filter?: string[]) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            dispatch({ type: Actions.SearchFoodsLoading });
+            const food = await axios.get(Urls.foods.search(query, filter));
+            dispatch({ type: Actions.SearchFoodsSuccess, data: food });
+        }
+        catch (error) {
+            dispatch({ type: Actions.SearchFoodsFailed, data: error })
         }
     }
 }
