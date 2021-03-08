@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* MouthfeelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MouthfeelTests.m */; };
 		04CAD92E91C333D9117DF86E /* libPods-Mouthfeel-tvOSTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 59960F5FBCCF9588881881A4 /* libPods-Mouthfeel-tvOSTests.a */; };
+		0CE9CA2548124B53A78849BD /* NexaDemo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81FA7A31C6864A978C47E63C /* NexaDemo-Bold.ttf */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
@@ -18,12 +19,12 @@
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* MouthfeelTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MouthfeelTests.m */; };
 		51ED55AE133F95F55295BD4C /* libPods-Mouthfeel-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57F101A4005AC665B9C753A2 /* libPods-Mouthfeel-tvOS.a */; };
-		B85695C4FF11B9C560C51BF6 /* libPods-Mouthfeel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3BEE31571BF8F94CBA1BCCB /* libPods-Mouthfeel.a */; };
-		E5E171317BD60CC8C5FBC46D /* libPods-MouthfeelTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0275851EF11BAD03C0AFD4DC /* libPods-MouthfeelTests.a */; };
-		0CE9CA2548124B53A78849BD /* NexaDemo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 81FA7A31C6864A978C47E63C /* NexaDemo-Bold.ttf */; };
-		7E305F5E770A488DAC2F728B /* NexaDemo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96121E048FA44C989445038E /* NexaDemo-Light.ttf */; };
 		7827C78BC53A4415941F9A14 /* NexaTextDemo-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B859DC4DF59A49958703ED6B /* NexaTextDemo-Bold.ttf */; };
+		7E305F5E770A488DAC2F728B /* NexaDemo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 96121E048FA44C989445038E /* NexaDemo-Light.ttf */; };
+		B85695C4FF11B9C560C51BF6 /* libPods-Mouthfeel.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E3BEE31571BF8F94CBA1BCCB /* libPods-Mouthfeel.a */; };
 		BE92285E38994085BE7E6E7B /* NexaTextDemo-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 20570E95A9C04481B746A3E8 /* NexaTextDemo-Light.ttf */; };
+		D5762D0F25F69CA9000F618A /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = D5762D0E25F69CA9000F618A /* File.swift */; };
+		E5E171317BD60CC8C5FBC46D /* libPods-MouthfeelTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0275851EF11BAD03C0AFD4DC /* libPods-MouthfeelTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -56,6 +57,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = Mouthfeel/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = Mouthfeel/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = Mouthfeel/main.m; sourceTree = "<group>"; };
+		20570E95A9C04481B746A3E8 /* NexaTextDemo-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NexaTextDemo-Light.ttf"; path = "../src/Assets/Fonts/NexaTextDemo-Light.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* Mouthfeel-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Mouthfeel-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* Mouthfeel-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Mouthfeel-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		325392BAD0E7464F6C2CC896 /* Pods-Mouthfeel-tvOSTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mouthfeel-tvOSTests.debug.xcconfig"; path = "Target Support Files/Pods-Mouthfeel-tvOSTests/Pods-Mouthfeel-tvOSTests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -64,8 +66,11 @@
 		482CD8BF68E5ECEDC93496CB /* Pods-MouthfeelTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MouthfeelTests.debug.xcconfig"; path = "Target Support Files/Pods-MouthfeelTests/Pods-MouthfeelTests.debug.xcconfig"; sourceTree = "<group>"; };
 		57F101A4005AC665B9C753A2 /* libPods-Mouthfeel-tvOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mouthfeel-tvOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		59960F5FBCCF9588881881A4 /* libPods-Mouthfeel-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mouthfeel-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81FA7A31C6864A978C47E63C /* NexaDemo-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NexaDemo-Bold.ttf"; path = "../src/Assets/Fonts/NexaDemo-Bold.ttf"; sourceTree = "<group>"; };
 		8EDE823B1902B10D92D4171D /* Pods-Mouthfeel-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mouthfeel-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-Mouthfeel-tvOSTests/Pods-Mouthfeel-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		91EACAEDBC15BB6EEFC64198 /* Pods-Mouthfeel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mouthfeel.debug.xcconfig"; path = "Target Support Files/Pods-Mouthfeel/Pods-Mouthfeel.debug.xcconfig"; sourceTree = "<group>"; };
+		96121E048FA44C989445038E /* NexaDemo-Light.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NexaDemo-Light.ttf"; path = "../src/Assets/Fonts/NexaDemo-Light.ttf"; sourceTree = "<group>"; };
+		B859DC4DF59A49958703ED6B /* NexaTextDemo-Bold.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "NexaTextDemo-Bold.ttf"; path = "../src/Assets/Fonts/NexaTextDemo-Bold.ttf"; sourceTree = "<group>"; };
 		D5136DC7242BC4AC0032E688 /* Feather.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
 		D5136DC8242BC4AC0032E688 /* AntDesign.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		D5136DC9242BC4AC0032E688 /* Entypo.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
@@ -82,15 +87,13 @@
 		D5136DD4242BC4AC0032E688 /* EvilIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		D5136DD5242BC4AC0032E688 /* Zocial.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		D5136DD6242BC4AC0032E688 /* Foundation.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
+		D5762D0D25F69CA9000F618A /* Mouthfeel-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Mouthfeel-Bridging-Header.h"; sourceTree = "<group>"; };
+		D5762D0E25F69CA9000F618A /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
 		E3BEE31571BF8F94CBA1BCCB /* libPods-Mouthfeel.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Mouthfeel.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		EFBDA69A8F7AA64C9989DAEE /* Pods-Mouthfeel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mouthfeel.release.xcconfig"; path = "Target Support Files/Pods-Mouthfeel/Pods-Mouthfeel.release.xcconfig"; sourceTree = "<group>"; };
 		F3990C6C90ECE2DC4922A73D /* Pods-Mouthfeel-tvOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Mouthfeel-tvOS.debug.xcconfig"; path = "Target Support Files/Pods-Mouthfeel-tvOS/Pods-Mouthfeel-tvOS.debug.xcconfig"; sourceTree = "<group>"; };
-		81FA7A31C6864A978C47E63C /* NexaDemo-Bold.ttf */ = {isa = PBXFileReference; name = "NexaDemo-Bold.ttf"; path = "../src/Assets/Fonts/NexaDemo-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		96121E048FA44C989445038E /* NexaDemo-Light.ttf */ = {isa = PBXFileReference; name = "NexaDemo-Light.ttf"; path = "../src/Assets/Fonts/NexaDemo-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		B859DC4DF59A49958703ED6B /* NexaTextDemo-Bold.ttf */ = {isa = PBXFileReference; name = "NexaTextDemo-Bold.ttf"; path = "../src/Assets/Fonts/NexaTextDemo-Bold.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		20570E95A9C04481B746A3E8 /* NexaTextDemo-Light.ttf */ = {isa = PBXFileReference; name = "NexaTextDemo-Light.ttf"; path = "../src/Assets/Fonts/NexaTextDemo-Light.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +202,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				D5762D0E25F69CA9000F618A /* File.swift */,
 				13B07FAE1A68108700A75B9A /* Mouthfeel */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* MouthfeelTests */,
@@ -206,6 +210,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				45678E6CC76C9C645C27EA99 /* Pods */,
 				C727F5FCC95643DE8B7D9361 /* Resources */,
+				D5762D0D25F69CA9000F618A /* Mouthfeel-Bridging-Header.h */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -221,6 +226,17 @@
 				2D02E4901E0B4A5D006451C7 /* Mouthfeel-tvOSTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C727F5FCC95643DE8B7D9361 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				81FA7A31C6864A978C47E63C /* NexaDemo-Bold.ttf */,
+				96121E048FA44C989445038E /* NexaDemo-Light.ttf */,
+				B859DC4DF59A49958703ED6B /* NexaTextDemo-Bold.ttf */,
+				20570E95A9C04481B746A3E8 /* NexaTextDemo-Light.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		D5136DC2242BC2CE0032E688 /* Fonts */ = {
@@ -245,18 +261,6 @@
 			);
 			name = Fonts;
 			sourceTree = "<group>";
-		};
-		C727F5FCC95643DE8B7D9361 /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				81FA7A31C6864A978C47E63C /* NexaDemo-Bold.ttf */,
-				96121E048FA44C989445038E /* NexaDemo-Light.ttf */,
-				B859DC4DF59A49958703ED6B /* NexaTextDemo-Bold.ttf */,
-				20570E95A9C04481B746A3E8 /* NexaTextDemo-Light.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -352,6 +356,9 @@
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
 						TestTargetID = 13B07F861A680F5B00A75B9A;
+					};
+					13B07F861A680F5B00A75B9A = {
+						LastSwiftMigration = 1240;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -643,6 +650,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				D5762D0F25F69CA9000F618A /* File.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -696,6 +704,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 482CD8BF68E5ECEDC93496CB /* Pods-MouthfeelTests.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -719,6 +728,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 39830CA2BCA75CBEC870AB1B /* Pods-MouthfeelTests.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				INFOPLIST_FILE = MouthfeelTests/Info.plist;
@@ -740,6 +750,7 @@
 			baseConfigurationReference = 91EACAEDBC15BB6EEFC64198 /* Pods-Mouthfeel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				INFOPLIST_FILE = Mouthfeel/Info.plist;
@@ -751,6 +762,9 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Mouthfeel;
+				SWIFT_OBJC_BRIDGING_HEADER = "Mouthfeel-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -760,6 +774,7 @@
 			baseConfigurationReference = EFBDA69A8F7AA64C9989DAEE /* Pods-Mouthfeel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				INFOPLIST_FILE = Mouthfeel/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -770,6 +785,8 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = Mouthfeel;
+				SWIFT_OBJC_BRIDGING_HEADER = "Mouthfeel-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
