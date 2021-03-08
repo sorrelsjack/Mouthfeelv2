@@ -5,7 +5,11 @@ const Routes = {
     SubmitFood: 'SubmitFood',
     Settings: 'Settings',
     Tags: 'Tags',
-    ContactUs: 'ContactUs'
+    ContactUs: 'ContactUs',
+    Liked: 'Liked',
+    Disliked: 'Disliked',
+    Recommended: 'Recommended',
+    ToTry: 'ToTry'
 }
 
 export default Routes;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { useDispatch } from 'react-redux';
 import {
     View,
     FlatList,
@@ -8,36 +9,53 @@ import {
     StyleSheet
 } from 'react-native';
 import { ThemeProp } from '../../Models';
+import { FoodDetails } from '../../Redux/Models/FoodDetails';
+import { FormatAsTitleCase, Routes } from '../../Common'
+import { SetSelectedFoodAction } from '../../Redux/Actions';
+import { useNavigation } from '@react-navigation/native';
+import { LoadingSpinner, Tag } from '..';
 
 interface FoodListProps {
-
+    items: FoodDetails[],
 }
 
-interface FoodListCellProps {
-    item: {
-        name: string,
-        tags: string[],
-        url: string
-    }
-}
-
-// TODO: Finish this. Will be used on Liked, Disliked, Recommended, and To Try. Should include basic summary info. Picture, name, most rated attributes
+// TODO: Text gets cut off here. However, if you remove the 20 padding, it stops being cut off
 // TODO: For each food, have "sub-foods" -- e.g., you can rate a specific recipe. The "parent food" will serve as a general page for that food
 const FoodList = (props: FoodListProps) => {
-    const test = [{ name: 'Testing Food', tags: ['tag', 'too', 'welp', 'salty'], url: 'https://publicdomainvectors.org/photos/1514958680.png' }, { name: 'Testing Food', tags: ['tag', 'too', 'welp', 'salty'], url: 'https://static8.depositphotos.com/1409882/1021/v/450/depositphotos_10213598-stock-illustration-broccoli.jpg' }]
+    const { items } = props;
 
-    const Cell = (props: FoodListCellProps) => {
+    const navigation = useNavigation();
+    const dispatch = useDispatch();
+
+    const Cell = (props: { item: FoodDetails }) => {
+        const { item } = props;
+        const mostVoted = item.flavors.concat(item.textures).concat(item.miscellaneous).sort((a, b) => a.votes - b.votes).slice(0, 3);
+
+        const handleItemPressed = () => {
+            dispatch(SetSelectedFoodAction(item.id));
+            navigation.navigate(Routes.FoodDetails);
+        }
+
         return (
-            <TouchableOpacity onPress={() => { console.log('Set selected food here. Then, navigate to Food Details screen, sending the id of the food with it') }}>
+            <TouchableOpacity onPress={handleItemPressed}>
                 <View style={{ flexDirection: 'row', backgroundColor: 'white', marginBottom: 10, padding: 20 }}>
-                    <Image style={styles.image} source={{ uri: props.item.url }} />
+                    <Image style={styles.image} source={{ uri: item.imageUrl }} />
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold' }}>
-                            {props.item.name}
+                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>
+                            {FormatAsTitleCase(item.name)}
                         </Text>
                         <Text style={{ fontSize: 16 }}>
-                            {`Attributes: ${props.item.tags.join(', ')}`}
+                            {`Attributes:`}
                         </Text>
+                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
+                        {mostVoted.map(v => {
+                            return (
+                                <Text style={{ fontSize: 16, marginRight: 10 }}>
+                                    {`${v.name} `}
+                                </Text>
+                            )
+                        })}
+                        </View>
                     </View>
                 </View>
             </TouchableOpacity>
@@ -47,9 +65,9 @@ const FoodList = (props: FoodListProps) => {
     return (
         <View>
             <FlatList
-                data={test}
+                data={items}
                 renderItem={({ item }) => <Cell item={item} />}
-                keyExtractor={test => test.name} />
+                keyExtractor={item => item.name} />
         </View>
     )
 }

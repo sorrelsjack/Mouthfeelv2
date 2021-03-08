@@ -6,12 +6,12 @@ import { Urls } from '../../Common';
 export const GetAllTexturesAction = () => {
     return async (dispatch: Dispatch) => {
         try {
-            dispatch({ type: Actions.GetAllTexturesLoading });
+            dispatch({ type: Actions.GetAllTextures.Loading });
             const textures = await axios.get(Urls.textures.getAll());
-            dispatch({ type: Actions.GetAllTexturesSuccess, data: textures });
+            dispatch({ type: Actions.GetAllTextures.Success, data: textures });
         }
         catch (error) {
-            dispatch({ type: Actions.GetAllTexturesFailed, data: error });
+            dispatch({ type: Actions.GetAllTextures.Failed, data: error });
         }
     }
 }

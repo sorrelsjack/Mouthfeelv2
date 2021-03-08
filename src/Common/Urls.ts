@@ -4,7 +4,9 @@ export const Urls = {
     foods: {
         getAll: () => `${rootUrl}/foods`,
         getDetails: (id: number) => `${rootUrl}/foods/${id}`,
-        search: (query: string, filter?: string[]) => `${rootUrl}/foods/search?query=${query}${filter ? `&filter=${filter.join(',')}` : ''}`
+        search: (query: string, filter?: string[]) => `${rootUrl}/foods/search?query=${query}${filter ? `&filter=${filter.join(',')}` : ''}`,
+        liked: () => `${rootUrl}/foods/liked`,
+        disliked: () => `${rootUrl}/foods/disliked`
     },
     flavors: {
         getAll: () => `${rootUrl}/flavors`
@@ -14,5 +16,9 @@ export const Urls = {
     },
     misc: {
         getAll: () => `${rootUrl}/misc`
+    },
+    users: {
+        register: () => `${rootUrl}/register`,
+        authenticate: () => `${rootUrl}/authenticate`
     }
 };

@@ -6,12 +6,12 @@ import { Urls } from '../../Common';
 export const GetAllMiscellaneousAction = () => {
     return async (dispatch: Dispatch) => {
         try {
-            dispatch({ type: Actions.GetAllMiscellaneousLoading });
+            dispatch({ type: Actions.GetAllMiscellaneous.Loading });
             const misc = await axios.get(Urls.misc.getAll());
-            dispatch({ type: Actions.GetAllMiscellaneousSuccess, data: misc });
+            dispatch({ type: Actions.GetAllMiscellaneous.Success, data: misc });
         }
         catch (error) {
-            dispatch({ type: Actions.GetAllMiscellaneousFailed, data: error });
+            dispatch({ type: Actions.GetAllMiscellaneous.Failed, data: error });
         }
     }
 }

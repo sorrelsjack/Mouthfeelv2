@@ -3,19 +3,19 @@ import { VotableAttributeState, ReduxAction } from '../Models';
 
 export const Textures = (state: VotableAttributeState = new VotableAttributeState(), action: ReduxAction) => {
     switch (action.type) {
-        case Actions.GetAllTexturesLoading:
+        case Actions.GetAllTextures.Loading:
             return {
                 ...state,
                 loading: true,
                 all: { ...state.all }
             }
-        case Actions.GetAllTexturesSuccess:
+        case Actions.GetAllTextures.Success:
             return {
                 ...state,
                 loading: false,
                 all: action.data.data
             }
-        case Actions.GetAllTexturesFailed:
+        case Actions.GetAllTextures.Failed:
         // TODO: This
         default:
             return state;

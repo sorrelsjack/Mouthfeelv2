@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Dispatch } from 'redux';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
@@ -7,6 +8,7 @@ import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config';
+import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
 
 interface HomeScreenProps {
     theme: ThemeProp,
@@ -25,10 +27,10 @@ const HomeScreen = (props: HomeScreenProps) => {
     }
 
     const items = [
-        { icon: 'heart', text: 'Liked' },
-        { icon: 'heart-broken', text: 'Disliked' },
-        { icon: 'location-arrow', text: 'Recommended' },
-        { icon: 'list-ul', text: 'To Try' },
+        { icon: 'heart', text: 'Liked', route: Routes.Liked },
+        { icon: 'heart-broken', text: 'Disliked', route: Routes.Disliked },
+        { icon: 'location-arrow', text: 'Recommended', route: Routes.Recommended },
+        { icon: 'list-ul', text: 'To Try', route: Routes.ToTry },
         { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
     ]
 

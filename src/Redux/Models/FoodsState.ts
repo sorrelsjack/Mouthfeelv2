@@ -4,6 +4,11 @@ import { CreateFoodRequest } from './CreateFoodRequest';
 
 export class FoodsState {
     all: Food[];
+    liked: {
+        loading: boolean;
+        data: FoodDetails[];
+    }
+    disliked: FoodDetails[];
     new: CreateFoodRequest;
     searchResults: {
         loading: boolean;
@@ -16,6 +21,11 @@ export class FoodsState {
 
     constructor () {
         this.all = [];
+        this.liked = {
+            loading: false,
+            data: []
+        }
+        this.disliked = [];
         this.new = new CreateFoodRequest(),
         this.searchResults = {
             loading: false,

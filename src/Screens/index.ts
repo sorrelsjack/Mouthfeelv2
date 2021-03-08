@@ -5,3 +5,7 @@ export { default as SubmitFoodScreen } from './SubmitFoodScreen';
 export { default as SettingsScreen } from './SettingsScreen';
 export { default as TagsScreen } from './TagsScreen';
 export { default as ContactUsScreen } from './ContactUsScreen';
+export { default as LikedScreen } from './LikedScreen';
+export { default as DislikedScreen } from './DislikedScreen';
+export { default as RecommendedScreen } from './RecommendedScreen';
+export { default as ToTryScreen } from './ToTryScreen';

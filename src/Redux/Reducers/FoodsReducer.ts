@@ -6,13 +6,19 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.SetSelectedFood:
             return {
                 ...state,
-                selected: action.data.data
+                selected: {
+                    ...state.selected,
+                    data: {
+                        ...state.selected.data,
+                        id: action.data
+                    }
+                }
             }
-        case Actions.GetAllFoodsSuccess:
+        case Actions.GetAllFoods.Loading:
             return {
                 ...state
             }
-        case Actions.GetFoodDetailsLoading:
+        case Actions.GetFoodDetails.Loading:
             return {
                 ...state,
                 selected: {
@@ -20,7 +26,32 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     loading: true
                 }
             }
-        case Actions.GetFoodDetailsSuccess:
+        case Actions.GetLikedFoods.Loading:
+            return {
+                ...state,
+                liked: {
+                    ...state.liked,
+                    loading: true
+                }
+            }
+        case Actions.GetLikedFoods.Success: {
+            return {
+                ...state,
+                liked: {
+                    ...state.liked,
+                    loading: false,
+                    data: action.data.data
+                }
+            }
+        }
+        case Actions.GetLikedFoods.Failed: {
+
+        }
+        case Actions.GetDislikedFoods.Loading: 
+            return {
+                ...state
+            }
+        case Actions.GetFoodDetails.Success:
             return {
                 ...state,
                 selected: {
@@ -29,7 +60,7 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     data: action.data.data
                 }
             }
-        case Actions.SearchFoodsLoading:
+        case Actions.SearchFoods.Loading:
             return {
                 ...state,
                 searchResults: {
@@ -37,7 +68,7 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     loading: true
                 }
             }
-        case Actions.SearchFoodsSuccess:
+        case Actions.SearchFoods.Success:
             return {
                 ...state,
                 searchResults: {

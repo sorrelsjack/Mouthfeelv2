@@ -40,8 +40,8 @@ interface FoodDetailsScreenProps {
 
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { theme, updateTheme, navigation } = props;
-  const { loading } = props.selected;
-  const { id, name, textures, flavors, miscellaneous } = props.selected.data ?? {}; // imageUrl
+  const { loading } = props.selected || {};
+  const { id, name, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
   const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg';
 
   const dispatch = useDispatch();
@@ -53,8 +53,8 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   // TODO: Change title to name of food, change color of header to primary color
   // TODO: On back clicked, revert the primary colors to the default
   useEffect(() => {
-    //dispatch(GetFoodDetailsAction(1));
-  }, [])
+    //dispatch(GetFoodDetailsAction(id));
+  }, [props.selected])
 
   useEffect(() => {
     if (!imageUrl) return;
