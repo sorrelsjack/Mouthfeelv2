@@ -17,8 +17,6 @@ import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
 import { VotableAttribute, MouthfeelState } from '../../Redux/Models';
 
-// TODO: Execute an action based on which screen this is
-// TODO: Need to look at certain store attributes based on the action as well... hmm
 const DislikedScreen = () => {
     return (
         <View>

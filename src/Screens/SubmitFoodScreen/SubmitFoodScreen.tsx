@@ -26,12 +26,11 @@ interface SubmitFoodScreenProps {
 
 // Put a touchable opacity with a stock image that you can tap to upload an image
 // Selecting textures / flavors / misc will cause them to appear on the screen
-// TODO: Might want to add some styling so that the tags are smaller
 // TODO: With ingredients, include prep time, if applicable
 // TODO: Include "subtypes" of food - e.g., chicken nuggets, then chicken nuggets from wendy's, or chicken nuggets from a pinterest recipe. in the DB, this would be a string representing location. could be a URL or a location
 // TODO: Add "parent food" input
-// TODO: Probably import InputField here instead of using TextInput
 // TODO: Handle errors here, for if a name is already being used or something else...
+// TODO: Change background color of button when it is disabled
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { theme, /*flavors, textures, misc*/ } = props;
 
@@ -54,6 +53,8 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const loading = flavors.loading || textures.loading || misc.loading;
     const styles = createStyles(theme);
     const dispatch = useDispatch();
+
+    const canSubmit = !!name;
 
     useEffect(() => {
         //dispatch(GetAllVotableAttributesAction());
@@ -112,7 +113,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 items={misc.all.length ? misc.all.map(m => { return { text: m.name, tooltipText: m.description } }) : []} />
                         </View>
                         <View style={styles.submitButtonContainer}>
-                            <TouchableOpacity style={styles.submitButton} onPress={handleSubmitButtonPress}>
+                            <TouchableOpacity style={styles.submitButton} disabled={!canSubmit} onPress={handleSubmitButtonPress}>
                                 <Text style={styles.submitButtonText}>Submit</Text>
                             </TouchableOpacity>
                         </View>

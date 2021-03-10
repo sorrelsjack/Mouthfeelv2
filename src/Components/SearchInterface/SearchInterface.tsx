@@ -43,7 +43,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                 platform={Platform.OS}
                 clearIcon
                 inputStyle={{ fontFamily: GlobalFontName }}
-                placeholder={'Food name, ingredient, or attribute'}
+                placeholder={'Search'}
                 onChangeText={updateSearch}
                 value={searchQuery}
                 onSubmitEditing={handleSubmit}
@@ -52,23 +52,24 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                 <CheckBox 
                     title='Name' 
                     checked={nameChecked} 
-                    size={16}
+                    size={14}
                     onPress={() => setNameChecked(!nameChecked)}
                     checkedColor={theme.primaryThemeColor} 
                     containerStyle={{ marginLeft: 0, marginRight: 0 }} />
                 <CheckBox 
                     title='Ingredients' 
                     checked={ingredientsChecked} 
-                    size={16}
+                    size={14}
                     onPress={() => setIngredientsChecked(!ingredientsChecked)}
                     checkedColor={theme.primaryThemeColor} 
                     containerStyle={{ marginRight: 0 }} />
                 <CheckBox 
                     title='Attributes' 
                     checked={attributesChecked} 
-                    size={16}
+                    size={14}
                     onPress={() => setAttributesChecked(!attributesChecked)}
-                    checkedColor={theme.primaryThemeColor} />
+                    checkedColor={theme.primaryThemeColor}
+                    containerStyle={{ marginRight: 0 }} />
             </View>
         </View>
     )

@@ -26,10 +26,6 @@ console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
-// TODO: Need screens for Liked, Disliked, Recommended, To Try
-// TODO: From list on Liked, etc. screens, go to Details screen
-// TODO: Change font
-
 export const App = () => {
   return (
     <ThemeProvider theme={Colors}>

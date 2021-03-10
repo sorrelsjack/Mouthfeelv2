@@ -33,7 +33,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         alignItems: 'center',
         flexDirection: 'row',
         borderRadius: 30,
-        paddingHorizontal: 15,
+        padding: 15,
         flexGrow: 0,
         marginRight: 7,
         backgroundColor: theme.primaryThemeColor

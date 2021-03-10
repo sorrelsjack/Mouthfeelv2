@@ -12,7 +12,7 @@ interface LoginScreenProps {
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
-    const { theme } = props;
+    const { theme, navigation } = props;
 
     const [showLoginForm, setShowLoginForm] = useState(false);
     const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -22,7 +22,7 @@ const LoginScreen = (props: LoginScreenProps) => {
     const handleLoginPressed = () => {
         setShowLoginForm(true);
         setShowRegisterForm(false);
-        props.navigation.replace(Routes.Home);
+        navigation.replace(Routes.Home);
     }
 
     const handleRegisterPressed = () => {

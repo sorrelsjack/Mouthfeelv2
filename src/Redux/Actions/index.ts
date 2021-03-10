@@ -4,3 +4,4 @@ export * from './FoodsActions';
 export * from './MiscellaneousActions';
 export * from './TexturesActions';
 export * from './VotableAttributesActions';
+export * from './UserActions';

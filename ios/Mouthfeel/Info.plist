@@ -24,6 +24,8 @@
 		<string>NexaDemo-Light.ttf</string>
 		<string>NexaTextDemo-Bold.ttf</string>
 		<string>NexaTextDemo-Light.ttf</string>
+		<string>Montserrat-Bold.ttf</string>
+		<string>Montserrat-Regular.ttf</string>
 	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>

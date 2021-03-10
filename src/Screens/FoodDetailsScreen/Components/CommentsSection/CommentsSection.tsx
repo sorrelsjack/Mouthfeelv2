@@ -14,6 +14,7 @@ interface CommentsSectionProps {
     theme: ThemeProp
 }
 
+// TODO: Arrange comment order by number of votes
 const CommentsSection = (props: CommentsSectionProps) => {
     const { theme } = props;
     const [isExpanded, setIsExpanded] = useState(false);
@@ -22,17 +23,21 @@ const CommentsSection = (props: CommentsSectionProps) => {
         const test = [
             {
                 username: 'nara',
-                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ullamcorper id augue sit amet elementum. Vestibulum id rhoncus lectus, in suscipit enim. Maecenas lacinia ligula vitae dolor laoreet, vel cursus mi tempus. Mauris laoreet varius nisl, quis lobortis odio lacinia ut. Duis mi elit, laoreet id nisl sit amet,'
+                body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ullamcorper id augue sit amet elementum. Vestibulum id rhoncus lectus, in suscipit enim. Maecenas lacinia ligula vitae dolor laoreet, vel cursus mi tempus. Mauris laoreet varius nisl, quis lobortis odio lacinia ut. Duis mi elit, laoreet id nisl sit amet,',
+                totalScore: 4
             },
             {
                 username: 'miles',
-                body: 'Suspendisse mollis rhoncus nisl id pretium. Sed eu convallis ex. Nunc ac quam vitae libero consectetur blandit quis non magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam magna neque, vulputate eu mauris vitae, egestas commodo ex.'
+                body: 'Suspendisse mollis rhoncus nisl id pretium. Sed eu convallis ex. Nunc ac quam vitae libero consectetur blandit quis non magna. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Nam magna neque, vulputate eu mauris vitae, egestas commodo ex.',
+                totalScore: 2,
             },
             {
                 username: 'cecil',
-                body: 'Nulla consectetur porttitor purus, nec pharetra tortor congue et.'
+                body: 'Nulla consectetur porttitor purus, nec pharetra tortor congue et.',
+                totalScore: -3
             }
         ]
+        
         return (
                 <View style={styles.wrapper}>
                     <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>

@@ -1,11 +1,9 @@
 import React from 'react'
-import { Text, Platform, StyleSheet } from 'react-native'
+import { Text, StyleSheet } from 'react-native'
 
-export const GlobalFontName = 'NexaDemo-Light';
-export const GlobalFontNameBold = 'NexaDemo-Bold'
+export const GlobalFontName = 'Montserrat-Regular';
+export const GlobalFontNameBold = 'Montserrat-Bold'
 
-// TODO: Get custom font working for iOS
-// TODO: Need textinputs to inherit it
 export const SetTypography = () => {
     const oldTextRender = Text.render;
 

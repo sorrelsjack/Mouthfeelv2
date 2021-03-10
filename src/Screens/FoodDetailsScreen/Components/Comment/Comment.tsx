@@ -8,7 +8,8 @@ interface CommentProps {
     theme: ThemeProp,
     details: {
         body: string,
-        username: string
+        username: string,
+        totalScore: number
     }
 }
 
@@ -21,15 +22,18 @@ const Comment = (props: CommentProps) => {
         <View style={styles.wrapper}>
             <View style={styles.arrowContainer}>
                 <TouchableOpacity onPress={() => { setUpvoted(!upvoted); setDownvoted(false); }}>
-                    <Icon style={styles.icon} fontSize={20} name={'arrow-up'} color={upvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
+                    <Icon style={styles.icon} size={14} name={'arrow-up'} color={upvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
+                <Text style={styles.vote}>
+                    {details.totalScore}
+                </Text>
                 <TouchableOpacity onPress={() => { setDownvoted(!downvoted); setUpvoted(false); }}>
-                    <Icon style={styles.icon} fontSize={20} name={'arrow-down'} color={downvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
+                    <Icon style={styles.icon} size={14} name={'arrow-down'} color={downvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'column' }}>
-                <Text style={[styles.usernameText, styles.text]}>{details.username}</Text>
-                <Text style={styles.text}>{details.body}</Text>
+                <Text style={[styles.usernameText, styles.commentText]}>{details.username}</Text>
+                <Text style={styles.commentText}>{details.body}</Text>
             </View>
         </View>
     )
@@ -46,16 +50,22 @@ const styles = StyleSheet.create({
     },
     arrowContainer: {
         paddingRight: 5,
+        marginRight: 5,
         flexDirection: 'column'
     },
     icon: {
         paddingVertical: 2.5,
         paddingHorizontal: 5
     },
+    vote: {
+        alignSelf: 'center',
+        paddingVertical: 2.5,
+        paddingHorizontal: 5
+    },
     usernameText: {
         fontWeight: 'bold'
     },
-    text: {
+    commentText: {
         fontSize: 16
     }
 })

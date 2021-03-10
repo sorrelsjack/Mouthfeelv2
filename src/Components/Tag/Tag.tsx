@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Tooltip } from 'react-native-elements';
 import { withTheme, Theme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
+import { InvertColor } from '../../Common';
 
 type TagSize = 'small' | 'regular';
 
@@ -17,10 +18,8 @@ interface TagProps {
         tooltipText: string
     }
 }
-// TODO: Type def here to have small vs normal sized tags
 
 // TODO: Let's get the descriptions standardized in terms of case
-// TODO: Put size defualt back to regular
 const Tag = (props: TagProps) => {
     const { theme, size = 'regular', style, item } = props;
     const { text, votes, tooltipText } = item;
@@ -32,15 +31,15 @@ const Tag = (props: TagProps) => {
     // TODO: Make the height vary on how much text there is
     const tooltipHeight = size === 'regular' ? 60 : 40;
 
-    // TODO: Selected color could be the inverted version of unselected
     const setWrapperStyle = () => isPressed
-        ? { ...styles.wrapper, backgroundColor: theme.tag.selected.backgroundColor }
+        ? { ...styles.wrapper, backgroundColor: InvertColor(theme.primaryThemeColor) }
         : { ...styles.wrapper, backgroundColor: theme.primaryThemeColor }
 
     const setTextStyle = () => isPressed
-        ? { ...styles.text, color: theme.tag.selected.textColor }
+        ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor) }
         : { ...styles.text, color: theme.primaryThemeTextColor }
 
+    // TODO: Invert this one
     const setCounterContainerStyle = () => isPressed
         ? { ...styles.counterContainer, backgroundColor: theme.tag.counter.selected.backgroundColor }
         : { ...styles.counterContainer, backgroundColor: theme.tag.counter.unselected.backgroundColor }
@@ -70,7 +69,7 @@ const Tag = (props: TagProps) => {
                     skipAndroidStatusBar
                     height={tooltipHeight}
                     popover={<Text style={{ color: 'white' }}>{tooltipText}</Text>}>
-                    <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? theme.tag.icon.selected.color : theme.primaryThemeTextColor} />
+                    <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? InvertColor(theme.primaryThemeTextColor) : theme.primaryThemeTextColor} />
                 </Tooltip>
             </View>
         </View>

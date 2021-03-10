@@ -23,26 +23,26 @@ import { ThemeProp } from '../../Models';
 import { VotableAttribute, MouthfeelState } from '../../Redux/Models';
 
 interface FoodDetailsScreenProps {
-    theme: ThemeProp,
-    updateTheme: UpdateTheme,
-    navigation: any, // TODO, fix
-    selected: {
-      loading: boolean,
-      data: {
-          id: number,
-          name: string,
-          textures: VotableAttribute[],
-          flavors: VotableAttribute[],
-          miscellaneous: VotableAttribute[]
-      }
+  theme: ThemeProp,
+  updateTheme: UpdateTheme,
+  navigation: any, // TODO, fix
+  selected: {
+    loading: boolean,
+    data: {
+      id: number,
+      name: string,
+      textures: VotableAttribute[],
+      flavors: VotableAttribute[],
+      miscellaneous: VotableAttribute[]
     }
+  }
 }
 
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { theme, updateTheme, navigation } = props;
   const { loading } = props.selected || {};
   const { id, name, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
-  const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg';
+  const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg'; // TODO: Remove this
 
   const dispatch = useDispatch();
   const styles = createStyles(theme);
@@ -50,11 +50,12 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   navigation.setOptions({ title: FormatAsTitleCase(name), headerTintColor: theme.primaryThemeTextColor })
 
   // TODO: determine when text should be white and when it should be black
-  // TODO: Change title to name of food, change color of header to primary color
   // TODO: On back clicked, revert the primary colors to the default
+  // TODO: Get the darn loading spinner centered
+
   useEffect(() => {
-    //dispatch(GetFoodDetailsAction(id));
-  }, [props.selected])
+    dispatch(GetFoodDetailsAction(id));
+  }, [props.selected.data.id])
 
   useEffect(() => {
     if (!imageUrl) return;
@@ -68,39 +69,39 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
   }, [imageUrl])
 
-  // TODO: What if flavor and texture have the same values?
   // TODO: Show pizza loader instead of entire screen
   const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
   const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
   const misc = ['vegetarian', 'boneless', 'toppings common'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
 
   return (
-    <>
-      <SafeAreaView>
-        <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false} contentInsetAdjustmentBehavior="automatic">
-          <View style={styles.heartsContainer}>
-            <CircleButton icon='heart' iconSelectedColor={theme.circleButton.icon.selected.heart.color} />
-            <CircleButton icon='heart-broken' iconSelectedColor={theme.circleButton.icon.selected.heartBroken.color} />
-          </View>
-          <View style={styles.container}>
-            <View style={styles.imageContainer}>
-              {loading && <LoadingSpinner />}
-              <Image source={{ uri: imageUrl }} style={styles.image} />
+    <SafeAreaView>
+      <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false}>
+        {loading ? <LoadingSpinner containerStyle={{ flexDirection: 'column', height: '100%', alignItems: 'center' }} spinnerStyle={{ height: '100%' }} /> :
+          <>
+            <View style={styles.heartsContainer}>
+              <CircleButton icon='heart' iconSelectedColor={theme.circleButton.icon.selected.heart.color} />
+              <CircleButton icon='heart-broken' iconSelectedColor={theme.circleButton.icon.selected.heartBroken.color} />
             </View>
-            <View style={styles.titleSection}>
-              <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>
+            <View style={styles.container}>
+              <View style={styles.imageContainer}>
+                <Image source={{ uri: imageUrl }} style={styles.image} />
+              </View>
+              <View style={styles.titleSection}>
+                <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>
+              </View>
+              <IngredientsList items={ingredients} />
+              <View style={styles.attributeListsContainer}>
+                <AttributeList title={`What textures does ${name} have?`} items={textures ? textures.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
+                <AttributeList title={`What flavors does ${name} have?`} items={flavors ? flavors.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
+                <AttributeList title={`What makes ${name} unique?`} items={miscellaneous ? miscellaneous.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
+              </View>
+              <CommentsSection />
             </View>
-            <IngredientsList items={ingredients} />
-            <View style={styles.attributeListsContainer}>
-              <AttributeList title={`What textures does ${name} have?`} items={textures ? textures.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
-              <AttributeList title={`What flavors does ${name} have?`} items={flavors ? flavors.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
-              <AttributeList title={`What makes ${name} unique?`} items={miscellaneous ? miscellaneous.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
-            </View>
-            <CommentsSection />
-          </View>
-        </ScrollView>
-      </SafeAreaView>
-    </>
+          </>
+        }
+      </ScrollView>
+    </SafeAreaView>
   )
 }
 

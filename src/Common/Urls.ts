@@ -2,6 +2,7 @@ const rootUrl = 'https://mouthfeel-api.azurewebsites.net/api';
 
 export const Urls = {
     foods: {
+        new: () => `${rootUrl}/foods`,
         getAll: () => `${rootUrl}/foods`,
         getDetails: (id: number) => `${rootUrl}/foods/${id}`,
         search: (query: string, filter?: string[]) => `${rootUrl}/foods/search?query=${query}${filter ? `&filter=${filter.join(',')}` : ''}`,
@@ -20,5 +21,11 @@ export const Urls = {
     users: {
         register: () => `${rootUrl}/register`,
         authenticate: () => `${rootUrl}/authenticate`
+    },
+    comments: {
+        new: () => `${rootUrl}/comments`,
+        delete: (commentId: number) => `${rootUrl}/comments/${commentId}`,
+        byFood: (foodId: number) => `${rootUrl}/comments/${foodId}`
     }
+    // TODO: Manage comment vote, create reducer
 };

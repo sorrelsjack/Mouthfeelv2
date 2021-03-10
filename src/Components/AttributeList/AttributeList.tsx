@@ -26,6 +26,7 @@ interface AttributeListProps {
     items: Item[],
 }
 
+// TODO: Fix the UX with the add button and the rest of the tags
 const AttributeList = (props: AttributeListProps) => {
     const { 
         title, 
@@ -41,8 +42,6 @@ const AttributeList = (props: AttributeListProps) => {
 
     const sortItems = (items: Item[]) => 
         items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
-
-    // TODO: Is the add button here supposed to bring up TagsScreen?
 
     return (
         <View style={styles.wrapper}>

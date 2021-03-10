@@ -9,3 +9,4 @@ export * from './ReduxAction';
 export * from './VotableAttribute';
 export * from './VotableAttributeState';
 export * from './ApiData';
+export * from './UserState';

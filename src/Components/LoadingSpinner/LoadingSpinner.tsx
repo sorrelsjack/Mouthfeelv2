@@ -1,12 +1,25 @@
 import React, { useEffect, useState } from 'react';
 import LottieView from 'lottie-react-native';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-const LoadingSpinner = () =>
-    <LottieView
-        style={styles.image}
-        source={require('../../Assets/loading_pizza.json')}
-        autoPlay />
+interface LoadingSpinnerProps {
+    containerStyle?: object,
+    spinnerStyle?: object
+}
+
+const LoadingSpinner = (props: LoadingSpinnerProps) => {
+    const { containerStyle, spinnerStyle } = props;
+
+    return (
+        <View style={containerStyle}>
+            <LottieView
+                style={[styles.image, spinnerStyle]}
+                source={require('../../Assets/loading_pizza.json')}
+                autoPlay />
+        </View>
+    )
+
+}
 
 export default LoadingSpinner;
 

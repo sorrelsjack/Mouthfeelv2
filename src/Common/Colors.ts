@@ -1,6 +1,6 @@
 export const Colors = {
     primaryThemeColor: '#6200ea',
-    primaryThemeTextColor: 'white',
+    primaryThemeTextColor: '#ffffff',
     halfTransparent: 'rgba(0, 0, 0, 0.5)',
 
     loginScreen: {
@@ -86,4 +86,4 @@ export const GetColor = () => Colors;
 
 export const GetDefaultPrimaryThemeColor = () => '#6200ea';
 
-export const GetDefaultPrimaryThemeTextColor = () => 'white';
+export const GetDefaultPrimaryThemeTextColor = () => '#ffffff';
