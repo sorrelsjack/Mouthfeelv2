@@ -15,6 +15,7 @@ interface HomeScreenProps {
     navigation: any // TODO: Fix
 }
 
+// TODO: UI for search results... maybe the results completely replace the home screen items?
 const HomeScreen = (props: HomeScreenProps) => {
     const { theme } = props;
 

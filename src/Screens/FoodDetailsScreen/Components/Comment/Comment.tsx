@@ -22,13 +22,13 @@ const Comment = (props: CommentProps) => {
         <View style={styles.wrapper}>
             <View style={styles.arrowContainer}>
                 <TouchableOpacity onPress={() => { setUpvoted(!upvoted); setDownvoted(false); }}>
-                    <Icon style={styles.icon} size={14} name={'arrow-up'} color={upvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
+                    <Icon style={styles.icon} size={14} name={'arrow-up'} color={upvoted ? theme.clickableTextColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
                 <Text style={styles.vote}>
                     {details.totalScore}
                 </Text>
                 <TouchableOpacity onPress={() => { setDownvoted(!downvoted); setUpvoted(false); }}>
-                    <Icon style={styles.icon} size={14} name={'arrow-down'} color={downvoted ? theme.primaryThemeColor : theme.comment.arrow.default.color} />
+                    <Icon style={styles.icon} size={14} name={'arrow-down'} color={downvoted ? theme.clickableTextColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'column' }}>

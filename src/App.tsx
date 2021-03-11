@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Provider } from 'react-redux';
 import store from './Redux/ConfigureStore';
 import {
@@ -16,21 +16,22 @@ import {
 } from './Screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import { Routes, Urls, Colors } from './Common';
+import { Routes, Urls, Colors, RemoveUserProfile } from './Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
-import { Startup, GlobalFontName } from './Config'
+import { Startup, GlobalFontName, navigationRef } from './Config'
 
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
+// TODO: Empty view for if nothing is returned
 export const App = () => {
   return (
     <ThemeProvider theme={Colors}>
       <Provider store={store}>
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
           <Stack.Navigator 
           screenOptions={{
             headerTitleAlign: 'center',

@@ -9,6 +9,10 @@ export class FoodsState {
         data: FoodDetails[];
     }
     disliked: FoodDetails[];
+    toTry: {
+        loading: boolean;
+        data: FoodDetails[];
+    }
     new: CreateFoodRequest;
     searchResults: {
         loading: boolean;
@@ -26,6 +30,10 @@ export class FoodsState {
             data: []
         }
         this.disliked = [];
+        this.toTry = {
+            loading: false,
+            data: []
+        }
         this.new = new CreateFoodRequest(),
         this.searchResults = {
             loading: false,

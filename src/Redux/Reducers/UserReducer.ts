@@ -3,22 +3,22 @@ import { UserState, ReduxAction } from '../Models';
 
 export const User = (state: UserState = new UserState(), action: ReduxAction) => {
     switch (action.type) {
-        case Actions.Register.Loading:
+        case Actions.User.Register.Loading:
             return {
                 ...state
             }
-        case Actions.Register.Success:
+        case Actions.User.Register.Success:
             return {
                 ...state
             }
-        case Actions.Login.Loading:
+        case Actions.User.Login.Loading:
             return {
                 ...state,
                 profile: {
                     loading: true
                 }
             }
-        case Actions.Login.Success:
+        case Actions.User.Login.Success:
             return {
                 ...state,
                 profile: {

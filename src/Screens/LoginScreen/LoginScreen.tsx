@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { InputField, RegisterForm, Button } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
-import { Routes } from '../../Common';
+import { Routes, RetrieveJwt, JwtIsValid } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { AuthenticateUserAction } from '../../Redux/Actions';
@@ -18,11 +18,9 @@ interface LoginScreenProps {
     navigation: any // TODO: Fix
 }
 
-// TODO: bypass this screen if we have the jwt
 // TODO: Keyboard avoiding button
-// TODO: Fix issue where trying to authenticate throws an error that has to do with hooks?
 const LoginScreen = (props: LoginScreenProps) => {
-    const { theme, navigation } = props;
+    const { theme, profile, navigation } = props;
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -30,10 +28,26 @@ const LoginScreen = (props: LoginScreenProps) => {
     const [showLoginForm, setShowLoginForm] = useState(true);
     const [showRegisterForm, setShowRegisterForm] = useState(false);
 
-    const canLogin = (showLoginForm && (username && password)) || showRegisterForm;
+    const canLogin = (showLoginForm && !profile.loading && (username && password)) || showRegisterForm;
 
     const dispatch = useDispatch();
     const styles = createStyles(theme);
+
+    useEffect(() => {
+        const maybeNavigateToHomeScreen = async () => {
+            const jwt = await RetrieveJwt();
+            if (JwtIsValid(jwt)) navigation.replace(Routes.Home);
+        }
+
+        maybeNavigateToHomeScreen();
+    }, [])
+
+    useEffect(() => {
+        if (!profile.data) return;
+
+        navigation.replace(Routes.Home);
+
+    }, [profile.data])
 
     const handleLoginPressed = () => {
         if (!showLoginForm) {
@@ -43,7 +57,6 @@ const LoginScreen = (props: LoginScreenProps) => {
         }
 
         if (canLogin) dispatch(AuthenticateUserAction(username, password));
-        //navigation.replace(Routes.Home);
     }
 
     const handleRegisterPressed = () => {

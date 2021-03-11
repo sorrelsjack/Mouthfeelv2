@@ -15,14 +15,35 @@ import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
-import { VotableAttribute, MouthfeelState } from '../../Redux/Models';
+import { VotableAttribute, MouthfeelState, FoodDetails } from '../../Redux/Models';
+import { GetFoodsToTryAction } from '../../Redux/Actions';
 
-const ToTryScreen = () => {
+interface ToTryScreenProps {
+    toTry: {
+        data: FoodDetails[];
+        loading: boolean;
+    }
+}
+
+const ToTryScreen = (props: ToTryScreenProps) => {
+    const { toTry } = props;
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(GetFoodsToTryAction());
+    }, [])
+
     return (
-        <View>
-            <FoodList />
+        <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+            {toTry.loading && <LoadingSpinner />}
+            {<FoodList items={toTry.data ? toTry.data : []} />}
         </View>
     )
 }
 
-export default ToTryScreen;
+export default connect((state: MouthfeelState) => {
+    return {
+        toTry: state.foods.toTry
+    }
+})(ToTryScreen);

@@ -51,7 +51,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         fontSize: 24
     },
     readMoreText: {
-        color: theme.primaryThemeColor
+        color: theme.clickableTextColor
     },
     listContainer: {
         marginTop: -10

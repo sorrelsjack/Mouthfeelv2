@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { GetFoodDetailsAction } from '../../Redux/Actions';
+import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction } from '../../Redux/Actions';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,7 +14,7 @@ import {
   IngredientsList,
   CommentsSection,
 } from './Components';
-import { FormatAsTitleCase } from '../../Common';
+import { FormatAsTitleCase, DetermineColorBrightness, GetTextColorBasedOnBrightness, InvertColor } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
 import { withTheme, UpdateTheme } from 'react-native-elements';
@@ -22,6 +22,7 @@ import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
 import { FoodDetails, VotableAttribute, MouthfeelState } from '../../Redux/Models';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Toast from 'react-native-simple-toast';
 
 interface FoodDetailsScreenProps {
   theme: ThemeProp,
@@ -39,30 +40,39 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { id, name, toTry, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
   const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg'; // TODO: Remove this
 
+  const [markedToTry, setMarkedToTry] = useState(false);
+
   const dispatch = useDispatch();
   const styles = createStyles(theme);
 
-  // TODO: determine when text should be white and when it should be black
+  const handleToTryButtonPressed = () => {
+    const initialMarkedToTry = markedToTry;
+    setMarkedToTry(!markedToTry);
+    Toast.show(`'${FormatAsTitleCase(name)}' ${!initialMarkedToTry ? 'added to' : 'removed from'} list of foods to try!`);
+    dispatch(AddOrRemoveFoodToTryAction());
+  }
+
   // TODO: On back clicked, revert the primary colors to the default
   // TODO: Get the darn loading spinner centered
+  // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
+  // Do the same for the arrows
 
-  // TODO: There might be a lag in between the Add to To Try action and it getting filled in; probably should account for that
   useLayoutEffect(() => {
     navigation.setOptions({ 
       title: FormatAsTitleCase(name), 
       headerTintColor: theme.primaryThemeTextColor,
       headerRight: () => (
-        <TouchableOpacity onPress={() => { console.log('Adding this food to the To Try list has yet to be implemented') }}>
+        <TouchableOpacity onPress={handleToTryButtonPressed}>
           <Icon
             style={{ padding: 15}}
-            solid={toTry}
+            solid={markedToTry}
             size={20}
             name='bookmark' 
             color={theme.primaryThemeTextColor} />
         </TouchableOpacity>
       )
     });
-  }, [navigation])
+  }, [navigation, theme, markedToTry])
 
   useEffect(() => {
     //dispatch(GetFoodDetailsAction(id));
@@ -73,7 +83,12 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
     const GetThemeColor = async () => {
       const res = await getColorFromURL(imageUrl);
-      updateTheme({ ...theme, primaryThemeColor: res.primary })
+      updateTheme({ 
+        ...theme, 
+        primaryThemeColor: res.primary, 
+        primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
+        clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary
+      })
       navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
     }
     GetThemeColor();
@@ -91,8 +106,8 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
         {loading ? <LoadingSpinner containerStyle={{ flexDirection: 'column', height: '100%', alignItems: 'center' }} spinnerStyle={{ height: '100%' }} /> :
           <>
             <View style={styles.heartsContainer}>
-              <CircleButton icon='heart' iconSelectedColor={theme.circleButton.icon.selected.heart.color} />
-              <CircleButton icon='heart-broken' iconSelectedColor={theme.circleButton.icon.selected.heartBroken.color} />
+              <CircleButton icon='heart' iconSelectedColor={theme.heartSelectedColor} />
+              <CircleButton icon='heart-broken' iconSelectedColor={theme.heartBrokenSelectedColor} />
             </View>
             <View style={styles.container}>
               <View style={styles.imageContainer}>

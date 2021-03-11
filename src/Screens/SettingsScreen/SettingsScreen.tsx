@@ -12,7 +12,7 @@ import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { withNavigation } from 'react-navigation';
 import { Routes } from '../../Common';
-import { Actions } from '../../Redux/Actions';
+import { LogoutAction } from '../../Redux/Actions';
 
 interface SettingsScreenProps {
     theme: ThemeProp,
@@ -26,7 +26,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const dispatch = useDispatch();
 
     const handleLogOutPressed = () => {
-        dispatch({ type: Actions.Logout }); // TODO: Make this into an actual action once we have login
+        dispatch(LogoutAction());
         navigation.navigate(Routes.Login);
     }
 

@@ -14,10 +14,6 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     }
                 }
             }
-        case Actions.GetAllFoods.Loading:
-            return {
-                ...state
-            }
         case Actions.GetFoodDetails.Loading:
             return {
                 ...state,
@@ -50,6 +46,21 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.GetDislikedFoods.Loading: 
             return {
                 ...state
+            }
+        case Actions.GetFoodsToTry.Loading:
+            return {
+                ...state,
+                toTry: {
+                    loading: true
+                }
+            }
+        case Actions.GetFoodsToTry.Success:
+            return {
+                ...state,
+                toTry: {
+                    loading: false,
+                    data: action.data.data
+                }
             }
         case Actions.GetFoodDetails.Success:
             return {

@@ -9,17 +9,8 @@ export const SetSelectedFoodAction = (id: number) => {
     }
 }
 
-export const GetAllFoodsAction = () => {
-    return async (dispatch: Dispatch) => {
-        try {
-            dispatch({ type: Actions.GetAllFoods.Loading });
-            const foods = await axios.get(Urls.foods.getAll());
-            dispatch({ type: Actions.GetAllFoods.Success, data: foods });
-        }
-        catch (error) {
-            dispatch({ type: Actions.GetAllFoods.Failed, data: error });
-        }
-    }
+export const CreateFoodAction = () => {
+
 }
 
 export const GetLikedFoodsAction = () => {
@@ -38,10 +29,45 @@ export const GetLikedFoodsAction = () => {
 export const GetDislikedFoodsAction = () => {
     return async (dispatch: Dispatch) => {
         try {
-
+            dispatch({ type: Actions.GetDislikedFoods.Loading });
+            const disliked = await axios.get(Urls.foods.liked());
+            dispatch({ type: Actions.GetDislikedFoods.Success, data: disliked });
         }
         catch (error) {
+            dispatch({ type: Actions.GetDislikedFoods.Failed, data: error })
+        }
+    }
+}
 
+export const ManageFoodSentimentAction = () => {
+
+}
+
+export const GetRecommendedFoodsAction = () => {
+
+}
+
+export const GetFoodsToTryAction = () => {
+    return async (dispatch: Dispatch) => {
+        dispatch({ type: Actions.GetFoodsToTry.Loading })
+        try {
+            const toTry = await axios.get(Urls.foods.toTry());
+            dispatch({ type: Actions.GetFoodsToTry.Success, data: toTry });
+        }
+        catch (error) {
+            dispatch({ type: Actions.GetFoodsToTry.Failed, data: error });
+        }
+    }
+}
+
+export const AddOrRemoveFoodToTryAction = () => {
+    return async (dispatch: Dispatch) => {
+        try {
+            dispatch({ type: Actions.AddOrRemoveFoodToTry.Loading })
+            dispatch({ type: Actions.AddOrRemoveFoodToTry.Success, data: {} })
+        }
+        catch (error) {
+            dispatch({ type: Actions.AddOrRemoveFoodToTry.Failed, data: error })
         }
     }
 }
@@ -70,4 +96,8 @@ export const SearchFoodsAction = (query: string, filter?: string[]) => {
             dispatch({ type: Actions.SearchFoods.Failed, data: error })
         }
     }
+}
+
+export const AddOrUpdateAttributeAction = () => {
+
 }

@@ -16,7 +16,7 @@ export const appReducer = combineReducers({
 });
 
 export const rootReducer = (state: MouthfeelState | undefined, action: ReduxAction) => {
-    if (action.type === Actions.Logout) // TODO: Create logout action
+    if (action.type === Actions.User.Logout)
         state = undefined;
 
     return appReducer(state, action);

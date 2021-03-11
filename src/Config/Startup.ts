@@ -1,14 +1,12 @@
 import axios from 'axios';
-import { RemoveJwt, RetrieveJwt, Routes, Urls } from '../Common';
-import JwtDecode from 'jwt-decode';
-import { useNavigation } from '@react-navigation/native';
+import { RemoveUserProfile, RetrieveJwt, Routes, Urls, JwtIsValid } from '../Common';
+import { navigate } from '../Config';
 
 export const Startup = () => {
     const deauthenticate = async () => {
-        // TODO: Error gets thrown and I'm pretty sure it's because of the navigation stuff. Fix it
-        await RemoveJwt();
-        const navigation = useNavigation();
-        navigation.navigate(Routes.Login);
+        // TODO: This almost works. But we have the user info still in the store... so it just throws you back onto the home screen. Fix that
+        await RemoveUserProfile();
+        navigate(Routes.Login);
         return Promise.reject();
     }
 
@@ -18,13 +16,11 @@ export const Startup = () => {
         if (config.url === Urls.users.authenticate() || config.url === Urls.users.register()) 
             return config;
 
+        // TODO: Can we dispatch this to redux?
+        // TODO: Endpoint to fetch user info
         const jwt = await RetrieveJwt();
-        const currentTime = (new Date()).getTime() / 1000;
-        const expiration = jwt ? JwtDecode(jwt).exp : 0;
-        const expired = expiration <= currentTime;
-        const authenticated = !expired && !!jwt;
         if (jwt) config.headers['Authorization'] = jwt;
 
-        return authenticated ? config : deauthenticate();
+        return JwtIsValid(jwt) ? config : deauthenticate();
     });
 }

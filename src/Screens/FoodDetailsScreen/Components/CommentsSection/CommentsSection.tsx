@@ -59,6 +59,6 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         padding: 20
     },
     headerText: {
-        color: theme.primaryThemeColor
+        color: theme.clickableTextColor
     }
 })
