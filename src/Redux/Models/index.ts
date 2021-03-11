@@ -1,3 +1,4 @@
+export * from './AuthenticateUserResponse';
 export * from './CreateFoodRequest';
 export * from './Food';
 export * from './FoodDetails';

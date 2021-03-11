@@ -31,6 +31,9 @@ interface SubmitFoodScreenProps {
 // TODO: Add "parent food" input
 // TODO: Handle errors here, for if a name is already being used or something else...
 // TODO: Change background color of button when it is disabled
+// TODO: When the user finishes typing the name, call and endpoint to fetch foods with the same / similar names and ask if they meant that one instead
+// TODO: Maybe we could also re-use this screen to "mass edit" as existing food?
+// TODO: Also, allow for multiple images
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { theme, /*flavors, textures, misc*/ } = props;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import LottieView from 'lottie-react-native';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 
 interface LoadingSpinnerProps {
     containerStyle?: object,
@@ -16,6 +16,7 @@ const LoadingSpinner = (props: LoadingSpinnerProps) => {
                 style={[styles.image, spinnerStyle]}
                 source={require('../../Assets/loading_pizza.json')}
                 autoPlay />
+            <Text style={styles.text}>Loading...</Text>
         </View>
     )
 
@@ -27,5 +28,10 @@ const styles = StyleSheet.create({
     image: {
         height: 175,
         width: '80%'
+    },
+    text: {
+        textAlign: 'center',
+        fontSize: 20,
+        marginTop: 20
     }
 })

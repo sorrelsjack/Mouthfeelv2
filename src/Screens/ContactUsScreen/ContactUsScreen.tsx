@@ -9,7 +9,7 @@ import {
     Platform,
     Linking
 } from 'react-native';
-import { InputField } from '../../Components';
+import { InputField, Button } from '../../Components';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
 import { CONTACT_US_EMAIl } from '@env';
@@ -41,11 +41,10 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
                 <InputField style={styles.input} placeholder='Name' value={name} onTextChange={setName} />
                 <InputField style={styles.input} placeholder='Subject' value={subject} onTextChange={setSubject} />
                 <InputField style={styles.input} placeholder='Your Message' multiline value={message} onTextChange={setMessage} />
-                <TouchableOpacity style={styles.button} onPress={onSendPressed}>
-                    <Text style={styles.buttonText}>
-                        Send Message
-                    </Text>
-                </TouchableOpacity>
+                <Button 
+                    style={styles.button} 
+                    onPress={onSendPressed} 
+                    text='Send Message' />
             </KeyboardAvoidingView>
         </ScrollView>
     )
@@ -63,10 +62,6 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         backgroundColor: theme.primaryThemeColor,
         padding: 15,
         marginTop: 20
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: theme.primaryThemeTextColor
     },
     input: {
         backgroundColor: 'white',

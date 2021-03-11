@@ -1,11 +1,12 @@
 import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { Urls } from '../../Common';
+import { Urls, SaveJwt } from '../../Common';
+import { AuthenticateUserResponse } from '../Models';
 
 // TODO: Get this to be how it's supposed to
 // TODO: Store JWT
-export const RegisterUser = () => {
+export const RegisterUserAction = () => {
     return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.Register.Loading });
@@ -18,14 +19,22 @@ export const RegisterUser = () => {
     }
 }
 
-export const AuthenticateUser = () => {
+export const AuthenticateUserAction = (username: string, password: string) => {
     return async (dispatch: Dispatch) => {
+        dispatch({ type: Actions.Login.Loading });
         try {
-            dispatch({ type: Actions.Login.Loading });
-            const res = await axios.post(Urls.users.authenticate());
+
+            const request = {
+                'username': username,
+                'password': password
+            }
+
+            const res: AuthenticateUserResponse = await axios.post(Urls.users.authenticate, request);
+            await SaveJwt(res.token);
             dispatch({ type: Actions.Login.Success, data: res })
         }
         catch (error) {
+            console.log(error)
             dispatch({ type: Actions.Login.Failed })
         }
     }

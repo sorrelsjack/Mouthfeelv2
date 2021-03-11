@@ -50,7 +50,6 @@ const Tag = (props: TagProps) => {
     }
 
     // TODO: Fix tooltip so it expands with the text
-    // TODO: Move the loose colors into colors constant
 
     return (
         <View style={[setWrapperStyle(), style]}>

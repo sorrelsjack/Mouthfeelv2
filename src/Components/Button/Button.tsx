@@ -19,24 +19,32 @@ import { Theme } from '@react-navigation/native/lib/typescript/src/types';
 
 interface ButtonProps {
     onPress: () => any;
+    style?: object,
     theme: ThemeProp;
     text: string;
     backgroundColor?: string;
     textColor?: string;
+    disabled?: boolean
 }
 
 const Button = (props: ButtonProps) => {
     const { 
-        onPress, 
+        onPress,
+        style,
         theme, 
         text, 
         backgroundColor = theme.primaryThemeColor, 
-        textColor = theme.primaryThemeTextColor
+        textColor = theme.primaryThemeTextColor,
+        disabled
     } = props;
 
+    const getBackgroundStyles = () => [styles.button, style, { backgroundColor: disabled ? theme.disabledButton.backgroundColor : backgroundColor }];
+
+    const getTextStyles = () => [styles.buttonText, { color: disabled ? theme.disabledButton.textColor : textColor }];
+
     return (
-        <TouchableOpacity style={[styles.button, { backgroundColor: backgroundColor }]} onPress={onPress}>
-            <Text style={[styles.buttonText, { color: textColor }]}>{text}</Text>
+        <TouchableOpacity style={getBackgroundStyles()} disabled={disabled} onPress={onPress}>
+            <Text style={getTextStyles()}>{text}</Text>
         </TouchableOpacity>
     )
 }

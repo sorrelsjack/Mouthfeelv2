@@ -5,6 +5,7 @@ export interface FoodDetails {
     name: string;
     imageUrl: string;
     sentiment: number;
+    toTry: boolean;
     ingredients: FoodIngredient[],
     flavors: VotableAttribute[];
     textures: VotableAttribute[];

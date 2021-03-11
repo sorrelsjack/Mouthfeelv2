@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { GetFoodDetailsAction } from '../../Redux/Actions';
 import {
@@ -7,7 +7,8 @@ import {
   ScrollView,
   View,
   Text,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 import {
   IngredientsList,
@@ -16,11 +17,11 @@ import {
 import { FormatAsTitleCase } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
-import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
-import { VotableAttribute, MouthfeelState } from '../../Redux/Models';
+import { FoodDetails, VotableAttribute, MouthfeelState } from '../../Redux/Models';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface FoodDetailsScreenProps {
   theme: ThemeProp,
@@ -28,33 +29,43 @@ interface FoodDetailsScreenProps {
   navigation: any, // TODO, fix
   selected: {
     loading: boolean,
-    data: {
-      id: number,
-      name: string,
-      textures: VotableAttribute[],
-      flavors: VotableAttribute[],
-      miscellaneous: VotableAttribute[]
-    }
+    data: FoodDetails
   }
 }
 
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { theme, updateTheme, navigation } = props;
   const { loading } = props.selected || {};
-  const { id, name, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
+  const { id, name, toTry, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
   const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg'; // TODO: Remove this
 
   const dispatch = useDispatch();
   const styles = createStyles(theme);
 
-  navigation.setOptions({ title: FormatAsTitleCase(name), headerTintColor: theme.primaryThemeTextColor })
-
   // TODO: determine when text should be white and when it should be black
   // TODO: On back clicked, revert the primary colors to the default
   // TODO: Get the darn loading spinner centered
 
+  // TODO: There might be a lag in between the Add to To Try action and it getting filled in; probably should account for that
+  useLayoutEffect(() => {
+    navigation.setOptions({ 
+      title: FormatAsTitleCase(name), 
+      headerTintColor: theme.primaryThemeTextColor,
+      headerRight: () => (
+        <TouchableOpacity onPress={() => { console.log('Adding this food to the To Try list has yet to be implemented') }}>
+          <Icon
+            style={{ padding: 15}}
+            solid={toTry}
+            size={20}
+            name='bookmark' 
+            color={theme.primaryThemeTextColor} />
+        </TouchableOpacity>
+      )
+    });
+  }, [navigation])
+
   useEffect(() => {
-    dispatch(GetFoodDetailsAction(id));
+    //dispatch(GetFoodDetailsAction(id));
   }, [props.selected.data.id])
 
   useEffect(() => {

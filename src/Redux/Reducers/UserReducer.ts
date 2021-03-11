@@ -13,11 +13,18 @@ export const User = (state: UserState = new UserState(), action: ReduxAction) =>
             }
         case Actions.Login.Loading:
             return {
-                ...state
+                ...state,
+                profile: {
+                    loading: true
+                }
             }
         case Actions.Login.Success:
             return {
-                ...state
+                ...state,
+                profile: {
+                    loading: false,
+                    data: action.data.data
+                }
             }
         default:
             return state;
