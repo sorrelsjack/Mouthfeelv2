@@ -29,7 +29,7 @@ export const AuthenticateUserAction = (username: string, password: string) => {
                 'password': password
             }
 
-            const res: AuthenticateUserResponse = await axios.post(Urls.users.authenticate, request);
+            const res: AuthenticateUserResponse = await axios.post(Urls.users.authenticate(), request);
             await SaveJwt(res.token);
             dispatch({ type: Actions.Login.Success, data: res })
         }

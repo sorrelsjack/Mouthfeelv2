@@ -24,8 +24,8 @@ export const Urls = {
         getAll: () => `${rootUrl}/misc`
     },
     users: {
-        register: () => `${rootUrl}/register`,
-        authenticate: `${rootUrl}/authenticate`
+        register: () => `${rootUrl}/users/register`,
+        authenticate: () => `${rootUrl}/users/authenticate`
     },
     comments: {
         new: () => `${rootUrl}/comments`,
