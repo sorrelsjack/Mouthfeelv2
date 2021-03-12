@@ -4,6 +4,7 @@ export const Colors = {
     clickableTextColor: '#6200ea',
     heartSelectedColor: '#ff0000',
     heartBrokenSelectedColor: '#910900',
+    bookmarkSelectedColor: '#e38d02',
     halfTransparent: 'rgba(0, 0, 0, 0.5)',
 
     loginScreen: {

@@ -7,6 +7,7 @@ export const Urls = {
         search: (query: string, filter?: string[]) => `${rootUrl}/foods/search?query=${query}${filter ? `&filter=${filter.join(',')}` : ''}`,
         liked: () => `${rootUrl}/foods/liked`,
         disliked: () => `${rootUrl}/foods/disliked`,
+        sentiment: () => `${rootUrl}/foods/sentiment`,
         new: () => `${rootUrl}/foods`,
         recommended: () => `${rootUrl}/foods/recommended`,
         toTry: () => `${rootUrl}/foods/to-try`,

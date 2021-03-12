@@ -36,8 +36,7 @@ const ToTryScreen = (props: ToTryScreenProps) => {
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            {toTry.loading && <LoadingSpinner />}
-            {<FoodList items={toTry.data ? toTry.data : []} />}
+            {toTry.loading ? <LoadingSpinner fullScreen /> : <FoodList items={toTry.data ? toTry.data : []} />}
         </View>
     )
 }

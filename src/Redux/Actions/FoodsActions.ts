@@ -1,7 +1,8 @@
 import { Actions } from '.';
 import axios from 'axios';
-import { Dispatch } from 'redux';
+import { Dispatch, } from 'redux';
 import { Urls } from '../../Common';
+import { MouthfeelState } from '../Models';
 
 export const SetSelectedFoodAction = (id: number) => {
     return async (dispatch: Dispatch) => {
@@ -30,7 +31,7 @@ export const GetDislikedFoodsAction = () => {
     return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.GetDislikedFoods.Loading });
-            const disliked = await axios.get(Urls.foods.liked());
+            const disliked = await axios.get(Urls.foods.disliked());
             dispatch({ type: Actions.GetDislikedFoods.Success, data: disliked });
         }
         catch (error) {
@@ -39,8 +40,18 @@ export const GetDislikedFoodsAction = () => {
     }
 }
 
-export const ManageFoodSentimentAction = () => {
-
+export const ManageFoodSentimentAction = (foodId: number, sentiment: number) => {
+    return async (dispatch: Dispatch) => {
+        console.log(sentiment)
+        dispatch({ type: Actions.ManageFoodSentiment.Loading });
+        try {
+            await axios.post(Urls.foods.sentiment(), { foodId, sentiment });
+            dispatch({ type: Actions.ManageFoodSentiment.Success });
+        }
+        catch (error) {
+            dispatch({ type: Actions.ManageFoodSentiment.Failed, data: error })
+        }
+    }
 }
 
 export const GetRecommendedFoodsAction = () => {
@@ -60,11 +71,12 @@ export const GetFoodsToTryAction = () => {
     }
 }
 
-export const AddOrRemoveFoodToTryAction = () => {
+export const AddOrRemoveFoodToTryAction = (foodId: number) => {
     return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.AddOrRemoveFoodToTry.Loading })
-            dispatch({ type: Actions.AddOrRemoveFoodToTry.Success, data: {} })
+            await axios.post(Urls.foods.toTry(), { foodId })
+            dispatch({ type: Actions.AddOrRemoveFoodToTry.Success })
         }
         catch (error) {
             dispatch({ type: Actions.AddOrRemoveFoodToTry.Failed, data: error })

@@ -10,18 +10,25 @@ import { ThemeProp } from '../../Models';
 interface CircleButtonProps {
     theme: ThemeProp,
     icon: string,
-    iconSelectedColor: string
+    iconSelectedColor: string,
+    onPress: () => any;
+    isActive: boolean;
 }
 
 const CircleButton = (props: CircleButtonProps) => {
-    const { theme, icon, iconSelectedColor } = props;
-    let [selected, setSelected] = useState(false);
+    const { 
+        theme, 
+        icon, 
+        iconSelectedColor, 
+        onPress, 
+        isActive 
+    } = props;
 
-    const styles = createStyles(theme)
+    const styles = createStyles(theme);
 
     return (
-        <TouchableOpacity style={styles.heartContainer} onPress={() => setSelected(!selected)}>
-            <Icon name={icon} solid size={20} color={selected ? iconSelectedColor : theme.primaryThemeTextColor} />
+        <TouchableOpacity style={styles.heartContainer} onPress={onPress}>
+            <Icon name={icon} solid size={20} color={isActive ? iconSelectedColor : theme.primaryThemeTextColor} />
         </TouchableOpacity>
     )
 }

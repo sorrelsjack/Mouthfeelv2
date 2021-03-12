@@ -25,7 +25,6 @@ interface LikedScreenProps {
     }
 }
 
-// TODO: Fix issue here where loading indicator isnt in the center of the screen
 const LikedScreen = (props: LikedScreenProps) => {
     const { liked } = props;
 

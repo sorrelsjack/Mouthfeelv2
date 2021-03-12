@@ -43,7 +43,5 @@ export const Actions = {
     ClearSearch: 'CLEAR_SEARCH',
     AddOrUpdateAttribute: new Action('ADD_OR_UPDATE_ATTRIBUTE'),
     CreateFood: new Action('CREATE_FOOD'),
-    SetFoodLikedStatus: new Action('SET_FOOD_LIKED_STATUS'),
-    SetFoodDislikedStatus: new Action('SET_FOOD_DISLIKED_STATUS'),
     GetFoodDetails: new Action('GET_FOOD_DETAILS'),
 }

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction } from '../../Redux/Actions';
+import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction, ManageFoodSentimentAction } from '../../Redux/Actions';
 import {
   SafeAreaView,
   StyleSheet,
@@ -37,36 +37,64 @@ interface FoodDetailsScreenProps {
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { theme, updateTheme, navigation } = props;
   const { loading } = props.selected || {};
-  const { id, name, toTry, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
-  const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg'; // TODO: Remove this
+  const { 
+    id, 
+    name, 
+    imageUrl, 
+    toTry, 
+    sentiment, 
+    textures, 
+    flavors, 
+    miscellaneous 
+  } = props.selected?.data ?? {};
 
-  const [markedToTry, setMarkedToTry] = useState(toTry);
+  const [markedLiked, setMarkedLiked] = useState(false);
+  const [markedDisliked, setMarkedDisliked] = useState(false);
+  const [markedToTry, setMarkedToTry] = useState(false);
 
   const dispatch = useDispatch();
   const styles = createStyles(theme);
+
+  const handleLikedPressed = () => {
+    const updatedStatus = !markedLiked;
+
+    setMarkedLiked(updatedStatus);
+    if (updatedStatus === true) setMarkedDisliked(false);
+    dispatch(ManageFoodSentimentAction(id, updatedStatus === true ? 1 : 0));
+  }
+
+  const handleDislikedPressed = () => {
+    const updatedStatus = !markedDisliked;
+
+    setMarkedDisliked(updatedStatus);
+    if (updatedStatus === true) setMarkedLiked(false);
+    dispatch(ManageFoodSentimentAction(id, updatedStatus === true ? -1 : 0));
+  }
 
   const handleToTryButtonPressed = () => {
     const initialMarkedToTry = markedToTry;
     setMarkedToTry(!markedToTry);
     Toast.show(`'${FormatAsTitleCase(name)}' ${!initialMarkedToTry ? 'added to' : 'removed from'} list of foods to try!`);
-    dispatch(AddOrRemoveFoodToTryAction());
+    dispatch(AddOrRemoveFoodToTryAction(id));
   }
 
   // TODO: On back clicked, revert the primary colors to the default
   // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
   // Do the same for the arrows
+  // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item
+  // TODO: Debounce the liked / disliked stuff
 
   useLayoutEffect(() => {
-    navigation.setOptions({ 
-      title: FormatAsTitleCase(name), 
+    navigation.setOptions({
+      title: FormatAsTitleCase(name),
       headerTintColor: theme.primaryThemeTextColor,
       headerRight: () => (
         <TouchableOpacity onPress={handleToTryButtonPressed}>
           <Icon
-            style={{ padding: 15}}
+            style={{ padding: 15 }}
             solid={markedToTry}
             size={20}
-            name='bookmark' 
+            name='bookmark'
             color={theme.primaryThemeTextColor} />
         </TouchableOpacity>
       )
@@ -78,13 +106,22 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   }, [props.selected.data.id])
 
   useEffect(() => {
+    if (sentiment === 1) setMarkedLiked(true);
+    if (sentiment === -1) setMarkedDisliked(true);
+  }, [sentiment])
+
+  useEffect(() => {
+    setMarkedToTry(toTry);
+  }, [toTry])
+
+  useEffect(() => {
     if (!imageUrl) return;
 
     const GetThemeColor = async () => {
       const res = await getColorFromURL(imageUrl);
-      updateTheme({ 
-        ...theme, 
-        primaryThemeColor: res.primary, 
+      updateTheme({
+        ...theme,
+        primaryThemeColor: res.primary,
         primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
         clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary
       })
@@ -94,10 +131,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
   }, [imageUrl])
 
-  // TODO: Show pizza loader instead of entire screen
   const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
-  const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
-  const misc = ['vegetarian', 'boneless', 'toppings common'].map(i => ({ text: i, votes: Math.floor(Math.random() * 101) }));;
 
   return (
     <SafeAreaView>
@@ -105,8 +139,8 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
         {loading ? <LoadingSpinner fullScreen /> :
           <>
             <View style={styles.heartsContainer}>
-              <CircleButton icon='heart' iconSelectedColor={theme.heartSelectedColor} />
-              <CircleButton icon='heart-broken' iconSelectedColor={theme.heartBrokenSelectedColor} />
+              <CircleButton icon='heart' iconSelectedColor={theme.heartSelectedColor} onPress={handleLikedPressed} isActive={markedLiked} />
+              <CircleButton icon='heart-broken' iconSelectedColor={theme.heartBrokenSelectedColor} onPress={handleDislikedPressed} isActive={markedDisliked} />
             </View>
             <View style={styles.container}>
               <View style={styles.imageContainer}>

@@ -5,6 +5,9 @@ import { CreateFoodRequest } from './CreateFoodRequest';
 // TODO: Consider breaking some of these out into their own substates / reducers
 export class FoodsState {
     all: Food[];
+    sentimentUpdate: {
+        loading: boolean
+    }
     liked: {
         loading: boolean;
         data: FoodDetails[];
@@ -26,6 +29,9 @@ export class FoodsState {
 
     constructor () {
         this.all = [];
+        this.sentimentUpdate = {
+            loading: false
+        }
         this.liked = {
             loading: false,
             data: []

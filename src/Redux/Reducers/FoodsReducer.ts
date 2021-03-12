@@ -43,10 +43,39 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.GetLikedFoods.Failed: {
 
         }
-        case Actions.GetDislikedFoods.Loading: 
+        case Actions.GetDislikedFoods.Loading: {
             return {
-                ...state
+                ...state,
+                disliked: {
+                    loading: true
+                }
             }
+        }
+        case Actions.GetDislikedFoods.Success: {
+            return {
+                ...state,
+                disliked: {
+                    loading: false,
+                    data: action.data.data
+                }
+            }
+        }
+        case Actions.ManageFoodSentiment.Loading: {
+            return {
+                ...state,
+                sentimentUpdate: {
+                    loading: true
+                }
+            }
+        }
+        case Actions.ManageFoodSentiment.Success: {
+            return {
+                ...state,
+                sentimentUpdate: {
+                    loading: false
+                }
+            }
+        }
         case Actions.GetFoodsToTry.Loading:
             return {
                 ...state,
@@ -62,6 +91,23 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     data: action.data.data
                 }
             }
+        case Actions.AddOrRemoveFoodToTry.Loading: {
+            return {
+                ...state,
+                toTry: {
+                    loading: true
+                }
+            }
+        }
+        case Actions.AddOrRemoveFoodToTry.Success: {
+            return {
+                ...state,
+                toTry: {
+                    loading: false,
+                    data: state.toTry.data
+                }
+            }
+        }
         case Actions.GetFoodDetails.Success:
             return {
                 ...state,

@@ -11,15 +11,16 @@ import {
 import { ThemeProp } from '../../Models';
 import { FoodDetails } from '../../Redux/Models/FoodDetails';
 import { FormatAsTitleCase, Routes } from '../../Common'
-import { SetSelectedFoodAction } from '../../Redux/Actions';
+import { SetSelectedFoodAction, AddOrRemoveFoodToTryAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
 import { LoadingSpinner, Tag } from '..';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { StandardIconsDisplay } from '..';
 
 interface FoodListProps {
     items: FoodDetails[],
 }
 
-// TODO: Text gets cut off here. However, if you remove the 20 padding, it stops being cut off
 // TODO: For each food, have "sub-foods" -- e.g., you can rate a specific recipe. The "parent food" will serve as a general page for that food
 const FoodList = (props: FoodListProps) => {
     const { items } = props;
@@ -37,24 +38,27 @@ const FoodList = (props: FoodListProps) => {
         }
 
         return (
-            <TouchableOpacity key={item.name} onPress={handleItemPressed}>
-                <View style={{ flexDirection: 'row', backgroundColor: 'white', marginBottom: 10, padding: 20 }}>
+            <TouchableOpacity key={item.id} onPress={handleItemPressed}>
+                <View style={styles.cellWrapper}>
                     <Image style={styles.image} source={{ uri: item.imageUrl }} />
-                    <View style={{ flexDirection: 'column', justifyContent: 'center' }}>
-                        <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>
-                            {FormatAsTitleCase(item.name)}
-                        </Text>
+                    <View style={styles.cellTextContainer}>
+                        <View style={{ flexDirection: 'row', }}>
+                            <Text style={styles.cellTitle}>
+                                {FormatAsTitleCase(item.name)}
+                            </Text>
+                            <StandardIconsDisplay foodDetails={item} />
+                        </View>
                         <Text style={{ fontSize: 16 }}>
                             {`Attributes:`}
                         </Text>
-                        <View style={{ flexDirection: 'row', flexWrap: 'wrap' }}>
-                        {mostVoted.map(v => {
-                            return (
-                                <Text style={{ fontSize: 16, marginRight: 10 }}>
-                                    {`${v.name} `}
-                                </Text>
-                            )
-                        })}
+                        <View style={styles.cellAttributeList}>
+                            {mostVoted.map(v => {
+                                return (
+                                    <Text key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
+                                        {`${v.name} `}
+                                    </Text>
+                                )
+                            })}
                         </View>
                     </View>
                 </View>
@@ -67,7 +71,7 @@ const FoodList = (props: FoodListProps) => {
             <FlatList
                 data={items}
                 renderItem={({ item }) => <Cell item={item} />}
-                keyExtractor={item => item.name} />
+                keyExtractor={item => item.id.toString()} />
         </View>
     )
 }
@@ -75,6 +79,30 @@ const FoodList = (props: FoodListProps) => {
 export default FoodList;
 
 const styles = StyleSheet.create({
+    cellWrapper: {
+        backgroundColor: 'white',
+        flexDirection: 'row',
+        marginBottom: 10,
+        padding: 20,
+    },
+    cellTextContainer: {
+        width: '100%',
+        flexDirection: 'column',
+        justifyContent: 'flex-start',
+    },
+    cellTitle: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        marginBottom: 10
+    },
+    cellAttributeList: {
+        flexDirection: 'row',
+        flexWrap: 'wrap'
+    },
+    cellAttribute: {
+        fontSize: 16,
+        marginRight: 10
+    },
     image: {
         resizeMode: 'contain',
         height: 75,
