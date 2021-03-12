@@ -10,19 +10,19 @@ interface LoadingSpinnerProps {
 }
 
 const LoadingSpinner = (props: LoadingSpinnerProps) => {
-    const { fullScreen, containerStyle, spinnerStyle } = props;
+    const { fullScreen = false, containerStyle, spinnerStyle } = props;
 
     const window = useWindowDimensions();
     const headerHeight = useHeaderHeight();
     const EXTRA_ANIMATION_HEIGHT = 30;
 
-    const styles = createStyles(window.height, headerHeight, EXTRA_ANIMATION_HEIGHT);
+    const styles = createStyles(fullScreen, window.height, headerHeight, EXTRA_ANIMATION_HEIGHT);
 
     return (
-        <View style={styles.wrapper}>
-            <View style={fullScreen ? styles.fullScreenContainer : {}}>
+        <View style={fullScreen ? styles.fullScreenWrapper : styles.wrapper}>
+            <View style={fullScreen ? styles.fullScreenContainer : styles.container}>
                 <LottieView
-                    style={[styles.image, fullScreen ? styles.fullScreenImage : {}]}
+                    style={styles.image}
                     source={require('../../Assets/loading_pizza.json')}
                     autoPlay />
                 <Text style={styles.text}>Loading...</Text>
@@ -34,17 +34,23 @@ const LoadingSpinner = (props: LoadingSpinnerProps) => {
 
 export default LoadingSpinner;
 
-const createStyles = (windowHeight: number, headerHeight: number, extraAnimationHeight: number) => StyleSheet.create({
+const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: number, extraAnimationHeight: number) => StyleSheet.create({
     wrapper: {
-        height: windowHeight - headerHeight - extraAnimationHeight, 
+        height: '100%'
+    },
+    fullScreenWrapper: {
+        height: fullScreen ? windowHeight - headerHeight - extraAnimationHeight : '100%', 
         alignItems: 'center',
         justifyContent: 'center'
     },
     image: {
-        width: '80%'
+        width: '80%',
+        height: fullScreen ? (windowHeight - headerHeight - extraAnimationHeight) / 2 : 250
     },
-    fullScreenImage: {
-        height: (windowHeight - headerHeight - extraAnimationHeight) / 2
+    container: {
+        marginTop: extraAnimationHeight,
+        alignItems: 'center', 
+        justifyContent: 'center'
     },
     fullScreenContainer: {
         marginTop: -extraAnimationHeight,

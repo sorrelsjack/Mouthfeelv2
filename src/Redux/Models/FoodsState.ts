@@ -2,6 +2,7 @@ import { Food } from './Food';
 import { FoodDetails } from './FoodDetails';
 import { CreateFoodRequest } from './CreateFoodRequest';
 
+// TODO: Consider breaking some of these out into their own substates / reducers
 export class FoodsState {
     all: Food[];
     liked: {
@@ -16,7 +17,7 @@ export class FoodsState {
     new: CreateFoodRequest;
     searchResults: {
         loading: boolean;
-        data: Food[];
+        data: FoodDetails[];
     }
     selected: {
         loading: boolean;

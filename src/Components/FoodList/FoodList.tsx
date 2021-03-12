@@ -37,7 +37,7 @@ const FoodList = (props: FoodListProps) => {
         }
 
         return (
-            <TouchableOpacity onPress={handleItemPressed}>
+            <TouchableOpacity key={item.name} onPress={handleItemPressed}>
                 <View style={{ flexDirection: 'row', backgroundColor: 'white', marginBottom: 10, padding: 20 }}>
                     <Image style={styles.image} source={{ uri: item.imageUrl }} />
                     <View style={{ flexDirection: 'column', justifyContent: 'center' }}>

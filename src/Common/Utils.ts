@@ -34,8 +34,6 @@ export const InvertColor = (color: string) => {
     return '#' + padZero(r) + padZero(g) + padZero(b);
 }
 
-// TODO: Functions to go from hex to rgb or rgb to hex
-
 export const DetermineColorBrightness = (color: string) => {
     // Variables for red, green, blue values
     let r, g, b, hsp;

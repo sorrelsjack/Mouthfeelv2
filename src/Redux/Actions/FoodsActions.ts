@@ -98,6 +98,12 @@ export const SearchFoodsAction = (query: string, filter?: string[]) => {
     }
 }
 
+export const ClearSearchAction = () => {
+    return async (dispatch: Dispatch) => {
+        dispatch({ type: Actions.ClearSearch });
+    }
+}
+
 export const AddOrUpdateAttributeAction = () => {
 
 }

@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
-import { Dispatch } from 'redux';
+import { connect, useDispatch } from 'react-redux';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
-import { FoodList, SearchInterface } from '../../Components';
+import { FoodList, SearchInterface, LoadingSpinner } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config';
 import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
+import { MouthfeelState, FoodDetails } from '../../Redux/Models';
 
 interface HomeScreenProps {
     theme: ThemeProp,
+    searchResults: {
+        loading: boolean,
+        data: FoodDetails[]
+    },
     navigation: any // TODO: Fix
 }
 
-// TODO: UI for search results... maybe the results completely replace the home screen items?
+// TODO: Add some logic for there to be an empty view if the user does a search that yields 0 results
 const HomeScreen = (props: HomeScreenProps) => {
-    const { theme } = props;
+    const { theme, searchResults } = props;
+
+    const [searchIsActive, setSearchIsActive] = useState(false);
 
     const styles = createStyles(theme);
 
@@ -37,17 +44,23 @@ const HomeScreen = (props: HomeScreenProps) => {
 
     return (
         <View style={styles.wrapper}>
-            <SearchInterface />
-            <FlatList
+            <SearchInterface onSearchStateChange={setSearchIsActive} />
+            { searchIsActive ? <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
+                {searchResults.loading ? <LoadingSpinner /> : < FoodList items={searchResults.data ? searchResults.data : []} />}
+            </View> : <FlatList
                 data={items}
                 ItemSeparatorComponent={renderItemSeparator}
                 renderItem={({ item }) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
-                keyExtractor={item => item.text} />
+                keyExtractor={item => item.text} />}
         </View>
     )
 }
 
-export default withTheme(HomeScreen);
+export default withTheme(connect((state: MouthfeelState) => {
+    return {
+        searchResults: state.foods.searchResults
+    }
+})(HomeScreen));
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

@@ -1,26 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { View, FlatList, StyleSheet, Platform } from 'react-native';
+import { Keyboard, View, FlatList, StyleSheet, Platform } from 'react-native';
 import { useDispatch } from 'react-redux';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config';
-import { SearchFoodsAction } from '../../Redux/Actions';
+import { Button } from '../../Components';
+import { SearchFoodsAction, ClearSearchAction } from '../../Redux/Actions';
 
 interface SearchInterfaceProps {
-    theme: ThemeProp
+    theme: ThemeProp,
+    onSearchStateChange: (searchIsActive: boolean) => any;
 }
 
-// TODO: Create Redux action to clear search results
-// TODO: Put search results in place of 'Home' screen stuff if we have results
 const SearchInterface = (props: SearchInterfaceProps) => {
-    const { theme } = props;
+    const { theme, onSearchStateChange } = props;
 
     const [searchQuery, setSearchQuery] = useState('');
-    const [nameChecked, setNameChecked] = useState(false);
-    const [ingredientsChecked, setIngredientsChecked] = useState(false);
-    const [attributesChecked, setAttributesChecked] = useState(false);
+    const [nameChecked, setNameChecked] = useState(true);
+    const [ingredientsChecked, setIngredientsChecked] = useState(true);
+    const [attributesChecked, setAttributesChecked] = useState(true);
 
     const dispatch = useDispatch();
 
@@ -34,7 +34,21 @@ const SearchInterface = (props: SearchInterfaceProps) => {
     ];
 
     const handleSubmit = () => {
+        Keyboard.dismiss();
+        onSearchStateChange(true);
         dispatch(SearchFoodsAction(searchQuery, generateFilterArray()));
+    }
+
+    const handleClear = () => {
+        onSearchStateChange(false);
+        setSearchQuery('');
+        dispatch(ClearSearchAction());
+    }
+
+    const handleClearFiltersPressed = () => {
+        setNameChecked(false);
+        setIngredientsChecked(false);
+        setAttributesChecked(false);
     }
 
     return (
@@ -47,8 +61,8 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                 onChangeText={updateSearch}
                 value={searchQuery}
                 onSubmitEditing={handleSubmit}
-                onClear={() => setSearchQuery('')} />
-            <View style={{ flexDirection: 'row', flexWrap: 'wrap', marginLeft: 0, marginRight: -15, marginTop: 5, marginBottom: -5 }}>
+                onClear={handleClear} />
+            <View style={styles.checkboxContainer}>
                 <CheckBox 
                     title='Name' 
                     checked={nameChecked} 
@@ -71,8 +85,34 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     checkedColor={theme.primaryThemeColor}
                     containerStyle={{ marginRight: 0 }} />
             </View>
+            <View style={styles.buttonsContainer}>
+                <Button style={styles.button} textStyle={styles.buttonText} text='Search' onPress={handleSubmit} />
+                <Button style={styles.button} textStyle={styles.buttonText} text='Clear Filters' onPress={handleClearFiltersPressed} />
+            </View>
         </View>
     )
 }
 
 export default withTheme(SearchInterface);
+
+const styles = StyleSheet.create({
+    checkboxContainer: {
+        flexDirection: 'row', 
+        flexWrap: 'wrap', 
+        marginLeft: 0, 
+        marginRight: -15, 
+        marginTop: 5, 
+        marginBottom: -5
+    },
+    buttonsContainer: {
+        marginTop: 10,
+        flexDirection: 'row', 
+        justifyContent: 'space-evenly'
+    },
+    button: {
+        width: '40%'
+    },
+    buttonText: {
+        fontSize: 14
+    }
+})

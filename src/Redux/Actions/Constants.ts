@@ -40,6 +40,7 @@ export const Actions = {
     GetFoodsToTry: new Action('GET_FOODS_TO_TRY'),
     AddOrRemoveFoodToTry: new Action('ADD_OR_REMOVE_FOOD_TO_TRY'),
     SearchFoods: new Action('SEARCH_FOODS'),
+    ClearSearch: 'CLEAR_SEARCH',
     AddOrUpdateAttribute: new Action('ADD_OR_UPDATE_ATTRIBUTE'),
     CreateFood: new Action('CREATE_FOOD'),
     SetFoodLikedStatus: new Action('SET_FOOD_LIKED_STATUS'),

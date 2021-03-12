@@ -88,6 +88,15 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                     data: action.data.data
                 }
             }
+        case Actions.ClearSearch: {
+            return {
+                ...state,
+                searchResults: {
+                    loading: false,
+                    data: []
+                }
+            }
+        }
         default:
             return state;
     }

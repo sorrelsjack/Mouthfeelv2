@@ -22,6 +22,7 @@ interface ButtonProps {
     style?: object,
     theme: ThemeProp;
     text: string;
+    textStyle?: object;
     backgroundColor?: string;
     textColor?: string;
     disabled?: boolean
@@ -32,7 +33,8 @@ const Button = (props: ButtonProps) => {
         onPress,
         style,
         theme, 
-        text, 
+        text,
+        textStyle,
         backgroundColor = theme.primaryThemeColor, 
         textColor = theme.primaryThemeTextColor,
         disabled
@@ -40,7 +42,7 @@ const Button = (props: ButtonProps) => {
 
     const getBackgroundStyles = () => [styles.button, style, { backgroundColor: disabled ? theme.disabledButton.backgroundColor : backgroundColor }];
 
-    const getTextStyles = () => [styles.buttonText, { color: disabled ? theme.disabledButton.textColor : textColor }];
+    const getTextStyles = () => [styles.buttonText, textStyle, { color: disabled ? theme.disabledButton.textColor : textColor }];
 
     return (
         <TouchableOpacity style={getBackgroundStyles()} disabled={disabled} onPress={onPress}>
