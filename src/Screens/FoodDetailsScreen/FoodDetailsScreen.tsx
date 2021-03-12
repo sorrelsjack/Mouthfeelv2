@@ -40,7 +40,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const { id, name, toTry, textures, flavors, miscellaneous } = props.selected?.data ?? {}; // imageUrl
   const imageUrl = 'https://st.depositphotos.com/1003814/5052/i/450/depositphotos_50523105-stock-photo-pizza-with-tomatoes.jpg'; // TODO: Remove this
 
-  const [markedToTry, setMarkedToTry] = useState(false);
+  const [markedToTry, setMarkedToTry] = useState(toTry);
 
   const dispatch = useDispatch();
   const styles = createStyles(theme);
@@ -53,7 +53,6 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   }
 
   // TODO: On back clicked, revert the primary colors to the default
-  // TODO: Get the darn loading spinner centered
   // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
   // Do the same for the arrows
 
@@ -75,7 +74,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   }, [navigation, theme, markedToTry])
 
   useEffect(() => {
-    //dispatch(GetFoodDetailsAction(id));
+    dispatch(GetFoodDetailsAction(id));
   }, [props.selected.data.id])
 
   useEffect(() => {
@@ -103,7 +102,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false}>
-        {loading ? <LoadingSpinner containerStyle={{ flexDirection: 'column', height: '100%', alignItems: 'center' }} spinnerStyle={{ height: '100%' }} /> :
+        {loading ? <LoadingSpinner fullScreen /> :
           <>
             <View style={styles.heartsContainer}>
               <CircleButton icon='heart' iconSelectedColor={theme.heartSelectedColor} />

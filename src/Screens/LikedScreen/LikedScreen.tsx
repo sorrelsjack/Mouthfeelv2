@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { GetFoodDetailsAction } from '../../Redux/Actions';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Image
+    SafeAreaView,
+    StyleSheet,
+    ScrollView,
+    View,
+    Text,
+    Image
 } from 'react-native';
 import { FormatAsTitleCase } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner, FoodList } from '../../Components';
@@ -37,8 +37,7 @@ const LikedScreen = (props: LikedScreenProps) => {
 
     return (
         <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            {liked.loading && <LoadingSpinner />}
-            {<FoodList items={liked.data ? liked.data : []} />}
+            {liked.loading ? <LoadingSpinner fullScreen /> : < FoodList items={liked.data ? liked.data : []} />}
         </View>
     )
 }
