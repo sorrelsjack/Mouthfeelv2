@@ -2,15 +2,15 @@ import React, { useEffect, useState } from 'react';
 import LottieView from 'lottie-react-native';
 import { StyleSheet, View, Text, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
-import { EmptyView } from '..';
 import BaseAnimatedView from '../BaseAnimatedView';
 
-interface LoadingSpinnerProps {
-    fullScreen?: boolean
+interface EmptyViewProps {
+    fullScreen?: boolean,
+    text: string
 }
 
-const LoadingSpinner = (props: LoadingSpinnerProps) => {
-    const { fullScreen = false } = props;
+const EmptyView = (props: EmptyViewProps) => {
+    const { fullScreen = false, text } = props;
 
     const window = useWindowDimensions();
     const headerHeight = useHeaderHeight();
@@ -22,18 +22,18 @@ const LoadingSpinner = (props: LoadingSpinnerProps) => {
         return (
             <LottieView
                 style={styles.image}
-                source={require('../../Assets/loading_pizza.json')}
+                source={require('../../Assets/empty_view.json')}
                 autoPlay />
         )
     }
 
     return (
-        <BaseAnimatedView text='Loading...' fullScreen={fullScreen} view={<LottieComponent />} />
+        <BaseAnimatedView text={text} fullScreen={fullScreen} view={<LottieComponent />} />
     )
 
 }
 
-export default LoadingSpinner;
+export default EmptyView;
 
 const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: number, extraAnimationHeight: number) => StyleSheet.create({
     image: {

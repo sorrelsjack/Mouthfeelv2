@@ -2,6 +2,7 @@ import axios from 'axios';
 import { RemoveUserProfile, RetrieveJwt, Routes, Urls, JwtIsValid } from '../Common';
 import { navigate } from '../Config';
 
+// TODO: Method to refresh JWT
 export const Startup = () => {
     const deauthenticate = async () => {
         // TODO: This almost works. But we have the user info still in the store... so it just throws you back onto the home screen. Fix that

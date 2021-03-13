@@ -10,7 +10,7 @@ import {
     Image
 } from 'react-native';
 import { FormatAsTitleCase } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList } from '../../Components';
+import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView } from '../../Components';
 import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
@@ -35,8 +35,9 @@ const DislikedScreen = (props: DislikedScreenProps) => {
     }, [])
 
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            {disliked.loading ? <LoadingSpinner fullScreen /> : < FoodList items={disliked.data ? disliked.data : []} />}
+        <View style={{ justifyContent: 'center', height: '100%' }}>
+            {disliked.loading ? <LoadingSpinner fullScreen /> : disliked.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={disliked.data ? disliked.data : []} /></View> : null}
+            {(!disliked.loading && !disliked.data?.length) && <EmptyView fullScreen text='No Disliked foods found' />}
         </View>
     )
 }

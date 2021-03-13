@@ -10,7 +10,7 @@ import {
   Image
 } from 'react-native';
 import { FormatAsTitleCase } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList } from '../../Components';
+import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView } from '../../Components';
 import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
@@ -35,8 +35,9 @@ const ToTryScreen = (props: ToTryScreenProps) => {
     }, [])
 
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            {toTry.loading ? <LoadingSpinner fullScreen /> : <FoodList items={toTry.data ? toTry.data : []} />}
+        <View style={{ justifyContent: 'center', height: '100%' }}>
+            {toTry.loading ? <LoadingSpinner fullScreen /> : toTry.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={toTry.data ? toTry.data : []} /></View> : null}
+            {!toTry.loading && !toTry.data?.length && <EmptyView fullScreen text='No foods To Try found' />}
         </View>
     )
 }

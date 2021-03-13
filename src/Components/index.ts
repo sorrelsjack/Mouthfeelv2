@@ -9,3 +9,5 @@ export { default as RegisterForm } from './RegisterForm';
 export { default as Button } from './Button';
 export { default as SearchInterface } from './SearchInterface';
 export { default as StandardIconsDisplay } from './StandardIconsDisplay';
+export { default as EmptyView } from './EmptyView';
+export { default as BaseAnimatedView } from './BaseAnimatedView';

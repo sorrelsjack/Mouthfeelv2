@@ -19,7 +19,6 @@ interface TagProps {
     }
 }
 
-// TODO: Let's get the descriptions standardized in terms of case
 const Tag = (props: TagProps) => {
     const { theme, size = 'regular', style, item } = props;
     const { text, votes, tooltipText } = item;
@@ -67,7 +66,7 @@ const Tag = (props: TagProps) => {
                     backgroundColor='rgba(0, 0, 0, .7)'
                     skipAndroidStatusBar
                     height={tooltipHeight}
-                    popover={<Text style={{ color: 'white' }}>{tooltipText}</Text>}>
+                    popover={<Text style={{ color: 'white' }}>{tooltipText.toLowerCase()}</Text>}>
                     <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? InvertColor(theme.primaryThemeTextColor) : theme.primaryThemeTextColor} />
                 </Tooltip>
             </View>

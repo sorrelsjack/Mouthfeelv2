@@ -26,7 +26,6 @@ console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
-// TODO: Empty view for if nothing is returned
 export const App = () => {
   return (
     <ThemeProvider theme={Colors}>

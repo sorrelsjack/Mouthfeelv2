@@ -10,11 +10,7 @@ import {
     Image
 } from 'react-native';
 import { FormatAsTitleCase } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList } from '../../Components';
-import LottieView from 'lottie-react-native';
-import { withTheme, UpdateTheme } from 'react-native-elements';
-import { withNavigation } from 'react-navigation';
-import { ThemeProp } from '../../Models';
+import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView } from '../../Components';
 import { VotableAttribute, MouthfeelState, FoodDetails } from '../../Redux/Models';
 import { GetLikedFoodsAction } from '../../Redux/Actions';
 
@@ -35,8 +31,9 @@ const LikedScreen = (props: LikedScreenProps) => {
     }, [])
 
     return (
-        <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-            {liked.loading ? <LoadingSpinner fullScreen /> : < FoodList items={liked.data ? liked.data : []} />}
+        <View style={{ justifyContent: 'center', height: '100%' }}>
+            {liked.loading ? <LoadingSpinner fullScreen /> : liked.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={liked.data ? liked.data : []} /></View> : null}
+            {(!liked.loading && !liked.data?.length) && <EmptyView fullScreen text='No Liked foods found' />}
         </View>
     )
 }

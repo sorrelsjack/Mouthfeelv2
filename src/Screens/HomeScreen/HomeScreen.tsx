@@ -3,7 +3,7 @@ import { connect, useDispatch } from 'react-redux';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
-import { FoodList, SearchInterface, LoadingSpinner } from '../../Components';
+import { FoodList, SearchInterface, LoadingSpinner, EmptyView } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
@@ -42,16 +42,25 @@ const HomeScreen = (props: HomeScreenProps) => {
         { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
     ]
 
+    const SearchResults = () => {
+        return (
+            <View style={{ justifyContent: 'center', height: '100%' }}>
+                {searchResults.loading ? <LoadingSpinner /> : < FoodList items={searchResults.data ? searchResults.data : []} />}
+                {(!searchResults.loading && !searchResults.data?.length) && <EmptyView text={`No results found`} />}
+            </View>
+        )
+    }
+
     return (
         <View style={styles.wrapper}>
             <SearchInterface onSearchStateChange={setSearchIsActive} />
-            { searchIsActive ? <View style={{ alignItems: 'center', justifyContent: 'center', height: '100%' }}>
-                {searchResults.loading ? <LoadingSpinner /> : < FoodList items={searchResults.data ? searchResults.data : []} />}
-            </View> : <FlatList
-                data={items}
-                ItemSeparatorComponent={renderItemSeparator}
-                renderItem={({ item }) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
-                keyExtractor={item => item.text} />}
+            { searchIsActive 
+                ? <SearchResults /> 
+                : <FlatList
+                    data={items}
+                    ItemSeparatorComponent={renderItemSeparator}
+                    renderItem={({ item }) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
+                    keyExtractor={item => item.text} />}
         </View>
     )
 }

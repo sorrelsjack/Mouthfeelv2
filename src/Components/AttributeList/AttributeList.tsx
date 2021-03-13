@@ -4,6 +4,7 @@ import {
     View,
     Text,
     FlatList,
+    ScrollView
 } from 'react-native';
 import { Tag } from '..';
 import { AttributeListAddButton } from '..';
@@ -26,37 +27,36 @@ interface AttributeListProps {
     items: Item[],
 }
 
-// TODO: Fix the UX with the add button and the rest of the tags
 const AttributeList = (props: AttributeListProps) => {
-    const { 
-        title, 
-        includeAddButton = true, 
-        horizontal = true, 
+    const {
+        title,
+        includeAddButton = true,
+        horizontal = true,
         contentContainerStyle = {},
         tagSize = 'regular',
-        tagStyle = {}, 
+        tagStyle = {},
         items,
     } = props;
 
     const navigation = useNavigation();
 
-    const sortItems = (items: Item[]) => 
+    const sortItems = (items: Item[]) =>
         items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
 
     return (
         <View style={styles.wrapper}>
             {title && <Text style={styles.text}>{title}</Text>}
-            <View style={{ flexDirection: 'row' }}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.list}>
                 {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags)} />}
                 <FlatList
+                    scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={contentContainerStyle}
-                    style={styles.list}
                     horizontal={horizontal}
                     data={sortItems(items)}
                     renderItem={({ item }) => <Tag style={tagStyle} size={tagSize} item={item} />}
                     keyExtractor={item => item.text} />
-            </View>
+            </ScrollView>
         </View>
     )
 }
@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     list: {
-        marginRight: -20,
+        flexDirection: 'row', 
+        marginRight: -20
     }
 })
 

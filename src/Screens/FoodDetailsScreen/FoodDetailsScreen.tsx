@@ -14,7 +14,14 @@ import {
   IngredientsList,
   CommentsSection,
 } from './Components';
-import { FormatAsTitleCase, DetermineColorBrightness, GetTextColorBasedOnBrightness, InvertColor } from '../../Common';
+import { 
+  FormatAsTitleCase,
+  GetDefaultPrimaryThemeColor,
+  GetDefaultPrimaryThemeTextColor,
+  DetermineColorBrightness, 
+  GetTextColorBasedOnBrightness, 
+  InvertColor 
+} from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
 import { withTheme, UpdateTheme } from 'react-native-elements';
@@ -78,11 +85,21 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     dispatch(AddOrRemoveFoodToTryAction(id));
   }
 
-  // TODO: On back clicked, revert the primary colors to the default
   // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
   // Do the same for the arrows
   // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item
   // TODO: Debounce the liked / disliked stuff
+
+  useEffect(() => {
+    navigation.addListener('blur', e => {
+      updateTheme({
+        ...theme,
+        primaryThemeColor: GetDefaultPrimaryThemeColor(),
+        primaryThemeTextColor: GetDefaultPrimaryThemeTextColor(),
+        clickableTextColor: GetDefaultPrimaryThemeColor()
+      })
+    });
+  }, [])
 
   useLayoutEffect(() => {
     navigation.setOptions({
