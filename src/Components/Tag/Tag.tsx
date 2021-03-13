@@ -22,13 +22,13 @@ interface TagProps {
 const Tag = (props: TagProps) => {
     const { theme, size = 'regular', style, item } = props;
     const { text, votes, tooltipText } = item;
+
+    const [tooltipHeight, setTooltipHeight] = useState(size === 'regular' ? 60 : 40);
     const [isPressed, setIsPressed] = useState(false);
 
     const styles = createStyles(size);
 
     const iconSize = size === 'regular' ? 18 : 14;
-    // TODO: Make the height vary on how much text there is
-    const tooltipHeight = size === 'regular' ? 60 : 40;
 
     const setWrapperStyle = () => isPressed
         ? { ...styles.wrapper, backgroundColor: InvertColor(theme.primaryThemeColor) }
@@ -48,7 +48,10 @@ const Tag = (props: TagProps) => {
         setIsPressed(!isPressed);
     }
 
-    // TODO: Fix tooltip so it expands with the text
+    const handleTextMount = (e) => {
+        const { height } = e.nativeEvent.layout;
+        setTooltipHeight(height + 30);
+    }
 
     return (
         <View style={[setWrapperStyle(), style]}>
@@ -66,7 +69,7 @@ const Tag = (props: TagProps) => {
                     backgroundColor='rgba(0, 0, 0, .7)'
                     skipAndroidStatusBar
                     height={tooltipHeight}
-                    popover={<Text style={{ color: 'white' }}>{tooltipText.toLowerCase()}</Text>}>
+                    popover={<Text onLayout={handleTextMount} style={{ color: 'white' }}>{tooltipText.toLowerCase()}</Text>}>
                     <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? InvertColor(theme.primaryThemeTextColor) : theme.primaryThemeTextColor} />
                 </Tooltip>
             </View>

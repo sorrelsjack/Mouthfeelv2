@@ -20,7 +20,6 @@ interface HomeScreenProps {
     navigation: any // TODO: Fix
 }
 
-// TODO: Add some logic for there to be an empty view if the user does a search that yields 0 results
 const HomeScreen = (props: HomeScreenProps) => {
     const { theme, searchResults } = props;
 

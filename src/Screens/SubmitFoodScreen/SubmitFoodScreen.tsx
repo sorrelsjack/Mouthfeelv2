@@ -10,7 +10,7 @@ import {
     Image
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Tag, AttributeList, LoadingSpinner, InputField } from '../../Components';
+import { Tag, AttributeList, LoadingSpinner, InputField, Button } from '../../Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GetAllVotableAttributesAction } from '../../Redux/Actions';
@@ -30,12 +30,11 @@ interface SubmitFoodScreenProps {
 // TODO: Include "subtypes" of food - e.g., chicken nuggets, then chicken nuggets from wendy's, or chicken nuggets from a pinterest recipe. in the DB, this would be a string representing location. could be a URL or a location
 // TODO: Add "parent food" input
 // TODO: Handle errors here, for if a name is already being used or something else...
-// TODO: Change background color of button when it is disabled
 // TODO: When the user finishes typing the name, call and endpoint to fetch foods with the same / similar names and ask if they meant that one instead
 // TODO: Maybe we could also re-use this screen to "mass edit" as existing food?
 // TODO: Also, allow for multiple images
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
-    const { theme, /*flavors, textures, misc*/ } = props;
+    const { theme, flavors, textures, misc } = props;
 
     const dummyData = {
         loading: false, all: [
@@ -49,9 +48,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
 
     const [name, setName] = useState('');
 
-    const flavors = dummyData;
+    /*const flavors = dummyData;
     const textures = dummyData;
-    const misc = dummyData;
+    const misc = dummyData;*/
 
     const loading = flavors.loading || textures.loading || misc.loading;
     const styles = createStyles(theme);
@@ -60,7 +59,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const canSubmit = !!name;
 
     useEffect(() => {
-        //dispatch(GetAllVotableAttributesAction());
+        dispatch(GetAllVotableAttributesAction());
     }, [])
 
     const handleSubmitButtonPress = () => {
@@ -75,14 +74,14 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
             <View style={styles.wrapper}>
                 {loading ?
                     <View style={styles.loadingSpinnerContainer}>
-                        <LoadingSpinner />
+                        <LoadingSpinner fullScreen />
                     </View> :
                     <>
-                        <InputField 
-                            style={styles.nameInput} 
-                            placeholder={'Food Name'} 
-                            value={name} 
-                            onChangeText={setName} />
+                        <InputField
+                            style={styles.nameInput}
+                            placeholder={'Food Name'}
+                            value={name}
+                            onTextChange={setName} />
                         <View>
                             <Text style={styles.title}>Image</Text>
                             <TouchableOpacity style={styles.imageContainer}>
@@ -94,6 +93,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             <AttributeList
                                 includeAddButton={false}
                                 horizontal={false}
+                                numColumns={2}
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
@@ -102,6 +102,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             <AttributeList
                                 includeAddButton={false}
                                 horizontal={false}
+                                numColumns={2}
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
@@ -110,15 +111,19 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             <AttributeList
                                 includeAddButton={false}
                                 horizontal={false}
+                                numColumns={2}
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
                                 items={misc.all.length ? misc.all.map(m => { return { text: m.name, tooltipText: m.description } }) : []} />
                         </View>
                         <View style={styles.submitButtonContainer}>
-                            <TouchableOpacity style={styles.submitButton} disabled={!canSubmit} onPress={handleSubmitButtonPress}>
-                                <Text style={styles.submitButtonText}>Submit</Text>
-                            </TouchableOpacity>
+                            <Button 
+                                disabled={!canSubmit} 
+                                onPress={handleSubmitButtonPress} 
+                                text='Submit' 
+                                backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor} 
+                                textColor={theme.submitFoodScreen.submitButton.textColor} />
                         </View>
                     </>}
             </View>
@@ -166,8 +171,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         fontWeight: 'bold'
     },
     attributeListContainer: {
-        flexDirection: "row",
-        flexWrap: "wrap"
+        flexDirection: 'column'
     },
     tagStyle: {
         marginTop: 10

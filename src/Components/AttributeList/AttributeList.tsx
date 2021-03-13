@@ -20,6 +20,7 @@ interface Item {
 interface AttributeListProps {
     title?: string,
     includeAddButton?: boolean,
+    numColumns?: number;
     horizontal?: boolean,
     contentContainerStyle?: object,
     tagSize?: 'small' | 'regular',
@@ -31,6 +32,7 @@ const AttributeList = (props: AttributeListProps) => {
     const {
         title,
         includeAddButton = true,
+        numColumns,
         horizontal = true,
         contentContainerStyle = {},
         tagSize = 'regular',
@@ -49,6 +51,7 @@ const AttributeList = (props: AttributeListProps) => {
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.list}>
                 {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags)} />}
                 <FlatList
+                    numColumns={numColumns}
                     scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}
                     contentContainerStyle={contentContainerStyle}
