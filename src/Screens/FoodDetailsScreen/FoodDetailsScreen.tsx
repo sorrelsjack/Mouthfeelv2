@@ -88,6 +88,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
   // Do the same for the arrows
   // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item
+  // TODO: 'Foods Like This' section?
   // TODO: Debounce the liked / disliked stuff
 
   useEffect(() => {
@@ -168,9 +169,9 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
               </View>
               <IngredientsList items={ingredients} />
               <View style={styles.attributeListsContainer}>
-                <AttributeList title={`What textures does ${name} have?`} items={textures ? textures.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
-                <AttributeList title={`What flavors does ${name} have?`} items={flavors ? flavors.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
-                <AttributeList title={`What makes ${name} unique?`} items={miscellaneous ? miscellaneous.map(i => ({ text: i.name, votes: i.votes, tooltipText: i.description })) : []} />
+                <AttributeList title={`What textures does ${name} have?`} items={textures ? textures : []} />
+                <AttributeList title={`What flavors does ${name} have?`} items={flavors ? flavors : []} />
+                <AttributeList title={`What makes ${name} unique?`} items={miscellaneous ? miscellaneous : []} />
               </View>
               <CommentsSection />
             </View>

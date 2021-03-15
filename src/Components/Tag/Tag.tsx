@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Tooltip } from 'react-native-elements';
 import { withTheme, Theme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { InvertColor } from '../../Common';
+import { VotableAttribute } from '../../Redux/Models';
 
 type TagSize = 'small' | 'regular';
 
@@ -12,16 +13,13 @@ interface TagProps {
     theme: ThemeProp,
     size?: TagSize,
     style?: object,
-    item: {
-        text: string,
-        votes?: number,
-        tooltipText: string
-    }
+    item: VotableAttribute;
 }
 
+// TODO: Need logic here to determine if a user needs tihs to be pre-selected or not -- probably requires a backend change
 const Tag = (props: TagProps) => {
     const { theme, size = 'regular', style, item } = props;
-    const { text, votes, tooltipText } = item;
+    const { name, votes, description } = item;
 
     const [tooltipHeight, setTooltipHeight] = useState(size === 'regular' ? 60 : 40);
     const [isPressed, setIsPressed] = useState(false);
@@ -44,7 +42,6 @@ const Tag = (props: TagProps) => {
         : { ...styles.counterContainer, backgroundColor: theme.tag.counter.unselected.backgroundColor }
 
     const handlePress = () => {
-        // TODO Increase or decrease the number
         setIsPressed(!isPressed);
     }
 
@@ -53,23 +50,33 @@ const Tag = (props: TagProps) => {
         setTooltipHeight(height + 30);
     }
 
+    const calculateCurrentVoteTotal = () => {
+        if (isPressed) return (votes ?? 0) + 1;
+        // TODO: There is logic that should be implemented here. Need to handle cases where we go into a screen with a tag pre-selected, and then un-selecting it
+        return votes;
+    }
+
+    useEffect(() => {
+
+    }, [votes])
+
     return (
         <View style={[setWrapperStyle(), style]}>
             <TouchableOpacity onPress={handlePress}>
                 <View style={{ flexDirection: 'row' }}>
                     {votes && <View style={setCounterContainerStyle()}>
-                        <Text style={setTextStyle()}>{votes}</Text>
+                        <Text style={setTextStyle()}>{calculateCurrentVoteTotal()}</Text>
                     </View>}
-                    <Text style={setTextStyle()}>{text}</Text>
+                    <Text style={setTextStyle()}>{name}</Text>
                 </View>
             </TouchableOpacity>
             <View style={styles.iconContainer}>
                 <Tooltip
                     overlayColor='transparent'
-                    backgroundColor='rgba(0, 0, 0, .7)'
+                    backgroundColor={theme.tooltip.backgroundColor}
                     skipAndroidStatusBar
                     height={tooltipHeight}
-                    popover={<Text onLayout={handleTextMount} style={{ color: 'white' }}>{tooltipText.toLowerCase()}</Text>}>
+                    popover={<Text onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor }}>{description.toLowerCase()}</Text>}>
                     <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? InvertColor(theme.primaryThemeTextColor) : theme.primaryThemeTextColor} />
                 </Tooltip>
             </View>

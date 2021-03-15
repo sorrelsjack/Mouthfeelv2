@@ -3,6 +3,7 @@ import { RemoveUserProfile, RetrieveJwt, Routes, Urls, JwtIsValid } from '../Com
 import { navigate } from '../Config';
 
 // TODO: Method to refresh JWT
+// TODO: Add a message for if a user gets logged out
 export const Startup = () => {
     const deauthenticate = async () => {
         // TODO: This almost works. But we have the user info still in the store... so it just throws you back onto the home screen. Fix that

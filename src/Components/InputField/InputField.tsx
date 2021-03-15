@@ -7,6 +7,7 @@ import { GlobalFontName } from '../../Config/SetTypography';
 interface InputFieldProps {
     theme: ThemeProp,
     style?: object,
+    textPosition?: 'top' | 'auto' | 'bottom' | 'center',
     secureTextEntry?: boolean,
     placeholder: string,
     placeholderTextColor?: string
@@ -18,7 +19,8 @@ interface InputFieldProps {
 const InputField = (props: InputFieldProps) => {
     const { 
         theme, 
-        style, 
+        style,
+        textPosition = 'top',
         secureTextEntry, 
         placeholder, 
         placeholderTextColor,
@@ -33,6 +35,7 @@ const InputField = (props: InputFieldProps) => {
         <View>
             <TextInput
                 style={[styles.textInput, style]}
+                textAlignVertical={textPosition}
                 placeholderTextColor={placeholderTextColor}
                 multiline={multiline}
                 numberOfLines={multiline ? 4 : 1}

@@ -29,6 +29,9 @@ export const Colors = {
             textColor:'#fdfffc'
         },
     },
+    tooltip: {
+        backgroundColor: 'rgba(0, 0, 0, .7)'
+    },
     disabledButton: {
         backgroundColor: '#cfcfcf',
         textColor: 'rgba(0, 0, 0, .3)'

@@ -19,6 +19,7 @@ export const Actions = {
         Login: new Action('LOGIN'),
         Logout: 'LOGOUT',
         Register: new Action('REGISTER'),
+        GetCurrent: 'GET_CURRENT_USER'
     },
 
     Flavors: {
@@ -31,6 +32,11 @@ export const Actions = {
 
     Miscellaneous: {
         GetAll: new Action('GET_ALL_MISCELLANEOUS')
+    },
+
+    Comments: {
+        GetForFood: new Action('GET_COMMENTS_FOR_FOOD'),
+        ManageVote: new Action('MANAGE_COMMENT_VOTE')
     },
 
     GetLikedFoods: new Action('GET_LIKED_FOODS'),

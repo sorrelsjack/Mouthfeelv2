@@ -1,6 +1,6 @@
 export interface VotableAttribute {
     id: number;
     name: string;
-    votes: number;
+    votes?: number;
     description: string;
 }

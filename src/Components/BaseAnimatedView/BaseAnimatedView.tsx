@@ -6,20 +6,21 @@ import { useHeaderHeight } from '@react-navigation/stack';
 interface BaseAnimatedViewProps {
     fullScreen?: boolean;
     view: JSX.Element;
-    text?: string
+    text?: string;
+    fontSize?: number
 }
 
 const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
-    const { fullScreen = false, view, text } = props;
+    const { fullScreen = false, view, text, fontSize = 20 } = props;
 
     const window = useWindowDimensions();
     const headerHeight = useHeaderHeight();
     const EXTRA_ANIMATION_HEIGHT = 30;
 
-    const styles = createStyles(fullScreen, window.height, headerHeight, EXTRA_ANIMATION_HEIGHT);
+    const styles = createStyles(fullScreen, window.height, headerHeight, EXTRA_ANIMATION_HEIGHT, fontSize);
 
     return (
-        <View style={fullScreen ? styles.fullScreenWrapper : styles.wrapper}>
+        <View style={fullScreen ? styles.fullScreenWrapper : {}}>
             <View style={fullScreen ? styles.fullScreenContainer : styles.container}>
                 {view}
                 <Text style={styles.text}>{text}</Text>
@@ -31,10 +32,7 @@ const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
 
 export default BaseAnimatedView;
 
-const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: number, extraAnimationHeight: number) => StyleSheet.create({
-    wrapper: {
-        height: '100%'
-    },
+const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: number, extraAnimationHeight: number, fontSize: number) => StyleSheet.create({
     fullScreenWrapper: {
         height: fullScreen ? windowHeight - headerHeight - extraAnimationHeight : '100%', 
         alignItems: 'center',
@@ -56,7 +54,7 @@ const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: n
     },
     text: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: fontSize,
         marginTop: 20
     }
 })

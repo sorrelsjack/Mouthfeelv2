@@ -6,11 +6,12 @@ import { EmptyView } from '..';
 import BaseAnimatedView from '../BaseAnimatedView';
 
 interface LoadingSpinnerProps {
-    fullScreen?: boolean
+    fullScreen?: boolean,
+    fontSize?: number
 }
 
 const LoadingSpinner = (props: LoadingSpinnerProps) => {
-    const { fullScreen = false } = props;
+    const { fullScreen = false, fontSize = 20 } = props;
 
     const window = useWindowDimensions();
     const headerHeight = useHeaderHeight();
@@ -28,7 +29,7 @@ const LoadingSpinner = (props: LoadingSpinnerProps) => {
     }
 
     return (
-        <BaseAnimatedView text='Loading...' fullScreen={fullScreen} view={<LottieComponent />} />
+        <BaseAnimatedView text='Loading...' fullScreen={fullScreen} view={<LottieComponent />} fontSize={fontSize} />
     )
 
 }

@@ -36,22 +36,12 @@ interface SubmitFoodScreenProps {
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { theme, flavors, textures, misc } = props;
 
-    const dummyData = {
-        loading: false, all: [
-            { name: "crunchy", description: 'Testing' },
-            { name: "2", description: 'Testing' },
-            { name: "soft", description: 'Testing' },
-            { name: "test", description: 'Testing' },
-            { name: "test2", description: 'Testing' }
-        ]
-    };
-
     const [name, setName] = useState('');
+    const [selectedFlavors, setSelectedFlavors] = useState([]);
+    const [selectedTextures, setSelectedTextures] = useState([]);
+    const [selectedMisc, setSelectedMisc] = useState([]);
 
-    /*const flavors = dummyData;
-    const textures = dummyData;
-    const misc = dummyData;*/
-
+    // TODO: The loading spinner flickers in a really gross way presumably because the state of these guys keeps updating. Can we fix?
     const loading = flavors.loading || textures.loading || misc.loading;
     const styles = createStyles(theme);
     const dispatch = useDispatch();
@@ -64,7 +54,11 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
 
     const handleSubmitButtonPress = () => {
         const request: CreateFoodRequest = {
-            name: name
+            name: name,
+            //imageUrl: ,
+            flavors: selectedFlavors,
+            textures: selectedTextures,
+            miscellaneous: selectedMisc
         }
         // Gather up name, imageUrl (or imageData?), flavor ids, texture ids, and misc ids, then pile them into an object and do a request
     }
@@ -97,7 +91,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
-                                items={flavors.all.length ? flavors.all.map(f => { return { text: f.name, tooltipText: f.description } }) : []} />
+                                items={flavors.all.length ? flavors.all : []} />
                             <Text style={styles.title}>Textures</Text>
                             <AttributeList
                                 includeAddButton={false}
@@ -106,7 +100,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
-                                items={textures.all.length ? textures.all.map(t => { return { text: t.name, tooltipText: t.description } }) : []} />
+                                items={textures.all.length ? textures.all : []} />
                             <Text style={styles.title}>Misc</Text>
                             <AttributeList
                                 includeAddButton={false}
@@ -115,7 +109,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
-                                items={misc.all.length ? misc.all.map(m => { return { text: m.name, tooltipText: m.description } }) : []} />
+                                items={misc.all.length ? misc.all : []} />
                         </View>
                         <View style={styles.submitButtonContainer}>
                             <Button 

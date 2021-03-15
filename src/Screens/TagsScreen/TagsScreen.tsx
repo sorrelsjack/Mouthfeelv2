@@ -11,7 +11,7 @@ import {
 // TODO: Get a nav param that says if flavors, textures, or misc should be fetched. Then, looking at the selected food in the store, highlight the ones that are already selected
 // TODO: Change title to say something like Flavors For X
 const TagsScreen = () => {
-    const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ text: i, tooltipText: 'test' }));
+    const experience = ['cheesy', 'salty', 'firm', 'layered', 'crispy', 'chewy', 'savory'].map(i => ({ id: 1, name: i, description: 'test' }));
 
     useEffect(() => {
 

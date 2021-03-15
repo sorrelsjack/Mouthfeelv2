@@ -1,15 +1,19 @@
 import { VotableAttribute } from './VotableAttribute';
 import { AuthenticateUserResponse } from './AuthenticateUserResponse';
 
-// TODO: Get this the way it's supposed to be
 export class UserState {
-    // register
+    newUser: {
+        loading: false
+    };
     profile: {
         data: AuthenticateUserResponse | null,
         loading: boolean
     };
 
     constructor () {
+        this.newUser = {
+            loading: false
+        } 
         this.profile = {
             data: null,
             loading: false

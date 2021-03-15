@@ -42,7 +42,6 @@ export const GetDislikedFoodsAction = () => {
 
 export const ManageFoodSentimentAction = (foodId: number, sentiment: number) => {
     return async (dispatch: Dispatch) => {
-        console.log(sentiment)
         dispatch({ type: Actions.ManageFoodSentiment.Loading });
         try {
             await axios.post(Urls.foods.sentiment(), { foodId, sentiment });

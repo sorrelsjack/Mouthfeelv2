@@ -4,10 +4,12 @@ import { Foods } from './FoodsReducer';
 import { Textures } from './TexturesReducer';
 import { Miscellaneous } from './MiscellaneousReducer';
 import { User } from './UserReducer';
+import { Comments } from './CommentsReducer';
 import { Actions } from '../../Redux/Actions';
 import { MouthfeelState, ReduxAction } from '../Models';
 
 export const appReducer = combineReducers({
+    comments: Comments,
     flavors: Flavors,
     foods: Foods,
     textures: Textures,

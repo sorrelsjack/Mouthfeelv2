@@ -31,8 +31,7 @@ export const Urls = {
     comments: {
         new: () => `${rootUrl}/comments`,
         delete: (commentId: number) => `${rootUrl}/comments/${commentId}`,
-        byFood: (foodId: number) => `${rootUrl}/comments/${foodId}`,
+        forFood: (foodId: number) => `${rootUrl}/comments/${foodId}`,
         vote: () => `${rootUrl}/comments`
     }
-    // TODO: Manage comment vote, create reducer
 };

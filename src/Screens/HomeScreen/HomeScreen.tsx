@@ -44,7 +44,7 @@ const HomeScreen = (props: HomeScreenProps) => {
     const SearchResults = () => {
         return (
             <View style={{ justifyContent: 'center', height: '100%' }}>
-                {searchResults.loading ? <LoadingSpinner /> : < FoodList items={searchResults.data ? searchResults.data : []} />}
+                {searchResults.loading ? <LoadingSpinner /> : <View style={{ alignItems: 'center' }}><FoodList items={searchResults.data ? searchResults.data : []} /></View>}
                 {(!searchResults.loading && !searchResults.data?.length) && <EmptyView text={`No results found`} />}
             </View>
         )

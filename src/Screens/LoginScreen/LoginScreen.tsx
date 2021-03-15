@@ -6,7 +6,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Routes, RetrieveJwt, JwtIsValid } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { AuthenticateUserAction } from '../../Redux/Actions';
+import { AuthenticateUserAction, GetCurrentUserAction } from '../../Redux/Actions';
 import { MouthfeelState, AuthenticateUserResponse, } from '../../Redux/Models';
 
 interface LoginScreenProps {

@@ -1,15 +1,14 @@
 import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch } from 'redux';
-import { Urls, SaveUserProfile, RemoveUserProfile } from '../../Common';
-import { AuthenticateUserResponse } from '../Models';
+import { Urls, SaveUserProfile, RemoveUserProfile, RetrieveUserProfile } from '../../Common';
+import { AuthenticateUserResponse, CreateUserRequest } from '../Models';
 
-// TODO: Get this to be how it's supposed to
-export const RegisterUserAction = () => {
+export const RegisterUserAction = (request: CreateUserRequest) => {
     return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.User.Register.Loading });
-            const res = await axios.post(Urls.users.register());
+            const res = await axios.post(Urls.users.register(), request);
             dispatch({ type: Actions.User.Register.Success, data: res });
         }
         catch (error) {
@@ -37,6 +36,13 @@ export const AuthenticateUserAction = (username: string, password: string) => {
             console.log(error)
             dispatch({ type: Actions.User.Login.Failed })
         }
+    }
+}
+
+export const GetCurrentUserAction = () => {
+    return async (dispatch: Dispatch) => {
+        const user = await RetrieveUserProfile();
+        dispatch({ type: Actions.User.GetCurrent, data: user });
     }
 }
 

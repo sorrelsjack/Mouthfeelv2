@@ -10,12 +10,7 @@ import { Tag } from '..';
 import { AttributeListAddButton } from '..';
 import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
-
-interface Item {
-    text: string,
-    votes?: number,
-    tooltipText: string
-}
+import { VotableAttribute } from '../../Redux/Models';
 
 interface AttributeListProps {
     title?: string,
@@ -25,7 +20,7 @@ interface AttributeListProps {
     contentContainerStyle?: object,
     tagSize?: 'small' | 'regular',
     tagStyle?: object,
-    items: Item[],
+    items: VotableAttribute[],
 }
 
 const AttributeList = (props: AttributeListProps) => {
@@ -42,7 +37,7 @@ const AttributeList = (props: AttributeListProps) => {
 
     const navigation = useNavigation();
 
-    const sortItems = (items: Item[]) =>
+    const sortItems = (items: VotableAttribute[]) =>
         items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
 
     return (
@@ -58,7 +53,7 @@ const AttributeList = (props: AttributeListProps) => {
                     horizontal={horizontal}
                     data={sortItems(items)}
                     renderItem={({ item }) => <Tag style={tagStyle} size={tagSize} item={item} />}
-                    keyExtractor={item => item.text} />
+                    keyExtractor={item => item.id.toString()} />
             </ScrollView>
         </View>
     )
