@@ -13,17 +13,18 @@ import { ThemeProp } from '../../Models';
 import { withNavigation } from 'react-navigation';
 import { Routes } from '../../Common';
 import { LogoutAction } from '../../Redux/Actions';
+import { useNavigation } from '@react-navigation/native';
 
 interface SettingsScreenProps {
-    theme: ThemeProp,
-    navigation: any // TODO; Fix
+    theme: ThemeProp
 }
 
 // TODO: Maybe make each section "hideable"
 const SettingsScreen = (props: SettingsScreenProps) => {
-    const { theme, navigation } = props;
+    const { theme } = props;
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     const handleLogOutPressed = () => {
         dispatch(LogoutAction());
@@ -110,7 +111,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     )
 }
 
-export default withNavigation(withTheme(SettingsScreen));
+export default withTheme(SettingsScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

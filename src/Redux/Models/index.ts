@@ -1,3 +1,5 @@
+export * from './ApiError';
+export * from './ApiOperation';
 export * from './AuthenticateUserResponse';
 export * from './Comment';
 export * from './CommentsState';

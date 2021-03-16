@@ -3,20 +3,17 @@ import { connect, useDispatch } from 'react-redux';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes } from '../../Common';
-import { FoodList, SearchInterface, LoadingSpinner, EmptyView } from '../../Components';
+import { FoodList, SearchInterface, LoadingSpinner, EmptyView, ErrorView } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config';
 import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
-import { MouthfeelState, FoodDetails } from '../../Redux/Models';
+import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 
 interface HomeScreenProps {
     theme: ThemeProp,
-    searchResults: {
-        loading: boolean,
-        data: FoodDetails[]
-    },
+    searchResults: ApiData<FoodDetails[]>
     navigation: any // TODO: Fix
 }
 
@@ -25,6 +22,7 @@ const HomeScreen = (props: HomeScreenProps) => {
 
     const [searchIsActive, setSearchIsActive] = useState(false);
 
+    const dispatch = useDispatch();
     const styles = createStyles(theme);
 
     const renderItemSeparator = () => {
@@ -41,11 +39,17 @@ const HomeScreen = (props: HomeScreenProps) => {
         { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
     ]
 
+    const NoDataView = () => {
+        if (searchResults.error) return <ErrorView text={searchResults.error.Message} onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} />
+        if (!searchResults.loading && !searchResults.data?.length) return <EmptyView text='No results found' />
+        return null;
+    }
+
     const SearchResults = () => {
         return (
-            <View style={{ justifyContent: 'center', height: '100%' }}>
+            <View style={{ justifyContent: 'flex-start', height: '100%' }}>
                 {searchResults.loading ? <LoadingSpinner /> : <View style={{ alignItems: 'center' }}><FoodList items={searchResults.data ? searchResults.data : []} /></View>}
-                {(!searchResults.loading && !searchResults.data?.length) && <EmptyView text={`No results found`} />}
+                <NoDataView />
             </View>
         )
     }

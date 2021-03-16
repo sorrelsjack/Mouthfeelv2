@@ -10,19 +10,16 @@ import {
   Image
 } from 'react-native';
 import { FormatAsTitleCase } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView } from '../../Components';
+import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
 import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
-import { VotableAttribute, MouthfeelState, FoodDetails } from '../../Redux/Models';
+import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { GetFoodsToTryAction } from '../../Redux/Actions';
 
 interface ToTryScreenProps {
-    toTry: {
-        data: FoodDetails[];
-        loading: boolean;
-    }
+    toTry: ApiData<FoodDetails[]>
 }
 
 const ToTryScreen = (props: ToTryScreenProps) => {
@@ -34,10 +31,16 @@ const ToTryScreen = (props: ToTryScreenProps) => {
         dispatch(GetFoodsToTryAction());
     }, [])
 
+    const NoDataView = () => {
+        if (toTry.error) return <ErrorView fullScreen text={toTry.error.Message} onButtonPress={() => { dispatch(GetFoodsToTryAction()) }} />
+        if (!toTry.loading && !toTry.data?.length) return <EmptyView fullScreen text='No foods To Try found' />
+        return null;
+    }
+
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
             {toTry.loading ? <LoadingSpinner fullScreen /> : toTry.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={toTry.data ? toTry.data : []} /></View> : null}
-            {!toTry.loading && !toTry.data?.length && <EmptyView fullScreen text='No foods To Try found' />}
+            <NoDataView />
         </View>
     )
 }

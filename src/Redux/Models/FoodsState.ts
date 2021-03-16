@@ -1,51 +1,34 @@
 import { Food } from './Food';
 import { FoodDetails } from './FoodDetails';
 import { CreateFoodRequest } from './CreateFoodRequest';
+import { ApiData, ApiOperation } from '.';
 
-// TODO: Consider breaking some of these out into their own substates / reducers
+// TODO: Maybe Liked / Disliked / To Try should return a more simple response in the API
 export class FoodsState {
-    all: Food[];
-    sentimentUpdate: {
-        loading: boolean
-    }
-    liked: {
-        loading: boolean;
-        data: FoodDetails[];
-    }
-    disliked: FoodDetails[];
-    toTry: {
-        loading: boolean;
-        data: FoodDetails[];
-    }
-    new: CreateFoodRequest;
-    searchResults: {
-        loading: boolean;
-        data: FoodDetails[];
-    }
+    foodToTryUpdate: ApiOperation;
+    sentimentUpdate: ApiOperation;
+    createNewFood: ApiOperation;
+
+    searchResults: ApiData<FoodDetails[]>;
+    liked: ApiData<FoodDetails[]>;
+    disliked: ApiData<FoodDetails[]>;
+    toTry: ApiData<FoodDetails[]>;
+
     selected: {
         loading: boolean;
         data: FoodDetails | null;
     }
 
     constructor () {
-        this.all = [];
-        this.sentimentUpdate = {
-            loading: false
-        }
-        this.liked = {
-            loading: false,
-            data: []
-        }
-        this.disliked = [];
-        this.toTry = {
-            loading: false,
-            data: []
-        }
-        this.new = new CreateFoodRequest(),
-        this.searchResults = {
-            loading: false,
-            data: []
-        },
+        this.foodToTryUpdate = new ApiOperation();
+        this.sentimentUpdate = new ApiOperation();
+        this.createNewFood = new ApiOperation();
+
+        this.searchResults = new ApiData<FoodDetails[]>([]);
+        this.liked = new ApiData<FoodDetails[]>([]);
+        this.disliked = new ApiData<FoodDetails[]>([]);
+        this.toTry = new ApiData<FoodDetails[]>([]);
+        
         this.selected = {
             loading: false,
             data: null

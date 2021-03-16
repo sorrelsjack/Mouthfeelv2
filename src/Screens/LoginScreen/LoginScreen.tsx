@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
 import { InputField, RegisterForm, Button } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
 import { Routes, RetrieveJwt, JwtIsValid } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { AuthenticateUserAction, GetCurrentUserAction } from '../../Redux/Actions';
-import { MouthfeelState, AuthenticateUserResponse, } from '../../Redux/Models';
+import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData } from '../../Redux/Models';
 
 interface LoginScreenProps {
     theme: ThemeProp,
-    profile: {
-        data: AuthenticateUserResponse | null,
-        loading: boolean
-    },
+    profile: ApiData<AuthenticateUserResponse>,
     navigation: any // TODO: Fix
 }
 
@@ -41,6 +38,13 @@ const LoginScreen = (props: LoginScreenProps) => {
 
         maybeNavigateToHomeScreen();
     }, [])
+
+    useEffect(() => {
+        if (!profile.error) return;
+
+        Keyboard.dismiss();
+
+    }, [profile.error])
 
     useEffect(() => {
         if (!profile.data) return;
@@ -95,6 +99,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                     disabled={!canLogin}
                     onPress={handleLoginPressed}
                     text='Log In' />
+                {profile.error ? <Text>{profile.error.Message}</Text> : null}
                 <Button
                     style={styles.registerButton}
                     backgroundColor={theme.loginScreen.registerButton.backgroundColor}

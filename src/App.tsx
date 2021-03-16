@@ -27,7 +27,6 @@ console.disableYellowBox = true;
 const Stack = createStackNavigator();
 
 // TODO: Maybe remove headerbar when screens are loading
-// TODO: Create error view
 
 export const App = () => {
   return (

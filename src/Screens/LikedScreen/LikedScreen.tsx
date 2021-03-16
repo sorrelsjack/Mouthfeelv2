@@ -10,15 +10,12 @@ import {
     Image
 } from 'react-native';
 import { FormatAsTitleCase } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView } from '../../Components';
-import { VotableAttribute, MouthfeelState, FoodDetails } from '../../Redux/Models';
+import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
+import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { GetLikedFoodsAction } from '../../Redux/Actions';
 
 interface LikedScreenProps {
-    liked: {
-        data: FoodDetails[];
-        loading: boolean;
-    }
+    liked: ApiData<FoodDetails[]>
 }
 
 const LikedScreen = (props: LikedScreenProps) => {
@@ -30,10 +27,16 @@ const LikedScreen = (props: LikedScreenProps) => {
         dispatch(GetLikedFoodsAction());
     }, [])
 
+    const NoDataView = () => {
+        if (liked.error) return <ErrorView fullScreen text={liked.error.Message} onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} />
+        if (!liked.loading && !liked.data?.length) return <EmptyView fullScreen text='No Liked foods found' />
+        return null;
+    }
+
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
-            {liked.loading ? <LoadingSpinner fullScreen /> : liked.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={liked.data ? liked.data : []} /></View> : null}
-            {(!liked.loading && !liked.data?.length) && <EmptyView fullScreen text='No Liked foods found' />}
+            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={{ alignItems: 'center' }}><FoodList items={liked.data ? liked.data : []} /></View> : null}
+            <NoDataView />
         </View>
     )
 }

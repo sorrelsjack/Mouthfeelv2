@@ -1,11 +1,10 @@
 import { VotableAttribute } from './VotableAttribute';
+import { ApiData } from '.';
 
 export class VotableAttributeState {
-    loading: boolean;
-    all: VotableAttribute[];
+    all: ApiData<VotableAttribute[]>;
 
     constructor () {
-        this.loading = false;
-        this.all = [];
+        this.all = new ApiData<VotableAttribute[]>();
     }
 }

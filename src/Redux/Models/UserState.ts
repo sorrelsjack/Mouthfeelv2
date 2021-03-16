@@ -1,22 +1,13 @@
 import { VotableAttribute } from './VotableAttribute';
 import { AuthenticateUserResponse } from './AuthenticateUserResponse';
+import { ApiError, ApiData, ApiOperation } from '.';
 
 export class UserState {
-    newUser: {
-        loading: false
-    };
-    profile: {
-        data: AuthenticateUserResponse | null,
-        loading: boolean
-    };
+    createNewUser: ApiOperation;
+    profile: ApiData<AuthenticateUserResponse> 
 
     constructor () {
-        this.newUser = {
-            loading: false
-        } 
-        this.profile = {
-            data: null,
-            loading: false
-        }
+        this.createNewUser = new ApiOperation();
+        this.profile = new ApiData();
     }
 }

@@ -2,11 +2,11 @@ import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch, } from 'redux';
 import { Urls } from '../../Common';
-import { MouthfeelState } from '../Models';
+import { FoodDetails, MouthfeelState } from '../Models';
 
-export const SetSelectedFoodAction = (id: number) => {
+export const SetSelectedFoodAction = (food: FoodDetails) => {
     return async (dispatch: Dispatch) => {
-        dispatch({ type: Actions.SetSelectedFood, data: id });
+        dispatch({ type: Actions.SetSelectedFood, data: food });
     }
 }
 
@@ -22,7 +22,7 @@ export const GetLikedFoodsAction = () => {
             dispatch({ type: Actions.GetLikedFoods.Success, data: liked });
         }
         catch (error) {
-            dispatch({ type: Actions.GetLikedFoods.Failed, data: error })
+            dispatch({ type: Actions.GetLikedFoods.Failed, error })
         }
     }
 }
@@ -35,7 +35,7 @@ export const GetDislikedFoodsAction = () => {
             dispatch({ type: Actions.GetDislikedFoods.Success, data: disliked });
         }
         catch (error) {
-            dispatch({ type: Actions.GetDislikedFoods.Failed, data: error })
+            dispatch({ type: Actions.GetDislikedFoods.Failed, error })
         }
     }
 }
@@ -48,7 +48,7 @@ export const ManageFoodSentimentAction = (foodId: number, sentiment: number) => 
             dispatch({ type: Actions.ManageFoodSentiment.Success });
         }
         catch (error) {
-            dispatch({ type: Actions.ManageFoodSentiment.Failed, data: error })
+            dispatch({ type: Actions.ManageFoodSentiment.Failed, error })
         }
     }
 }
@@ -65,7 +65,7 @@ export const GetFoodsToTryAction = () => {
             dispatch({ type: Actions.GetFoodsToTry.Success, data: toTry });
         }
         catch (error) {
-            dispatch({ type: Actions.GetFoodsToTry.Failed, data: error });
+            dispatch({ type: Actions.GetFoodsToTry.Failed, error });
         }
     }
 }
@@ -78,7 +78,7 @@ export const AddOrRemoveFoodToTryAction = (foodId: number) => {
             dispatch({ type: Actions.AddOrRemoveFoodToTry.Success })
         }
         catch (error) {
-            dispatch({ type: Actions.AddOrRemoveFoodToTry.Failed, data: error })
+            dispatch({ type: Actions.AddOrRemoveFoodToTry.Failed, error })
         }
     }
 }
@@ -91,7 +91,7 @@ export const GetFoodDetailsAction = (id: number) => {
             dispatch({ type: Actions.GetFoodDetails.Success, data: food });
         }
         catch (error) {
-            dispatch({ type: Actions.GetFoodDetails.Failed, data: error })
+            dispatch({ type: Actions.GetFoodDetails.Failed, error })
         }
     }
 }
@@ -104,7 +104,7 @@ export const SearchFoodsAction = (query: string, filter?: string[]) => {
             dispatch({ type: Actions.SearchFoods.Success, data: food });
         }
         catch (error) {
-            dispatch({ type: Actions.SearchFoods.Failed, data: error })
+            dispatch({ type: Actions.SearchFoods.Failed, error })
         }
     }
 }

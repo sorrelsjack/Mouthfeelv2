@@ -2,16 +2,26 @@ import React, { useEffect, useState } from 'react';
 import LottieView from 'lottie-react-native';
 import { StyleSheet, View, Text, Dimensions, useWindowDimensions, ScaledSize } from 'react-native';
 import { useHeaderHeight } from '@react-navigation/stack';
+import { Button } from '..';
 
 interface BaseAnimatedViewProps {
     fullScreen?: boolean;
     view: JSX.Element;
     text?: string;
-    fontSize?: number
+    fontSize?: number;
+    buttonText?: string;
+    onButtonPress?: () => any; 
 }
 
 const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
-    const { fullScreen = false, view, text, fontSize = 20 } = props;
+    const { 
+        fullScreen = false, 
+        view, 
+        text, 
+        fontSize = 20,
+        buttonText,
+        onButtonPress = () => {}
+    } = props;
 
     const window = useWindowDimensions();
     const headerHeight = useHeaderHeight();
@@ -25,6 +35,7 @@ const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
                 {view}
                 <Text style={styles.text}>{text}</Text>
             </View>
+            {buttonText && <Button style={styles.button} text={buttonText} onPress={onButtonPress} />}
         </View>
     )
 
@@ -41,6 +52,10 @@ const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: n
     image: {
         width: '80%',
         height: fullScreen ? (windowHeight - headerHeight - extraAnimationHeight) / 2 : 250
+    },
+    button: {
+        width: '70%', 
+        marginTop: 20
     },
     container: {
         marginTop: extraAnimationHeight,

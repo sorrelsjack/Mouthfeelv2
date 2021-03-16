@@ -2,7 +2,7 @@ import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch } from 'redux';
 import { Urls, SaveUserProfile, RemoveUserProfile, RetrieveUserProfile } from '../../Common';
-import { AuthenticateUserResponse, CreateUserRequest } from '../Models';
+import { AuthenticateUserResponse, CreateUserRequest, ApiError } from '../Models';
 
 export const RegisterUserAction = (request: CreateUserRequest) => {
     return async (dispatch: Dispatch) => {
@@ -12,7 +12,7 @@ export const RegisterUserAction = (request: CreateUserRequest) => {
             dispatch({ type: Actions.User.Register.Success, data: res });
         }
         catch (error) {
-            dispatch({ type: Actions.User.Register.Failed, data: error });
+            dispatch({ type: Actions.User.Register.Failed, error });
         }
     }
 }
@@ -33,8 +33,7 @@ export const AuthenticateUserAction = (username: string, password: string) => {
             dispatch({ type: Actions.User.Login.Success, data: res })
         }
         catch (error) {
-            console.log(error)
-            dispatch({ type: Actions.User.Login.Failed })
+            dispatch({ type: Actions.User.Login.Failed, error })
         }
     }
 }

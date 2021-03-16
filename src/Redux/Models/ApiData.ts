@@ -1,25 +1,46 @@
-export class ApiData {
+import { ApiError } from '.';
+import { ErrorCodes } from '../../Common';
+
+export class ApiData<T> {
     loading: boolean;
-    data: any;
-    error: any | null;
+    data: T | null;
+    error: ApiError | null;
+    initial: T;
 
-    constructor() {
+    constructor(initial: T = null) {
         this.loading = false;
-        this.data = undefined;
+        this.data = initial;
         this.error = null;
+        this.initial = initial;
     }
 
-    startLoading = () => {
-        this.loading = true;
+    startLoading() {
+        const r = new ApiData<T>(this.initial);
+        r.loading = true;
+        r.data = this.initial;
+        return r;
     }
 
-    succeeded = (data: any) => {
-        this.loading = false;
-        this.data = data;
+    succeeded(data: T) {
+        const r = new ApiData<T>(this.initial);
+        r.data = data;
+        return r;
     }
 
-    failed = (error: any) => {
-        this.loading = false;
-        this.error = error;
+    formatError(error: any) {
+        const newError: ApiError = {
+            ErrorCode: error?.ErrorCode || 500,
+            DescriptiveErrorCode: error?.DescriptiveErrorCode || ErrorCodes.internalError,
+            Message: error?.Message || 'An internal error occurred.'
+        }
+
+        return newError;
+    }
+
+    failed(error: any) {
+        const r = new ApiData<T>(this.initial);
+        r.data = this.initial;
+        r.error = this.formatError(error);
+        return r;
     }
 }
