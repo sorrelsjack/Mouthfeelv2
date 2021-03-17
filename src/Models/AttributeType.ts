@@ -1,0 +1,1 @@
+export type AttributeType = 'flavor' | 'texture' | 'miscellaneous';

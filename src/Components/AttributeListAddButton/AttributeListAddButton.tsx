@@ -9,7 +9,6 @@ interface AttributeListAddButton {
     onPress: () => any;
 }
 
-// TODO: Add functionality to add more flavors and textures on press of this button
 const AttributeListAddButton = (props: AttributeListAddButton) => {
     const { theme, onPress } = props;
 

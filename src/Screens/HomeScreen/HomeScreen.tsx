@@ -17,6 +17,7 @@ interface HomeScreenProps {
     navigation: any // TODO: Fix
 }
 
+// TODO: Issue where the loading doesn't happen anymore if you execute a second search
 const HomeScreen = (props: HomeScreenProps) => {
     const { theme, searchResults } = props;
 

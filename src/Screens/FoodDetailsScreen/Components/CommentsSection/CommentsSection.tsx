@@ -75,12 +75,12 @@ const CommentsSection = (props: CommentsSectionProps) => {
                             data={comments?.data ? sortItems(comments.data) : []}
                             renderItem={({ item }) => <Comment details={item} />}
                             keyExtractor={item => item.userDetails.id.toString()} />
-                        {comments?.data?.length &&
+                        {comments?.data?.length ?
                             <InputField
                                 multiline
                                 placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like`}
                                 placeholderTextColor={'rgba(0, 0 , 0 , .7)'}
-                                style={{ backgroundColor: theme.page.backgroundColor }} />}
+                                style={{ backgroundColor: theme.page.backgroundColor }} /> : null}
                     </View>}
                 {(!comments?.loading && !comments?.data?.length) && <NoCommentsView />}
             </View>

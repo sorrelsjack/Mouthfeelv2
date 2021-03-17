@@ -88,6 +88,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 includeAddButton={false}
                                 horizontal={false}
                                 numColumns={2}
+                                attributeType='texture'
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
@@ -97,6 +98,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 includeAddButton={false}
                                 horizontal={false}
                                 numColumns={2}
+                                attributeType='texture'
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}
@@ -106,6 +108,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 includeAddButton={false}
                                 horizontal={false}
                                 numColumns={2}
+                                attributeType='miscellaneous'
                                 contentContainerStyle={styles.attributeListContainer}
                                 tagStyle={styles.tagStyle}
                                 tagSize={'small'}

@@ -11,9 +11,11 @@ import { AttributeListAddButton } from '..';
 import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { VotableAttribute } from '../../Redux/Models';
+import { AttributeType } from '../../Models';
 
 interface AttributeListProps {
     title?: string,
+    attributeType: AttributeType,
     includeAddButton?: boolean,
     numColumns?: number;
     horizontal?: boolean,
@@ -26,6 +28,7 @@ interface AttributeListProps {
 const AttributeList = (props: AttributeListProps) => {
     const {
         title,
+        attributeType,
         includeAddButton = true,
         numColumns,
         horizontal = true,
@@ -44,7 +47,7 @@ const AttributeList = (props: AttributeListProps) => {
         <View style={styles.wrapper}>
             {title && <Text style={styles.text}>{title}</Text>}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.list}>
-                {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags)} />}
+                {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags, { attributeType })} />}
                 <FlatList
                     numColumns={numColumns}
                     scrollEnabled={false}

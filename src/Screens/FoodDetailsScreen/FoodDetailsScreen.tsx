@@ -30,11 +30,11 @@ import { ThemeProp } from '../../Models';
 import { FoodDetails, VotableAttribute, MouthfeelState } from '../../Redux/Models';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-simple-toast';
+import { useNavigation } from '@react-navigation/native';
 
 interface FoodDetailsScreenProps {
   theme: ThemeProp,
   updateTheme: UpdateTheme,
-  navigation: any, // TODO, fix
   selected: {
     loading: boolean,
     data: FoodDetails
@@ -42,7 +42,7 @@ interface FoodDetailsScreenProps {
 }
 
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
-  const { theme, updateTheme, navigation } = props;
+  const { theme, updateTheme } = props;
   const { loading } = props.selected || {};
   const { 
     id, 
@@ -59,6 +59,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const [markedDisliked, setMarkedDisliked] = useState(false);
   const [markedToTry, setMarkedToTry] = useState(false);
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const styles = createStyles(theme);
 
@@ -90,6 +91,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item
   // TODO: 'Foods Like This' section?
   // TODO: Debounce the liked / disliked stuff
+  // TODO: Fix issue where if you go to a food from disliked, then go back, go to liked, then go to another one, the first food's theme color is still there
 
   useEffect(() => {
     navigation.addListener('blur', e => {
@@ -169,9 +171,9 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
               </View>
               <IngredientsList items={ingredients} />
               <View style={styles.attributeListsContainer}>
-                <AttributeList title={`What textures does ${name} have?`} items={textures ? textures : []} />
-                <AttributeList title={`What flavors does ${name} have?`} items={flavors ? flavors : []} />
-                <AttributeList title={`What makes ${name} unique?`} items={miscellaneous ? miscellaneous : []} />
+                <AttributeList title={`What textures does ${name} have?`} attributeType='texture' items={textures ? textures : []} />
+                <AttributeList title={`What flavors does ${name} have?`} attributeType='flavor' items={flavors ? flavors : []} />
+                <AttributeList title={`What makes ${name} unique?`} attributeType='miscellaneous' items={miscellaneous ? miscellaneous : []} />
               </View>
               <CommentsSection />
             </View>
@@ -182,13 +184,13 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   )
 }
 
-export default withNavigation(withTheme(connect((state: MouthfeelState) => {
+export default withTheme(connect((state: MouthfeelState) => {
 
   return {
     selected: state.foods.selected
   }
 
-})(FoodDetailsScreen)));
+})(FoodDetailsScreen));
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
   wrapper: {
