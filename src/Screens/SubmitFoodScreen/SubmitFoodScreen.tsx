@@ -10,18 +10,24 @@ import {
     Image
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Tag, AttributeList, LoadingSpinner, InputField, Button } from '../../Components';
+import {
+    Tag,
+    AttributeList,
+    LoadingSpinner,
+    InputField,
+    Button,
+    ArrowAccordion
+} from '../../Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GetAllVotableAttributesAction } from '../../Redux/Actions';
-import { VotableAttribute, MouthfeelState, CreateFoodRequest } from '../../Redux/Models';
+import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData } from '../../Redux/Models';
 
 interface SubmitFoodScreenProps {
     theme: ThemeProp,
-    flavors: { loading: boolean, all: VotableAttribute[] },
-    textures: { loading: boolean, all: VotableAttribute[] },
-    misc: { loading: boolean, all: VotableAttribute[] },
-    items: string[]
+    flavors: ApiData<VotableAttribute[]>,
+    textures: ApiData<VotableAttribute[]>,
+    misc: ApiData<VotableAttribute[]>
 }
 
 // Put a touchable opacity with a stock image that you can tap to upload an image
@@ -31,12 +37,14 @@ interface SubmitFoodScreenProps {
 // TODO: Add "parent food" input
 // TODO: Handle errors here, for if a name is already being used or something else...
 // TODO: When the user finishes typing the name, call and endpoint to fetch foods with the same / similar names and ask if they meant that one instead
-// TODO: Maybe we could also re-use this screen to "mass edit" as existing food?
 // TODO: Also, allow for multiple images
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { theme, flavors, textures, misc } = props;
 
     const [name, setName] = useState('');
+    const [flavorListVisible] = useState(false);
+    const [miscListVisible] = useState(false);
+    const [textureListVisible] = useState(false);
     const [selectedFlavors, setSelectedFlavors] = useState([]);
     const [selectedTextures, setSelectedTextures] = useState([]);
     const [selectedMisc, setSelectedMisc] = useState([]);
@@ -63,8 +71,58 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
         // Gather up name, imageUrl (or imageData?), flavor ids, texture ids, and misc ids, then pile them into an object and do a request
     }
 
+    const Sections = [
+        {
+            title: 'Images',
+            content: <View style={{ marginTop: 10 }}>
+                <TouchableOpacity style={styles.imageContainer}>
+                    <Image source={require('../../Assets/plate.png')} style={styles.image} />
+                </TouchableOpacity>
+            </View>
+        },
+        {
+            title: 'Flavors',
+            content: <AttributeList
+                includeAddButton={false}
+                horizontal={false}
+                numColumns={2}
+                attributeType='texture'
+                contentContainerStyle={styles.attributeListContainer}
+                tagStyle={styles.tagStyle}
+                tagSize={'small'}
+                items={flavors.data || []}
+                sortBy={'alphabetically'} />
+        },
+        {
+            title: 'Texture',
+            content: <AttributeList
+                includeAddButton={false}
+                horizontal={false}
+                numColumns={2}
+                attributeType='texture'
+                contentContainerStyle={styles.attributeListContainer}
+                tagStyle={styles.tagStyle}
+                tagSize={'small'}
+                items={textures.data || []}
+                sortBy={'alphabetically'} />
+        },
+        {
+            title: 'Miscellaneous',
+            content: <AttributeList
+                includeAddButton={false}
+                horizontal={false}
+                numColumns={2}
+                attributeType='miscellaneous'
+                contentContainerStyle={styles.attributeListContainer}
+                tagStyle={styles.tagStyle}
+                tagSize={'small'}
+                items={misc.data || []}
+                sortBy={'alphabetically'} />
+        }
+    ]
+
     return (
-        <ScrollView>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.wrapper}>
                 {loading ?
                     <View style={styles.loadingSpinnerContainer}>
@@ -76,50 +134,15 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             placeholder={'Food Name'}
                             value={name}
                             onTextChange={setName} />
-                        <View>
-                            <Text style={styles.title}>Image</Text>
-                            <TouchableOpacity style={styles.imageContainer}>
-                                <Image source={require('../../Assets/plate.png')} style={styles.image} />
-                            </TouchableOpacity>
-                        </View>
-                        <View>
-                            <Text style={styles.title}>Flavors</Text>
-                            <AttributeList
-                                includeAddButton={false}
-                                horizontal={false}
-                                numColumns={2}
-                                attributeType='texture'
-                                contentContainerStyle={styles.attributeListContainer}
-                                tagStyle={styles.tagStyle}
-                                tagSize={'small'}
-                                items={flavors.all.length ? flavors.all : []} />
-                            <Text style={styles.title}>Textures</Text>
-                            <AttributeList
-                                includeAddButton={false}
-                                horizontal={false}
-                                numColumns={2}
-                                attributeType='texture'
-                                contentContainerStyle={styles.attributeListContainer}
-                                tagStyle={styles.tagStyle}
-                                tagSize={'small'}
-                                items={textures.all.length ? textures.all : []} />
-                            <Text style={styles.title}>Misc</Text>
-                            <AttributeList
-                                includeAddButton={false}
-                                horizontal={false}
-                                numColumns={2}
-                                attributeType='miscellaneous'
-                                contentContainerStyle={styles.attributeListContainer}
-                                tagStyle={styles.tagStyle}
-                                tagSize={'small'}
-                                items={misc.all.length ? misc.all : []} />
+                        <View style={{ flex: 1, justifyContent: 'center' }}>
+                            <ArrowAccordion sections={Sections} />
                         </View>
                         <View style={styles.submitButtonContainer}>
-                            <Button 
-                                disabled={!canSubmit} 
-                                onPress={handleSubmitButtonPress} 
-                                text='Submit' 
-                                backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor} 
+                            <Button
+                                disabled={!canSubmit}
+                                onPress={handleSubmitButtonPress}
+                                text='Submit'
+                                backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor}
                                 textColor={theme.submitFoodScreen.submitButton.textColor} />
                         </View>
                     </>}
@@ -130,9 +153,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
 
 export default withTheme(connect((state: MouthfeelState) => {
     return {
-        flavors: state.flavors,
-        textures: state.textures,
-        misc: state.miscellaneous
+        flavors: state.flavors.all,
+        textures: state.textures.all,
+        misc: state.miscellaneous.all
     }
 })(SubmitFoodScreen));
 
@@ -147,6 +170,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     },
     nameInput: {
         backgroundColor: 'white',
+        textAlignVertical: 'center',
         marginBottom: 20,
         borderWidth: 2,
         borderColor: theme.halfTransparent
@@ -168,7 +192,8 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         fontWeight: 'bold'
     },
     attributeListContainer: {
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginTop: 10
     },
     tagStyle: {
         marginTop: 10

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     View,
@@ -10,8 +10,8 @@ import {
 } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { withNavigation } from 'react-navigation';
 import { Routes } from '../../Common';
+import { ArrowAccordion } from '../../Components';
 import { LogoutAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
 
@@ -19,9 +19,10 @@ interface SettingsScreenProps {
     theme: ThemeProp
 }
 
-// TODO: Maybe make each section "hideable"
 const SettingsScreen = (props: SettingsScreenProps) => {
     const { theme } = props;
+
+    const [activeSections, setActiveSections] = useState([]);
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -40,9 +41,6 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const AutismSection = () => {
         return (
             <>
-                <Text style={styles.header}>
-                    What is autism?
-                </Text>
                 <Text style={styles.text}>
                     Autism, or autism spectrum disorder (ASD), is a developmental disability that affects a person's experience of the world. One component of this is related to the senses, as an autistic person might process stimuli differently than a neurotypical person would. This can result in certain textures or flavors being overwhelming, making eating a challenging activity.
                 </Text>
@@ -61,9 +59,6 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const ArfidSection = () => {
         return (
             <>
-                <Text style={styles.header}>
-                    What is ARFID?
-                </Text>
                 <Text style={styles.text}>
                     ARFID, or Avoidant Restrictive Food Intake Disorder, is classified as an eating disorder, and can be understood as a form of extreme "picky eating", though sufferers do not reject food by choice. People with ARFID often struggle with foods with "complex" textures or flavors, preferring foods similar to ones they're familiar with. It is also known as SED, or Selective Eating Disorder.
                 </Text>
@@ -74,9 +69,6 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     const SensoryProcessingDisorderSection = () => {
         return (
             <>
-                <Text style={styles.header}>
-                    What is Sensory Processing Disorder?
-                </Text>
                 <Text style={styles.text}>
                     Sensory Processing Disorder, or SPD, is a disorder where the brain has trouble processing sensory information. As eating is highly sensory in nature, this can be overwhelming to someone with SPD. Individual experiences of flavor, smell, and texture can be heightened as well, potentially causing physical or psychological pain. It is also worth noting that SPD is more common among autistic people and people with ADHD.
                 </Text>
@@ -84,9 +76,26 @@ const SettingsScreen = (props: SettingsScreenProps) => {
         )
     }
 
+    const Sections = [
+        {
+            title: 'What is ARFID?',
+            content: <ArfidSection />
+        },
+        {
+            title: 'What is autism?',
+            content: <AutismSection />
+        },
+        {
+            title: 'What is Sensory Processing Disorder?',
+            content: <SensoryProcessingDisorderSection />
+        }
+    ]
+
     return (
         <ScrollView
+            style={{ height: '100%' }}
             showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
             contentInsetAdjustmentBehavior="automatic">
             <View style={styles.wrapper}>
                 <TouchableOpacity onPress={handleAboutPressed}>
@@ -95,16 +104,16 @@ const SettingsScreen = (props: SettingsScreenProps) => {
                 <Text style={styles.text}>
                     Mouthfeel was made with certain groups in mind, with an aim of improving their quality of life. These include sufferers of ARFID, those on the autism spectrum, those with sensory processing issues, and generally anyone who has difficulty with food.
                 </Text>
-                <ArfidSection />
-                <AutismSection />
-                <SensoryProcessingDisorderSection />
-                <View style={{ marginTop: 20 }}>
-                    <TouchableOpacity style={[styles.button, { marginBottom: 15 }]} onPress={() => navigation.navigate(Routes.ContactUs)}>
-                        <Text style={styles.buttonText}>Contact Us</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={handleLogOutPressed}>
-                        <Text style={styles.buttonText}>Log Out</Text>
-                    </TouchableOpacity>
+                <View style={{ flex: 1, height: '100%', marginTop: 20, justifyContent: 'space-between' }}>
+                    <ArrowAccordion sections={Sections} />
+                    <View style={{ marginTop: 20 }}>
+                        <TouchableOpacity style={[styles.button, { marginBottom: 15 }]} onPress={() => navigation.navigate(Routes.ContactUs)}>
+                            <Text style={styles.buttonText}>Contact Us</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={handleLogOutPressed}>
+                            <Text style={styles.buttonText}>Log Out</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </View>
         </ScrollView>
@@ -115,17 +124,13 @@ export default withTheme(SettingsScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
-        padding: 20
+        padding: 20,
+        height: '100%'
     },
     title: {
         fontWeight: 'bold',
         fontSize: 18,
         textAlign: 'center'
-    },
-    header: {
-        marginTop: 10,
-        textAlign: 'center',
-        fontWeight: 'bold'
     },
     text: {
         marginTop: 10

@@ -13,6 +13,8 @@ import { useNavigation } from '@react-navigation/native';
 import { VotableAttribute } from '../../Redux/Models';
 import { AttributeType } from '../../Models';
 
+type SortType = 'alphabetically' | 'byVotes';
+
 interface AttributeListProps {
     title?: string,
     attributeType: AttributeType,
@@ -22,9 +24,11 @@ interface AttributeListProps {
     contentContainerStyle?: object,
     tagSize?: 'small' | 'regular',
     tagStyle?: object,
-    items: VotableAttribute[],
+    sortBy?: SortType,
+    items: VotableAttribute[]
 }
 
+// TODO: onItemsSelected event
 const AttributeList = (props: AttributeListProps) => {
     const {
         title,
@@ -35,13 +39,17 @@ const AttributeList = (props: AttributeListProps) => {
         contentContainerStyle = {},
         tagSize = 'regular',
         tagStyle = {},
+        sortBy = 'byVotes',
         items,
     } = props;
 
     const navigation = useNavigation();
 
-    const sortItems = (items: VotableAttribute[]) =>
-        items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1);
+    const sortItems = (items: VotableAttribute[]) => {
+        return sortBy === 'byVotes' 
+            ? items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1)
+            : items.sort((a, b) => ((a.name > b.name) ? 1 : -1))
+    }
 
     return (
         <View style={styles.wrapper}>
@@ -55,7 +63,7 @@ const AttributeList = (props: AttributeListProps) => {
                     contentContainerStyle={contentContainerStyle}
                     horizontal={horizontal}
                     data={sortItems(items)}
-                    renderItem={({ item }) => <Tag style={tagStyle} size={tagSize} item={item} />}
+                    renderItem={({ item }) => <Tag style={tagStyle} size={tagSize} item={item} attributeType={attributeType} />}
                     keyExtractor={item => item.id.toString()} />
             </ScrollView>
         </View>

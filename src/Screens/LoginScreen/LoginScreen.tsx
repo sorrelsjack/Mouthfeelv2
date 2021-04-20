@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
 import { InputField, RegisterForm, Button } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
-import { Routes, RetrieveJwt, JwtIsValid } from '../../Common';
+import { Routes, RetrieveJwt, JwtIsValid, IsIos } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { AuthenticateUserAction, GetCurrentUserAction } from '../../Redux/Actions';
-import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData } from '../../Redux/Models';
+import { AuthenticateUserAction, GetCurrentUserAction, RegisterUserAction } from '../../Redux/Actions';
+import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData, CreateUserRequest } from '../../Redux/Models';
 
 interface LoginScreenProps {
     theme: ThemeProp,
@@ -15,12 +15,13 @@ interface LoginScreenProps {
     navigation: any // TODO: Fix
 }
 
-// TODO: Keyboard avoiding button
 const LoginScreen = (props: LoginScreenProps) => {
     const { theme, profile, navigation } = props;
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [registrationRequest, setRegistrationRequest] = useState<CreateUserRequest>();
+    const [canRegister, setCanRegister] = useState(false);
 
     const [showLoginForm, setShowLoginForm] = useState(true);
     const [showRegisterForm, setShowRegisterForm] = useState(false);
@@ -51,7 +52,12 @@ const LoginScreen = (props: LoginScreenProps) => {
 
         navigation.replace(Routes.Home);
 
-    }, [profile.data])
+    }, [profile.data]);
+
+    const handleRegisterAllowed = (request: CreateUserRequest) => {
+        setCanRegister(true);
+        setRegistrationRequest(request);
+    }
 
     const handleLoginPressed = () => {
         if (!showLoginForm) {
@@ -66,6 +72,9 @@ const LoginScreen = (props: LoginScreenProps) => {
     const handleRegisterPressed = () => {
         setShowRegisterForm(true);
         setShowLoginForm(false);
+
+        if (!registrationRequest) return;
+        if (canRegister) dispatch(RegisterUserAction(registrationRequest));
     }
 
     return (
@@ -90,7 +99,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                                 placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
                                 secureTextEntry={true} />
                         </>}
-                    {showRegisterForm && <RegisterForm />}
+                    {showRegisterForm && <RegisterForm onSubmitAllowed={handleRegisterAllowed} />}
                 </View>
                 <Button
                     style={styles.loginButton}
@@ -104,6 +113,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                     style={styles.registerButton}
                     backgroundColor={theme.loginScreen.registerButton.backgroundColor}
                     textColor={theme.loginScreen.registerButton.textColor}
+                    disabled={showRegisterForm && !canRegister}
                     onPress={handleRegisterPressed}
                     text='Register' />
             </View>

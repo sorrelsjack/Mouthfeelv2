@@ -2,17 +2,19 @@ import React, { useEffect, useLayoutEffect } from 'react';
 import { View, StyleSheet, ScrollView } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { ThemeProp } from '../../Models';
-import { AttributeList, Button } from '../../Components';
+import { AttributeList, Button, LoadingSpinner } from '../../Components';
 import {
     GetAllFlavorsAction,
     GetAllTexturesAction,
-    GetAllMiscellaneousAction
+    GetAllMiscellaneousAction,
+    AddOrUpdateAttributeAction
 } from '../../Redux/Actions';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import { MouthfeelState, FoodDetails, ApiData, VotableAttribute } from '../../Redux/Models';
+import { MouthfeelState, FoodDetails, ApiData, VotableAttribute, AddOrUpdateAttributeRequest } from '../../Redux/Models';
 import { FormatAsTitleCase } from '../../Common';
 
 interface TagsScreenProps {
+    userId: number,
     selected: {
         loading: boolean,
         data: FoodDetails
@@ -22,9 +24,9 @@ interface TagsScreenProps {
     misc: ApiData<VotableAttribute[]>
 }
 
-// TODO: Fix issue where taglist doesn't wrap to next line
+// TODO: Is it possible to arrange these by element size instead?
 const TagsScreen = (props: TagsScreenProps) => {
-    const { selected, textures, flavors, misc } = props;
+    const { userId, selected, textures, flavors, misc } = props;
     const { id, name } = selected?.data ?? {};
 
     const dispatch = useDispatch();
@@ -50,9 +52,18 @@ const TagsScreen = (props: TagsScreenProps) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-          title: FormatAsTitleCase(`${FormatAsTitleCase(`${attributeType}s For ${name}`)}`),
+            title: FormatAsTitleCase(`${FormatAsTitleCase(`${attributeType}s For ${name}`)}`),
         });
-      }, [navigation])
+    }, [navigation])
+
+    const getLoadingState = () => {
+        switch (attributeType) {
+            case 'flavor': return flavors.loading
+            case 'texture': return textures.loading
+            case 'miscellaneous': return misc.loading
+            default: return false
+        }
+    }
 
     const getAttributes = () => {
         switch (attributeType) {
@@ -64,26 +75,36 @@ const TagsScreen = (props: TagsScreenProps) => {
     }
 
     const handleSubmitPressed = () => {
-
+        const request: AddOrUpdateAttributeRequest = {
+            foodId: id,
+            userId: userId,
+            attributeId: id // TODO: Fix this so we dispatch a bunch of requests, based on the tags we have selected
+        };
+        
+        dispatch(AddOrUpdateAttributeAction(attributeType, request));
     }
 
     return (
         <ScrollView
-            contentContainerStyle={{ height: '100%' }}
             showsVerticalScrollIndicator={false}
             contentInsetAdjustmentBehavior="automatic">
-            <View style={{ height: '100%', justifyContent: 'space-between' }}>
-                <AttributeList
-                    items={getAttributes()}
-                    attributeType={attributeType}
-                    includeAddButton={false}
-                    horizontal={false}
-                    contentContainerStyle={styles.attributeListContainer}
-                    tagStyle={styles.tagStyle}
-                    tagSize={'small'} />
-                <View style={{ padding: 15 }}>
-                    <Button text='Submit' onPress={handleSubmitPressed} />
-                </View>
+            <View style={{ height: '100%', justifyContent: 'space-between', padding: 20 }}>
+                {getLoadingState() ? <LoadingSpinner fullScreen /> :
+                    <>
+                        <AttributeList
+                            items={getAttributes()}
+                            attributeType={attributeType}
+                            horizontal={false}
+                            numColumns={3}
+                            sortBy={'alphabetically'}
+                            includeAddButton={false}
+                            contentContainerStyle={styles.attributeListContainer}
+                            tagStyle={styles.tagStyle}
+                            tagSize={'small'} />
+                        <View style={{ padding: 15 }}>
+                            <Button text='Submit' onPress={handleSubmitPressed} />
+                        </View>
+                    </>}
             </View>
         </ScrollView>
     )
@@ -91,6 +112,7 @@ const TagsScreen = (props: TagsScreenProps) => {
 
 export default connect((state: MouthfeelState) => {
     return {
+        userId: state.user.profile.data?.id,
         selected: state.foods.selected,
         flavors: state.flavors.all,
         textures: state.textures.all,
@@ -100,7 +122,7 @@ export default connect((state: MouthfeelState) => {
 
 const styles = StyleSheet.create({
     attributeListContainer: {
-        flexDirection: "row",
+        flexDirection: "column",
         flexWrap: "wrap"
     },
     tagStyle: {

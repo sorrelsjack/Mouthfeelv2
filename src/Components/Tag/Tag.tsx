@@ -3,26 +3,44 @@ import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Tooltip } from 'react-native-elements';
 import { withTheme, Theme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
-import { InvertColor } from '../../Common';
-import { VotableAttribute } from '../../Redux/Models';
+import { AttributeType, ThemeProp } from '../../Models';
+import { ConvertHexToRgba, InvertColor } from '../../Common';
+import { AddOrUpdateAttributeRequest, FoodDetails, MouthfeelState, VotableAttribute } from '../../Redux/Models';
+import { connect, useDispatch } from 'react-redux';
+import { AddOrUpdateAttributeAction } from '../../Redux/Actions';
 
 type TagSize = 'small' | 'regular';
 
 interface TagProps {
+    userId: number,
+    selected: {
+        loading: boolean;
+        data: FoodDetails | null
+    }
     theme: ThemeProp,
     size?: TagSize,
     style?: object,
     item: VotableAttribute;
+    attributeType: AttributeType;
 }
 
 // TODO: Need logic here to determine if a user needs tihs to be pre-selected or not -- probably requires a backend change
 const Tag = (props: TagProps) => {
-    const { theme, size = 'regular', style, item } = props;
-    const { name, votes, description } = item;
+    const { 
+        userId,
+        selected,
+        theme, 
+        size = 'regular', 
+        style, 
+        item, 
+        attributeType 
+    } = props;
+    const { id, name, votes, sentiment, description } = item;
 
     const [tooltipHeight, setTooltipHeight] = useState(size === 'regular' ? 60 : 40);
     const [isPressed, setIsPressed] = useState(false);
+
+    const dispatch = useDispatch();
 
     const styles = createStyles(size);
 
@@ -36,12 +54,21 @@ const Tag = (props: TagProps) => {
         ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor) }
         : { ...styles.text, color: theme.primaryThemeTextColor }
 
-    // TODO: Invert this one
     const setCounterContainerStyle = () => isPressed
-        ? { ...styles.counterContainer, backgroundColor: theme.tag.counter.selected.backgroundColor }
-        : { ...styles.counterContainer, backgroundColor: theme.tag.counter.unselected.backgroundColor }
+        ? { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(InvertColor(theme.primaryThemeTextColor), .3) }
+        : { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(theme.primaryThemeTextColor, .3) }
 
     const handlePress = () => {
+        if (!selected.data || !userId) return;
+        // TODO: Fix strange issue where this is effecting every single attribute
+        // Might be related to the call to fetch food details
+        const request: AddOrUpdateAttributeRequest = {
+            foodId: selected.data?.id,
+            userId: userId,
+            attributeId: id
+        };
+
+        dispatch(AddOrUpdateAttributeAction(attributeType, request));
         setIsPressed(!isPressed);
     }
 
@@ -50,15 +77,23 @@ const Tag = (props: TagProps) => {
         setTooltipHeight(height + 30);
     }
 
+    /*const calculateCurrentVoteTotal = () => {
+        if (upvoted && sentiment !== 1) return details.votes + 1;
+        if (downvoted && sentiment !== -1 && details.votes !== 0) return details.votes - 1;
+        if (!upvoted && !downvoted && userId === details.userDetails.id && details.votes !== 0) return details.votes - 1;
+        return details.votes;
+    }*/
+
     const calculateCurrentVoteTotal = () => {
         if (isPressed) return (votes ?? 0) + 1;
         // TODO: There is logic that should be implemented here. Need to handle cases where we go into a screen with a tag pre-selected, and then un-selecting it
+        // maybe need to know who originated this tag
         return votes;
     }
 
     useEffect(() => {
-
-    }, [votes])
+        if (sentiment > 0) setIsPressed(true);
+    }, [sentiment])
 
     return (
         <View style={[setWrapperStyle(), style]}>
@@ -84,7 +119,12 @@ const Tag = (props: TagProps) => {
     )
 }
 
-export default withTheme(Tag);
+export default withTheme(connect((state: MouthfeelState) => {
+    return {
+        userId: state.user.profile.data?.id,
+        selected: state.foods.selected
+    }
+})(Tag));
 
 const createStyles = (size: TagSize) => StyleSheet.create({
     wrapper: {

@@ -1,4 +1,5 @@
 import JwtDecode from 'jwt-decode';
+import { Platform } from 'react-native';
 
 export const InvertColor = (color: string) => {
     const padZero = (str: string, len: number = 2) => {
@@ -32,6 +33,15 @@ export const InvertColor = (color: string) => {
 
     // pad each with zeros and return
     return '#' + padZero(r) + padZero(g) + padZero(b);
+}
+
+export const ConvertHexToRgba = (hex: string, alpha: number = 1) => {
+    var r = parseInt(hex.slice(1, 3), 16),
+        g = parseInt(hex.slice(3, 5), 16),
+        b = parseInt(hex.slice(5, 7), 16);
+
+    if (alpha) return "rgba(" + r + ", " + g + ", " + b + ", " + alpha + ")";
+    else return "rgb(" + r + ", " + g + ", " + b + ")";
 }
 
 export const DetermineColorBrightness = (color: string) => {
@@ -79,7 +89,7 @@ export const DetermineColorBrightness = (color: string) => {
 
 export const GetTextColorBasedOnBrightness = (color: string) => {
     const brightness = DetermineColorBrightness(color);
-    
+
     if (brightness === 'light') return '#000000'
     if (brightness === 'dark') return '#ffffff'
 }
@@ -90,3 +100,5 @@ export const JwtIsValid = (jwt: string | null) => {
     const expired = expiration <= currentTime;
     return !expired && !!jwt;
 }
+
+export const IsIos = () => Platform.OS === 'ios';

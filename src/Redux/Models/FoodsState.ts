@@ -8,6 +8,7 @@ export class FoodsState {
     foodToTryUpdate: ApiOperation;
     sentimentUpdate: ApiOperation;
     createNewFood: ApiOperation;
+    addOrUpdateAttribute: ApiOperation;
 
     searchResults: ApiData<FoodDetails[]>;
     liked: ApiData<FoodDetails[]>;
@@ -23,6 +24,7 @@ export class FoodsState {
         this.foodToTryUpdate = new ApiOperation();
         this.sentimentUpdate = new ApiOperation();
         this.createNewFood = new ApiOperation();
+        this.addOrUpdateAttribute = new ApiOperation();
 
         this.searchResults = new ApiData<FoodDetails[]>([]);
         this.liked = new ApiData<FoodDetails[]>([]);

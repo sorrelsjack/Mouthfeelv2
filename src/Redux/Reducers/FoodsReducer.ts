@@ -8,10 +8,7 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
                 ...state,
                 selected: {
                     ...state.selected,
-                    data: {
-                        ...state.selected.data,
-                        id: action.data
-                    }
+                    data: action.data
                 }
             }
         case Actions.GetFoodDetails.Loading:
@@ -74,6 +71,13 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.AddOrRemoveFoodToTry.Failed:
             return { ...state, toTry: state.foodToTryUpdate.failed(action.error?.response?.data) }
 
+        case Actions.AddOrUpdateAttribute.Loading:
+            return { ...state, addOrUpdateAttribute: state.addOrUpdateAttribute.startLoading() }
+        case Actions.AddOrUpdateAttribute.Success:
+            return { ...state, addOrUpdateAttribute: state.addOrUpdateAttribute.succeeded() }
+        case Actions.AddOrUpdateAttribute.Failed:
+            return { ...state, addOrUpdateAttribute: state.addOrUpdateAttribute.failed(action.error?.response?.data) }
+
         case Actions.SearchFoods.Loading:
             return { ...state, searchResults: state.searchResults.startLoading() }
         case Actions.SearchFoods.Success:
@@ -81,15 +85,9 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.SearchFoods.Failed:
             return { ...state, searchResults: state.searchResults.failed(action.error?.response?.data) }
             
-        case Actions.ClearSearch: {
-            return {
-                ...state,
-                searchResults: {
-                    loading: false,
-                    data: []
-                }
-            }
-        }
+        case Actions.ClearSearch:
+            return { ...state, searchResults: state.searchResults.reset() }
+
         default:
             return state;
     }

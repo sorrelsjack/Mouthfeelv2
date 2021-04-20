@@ -30,10 +30,10 @@ const FoodList = (props: FoodListProps) => {
 
     const Cell = (props: { item: FoodDetails }) => {
         const { item } = props;
-        const mostVoted = item.flavors.concat(item.textures).concat(item.miscellaneous).sort((a, b) => a.votes - b.votes).slice(0, 3);
+        const mostVoted = item.flavors.concat(item.textures).concat(item.miscellaneous).sort((a, b) => (a.votes ?? 0) - (b.votes ?? 0)).slice(0, 3);
 
         const handleItemPressed = () => {
-            dispatch(SetSelectedFoodAction(item.id));
+            dispatch(SetSelectedFoodAction(item));
             navigation.navigate(Routes.FoodDetails);
         }
 
@@ -42,7 +42,7 @@ const FoodList = (props: FoodListProps) => {
                 <View style={styles.cellWrapper}>
                     <Image style={styles.image} source={{ uri: item.imageUrl }} />
                     <View style={styles.cellTextContainer}>
-                        <View style={{ flexDirection: 'row', }}>
+                        <View style={{ width: '100%', flexDirection: 'row' }}>
                             <Text style={styles.cellTitle}>
                                 {FormatAsTitleCase(item.name)}
                             </Text>
@@ -52,13 +52,14 @@ const FoodList = (props: FoodListProps) => {
                             {`Attributes:`}
                         </Text>
                         <View style={styles.cellAttributeList}>
-                            {mostVoted.map(v => {
-                                return (
-                                    <Text key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
-                                        {`${v.name} `}
-                                    </Text>
-                                )
-                            })}
+                            {mostVoted.length
+                                ? mostVoted.map(v => {
+                                    return (
+                                        <Text key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
+                                            {`${v.name} `}
+                                        </Text>
+                                    )
+                                }) : <Text>N/A</Text>}
                         </View>
                     </View>
                 </View>
@@ -86,9 +87,9 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     cellTextContainer: {
-        width: '100%',
+        flexGrow: 1,
         flexDirection: 'column',
-        justifyContent: 'flex-start',
+        justifyContent: 'flex-start'
     },
     cellTitle: {
         fontSize: 20,

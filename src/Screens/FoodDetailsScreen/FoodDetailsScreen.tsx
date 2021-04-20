@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction, ManageFoodSentimentAction } from '../../Redux/Actions';
+import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction, ManageFoodSentimentAction, GetCurrentUserAction } from '../../Redux/Actions';
 import {
   SafeAreaView,
   StyleSheet,
@@ -14,13 +14,13 @@ import {
   IngredientsList,
   CommentsSection,
 } from './Components';
-import { 
+import {
   FormatAsTitleCase,
   GetDefaultPrimaryThemeColor,
   GetDefaultPrimaryThemeTextColor,
-  DetermineColorBrightness, 
-  GetTextColorBasedOnBrightness, 
-  InvertColor 
+  DetermineColorBrightness,
+  GetTextColorBasedOnBrightness,
+  InvertColor
 } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
@@ -33,6 +33,7 @@ import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
 
 interface FoodDetailsScreenProps {
+  userId: number,
   theme: ThemeProp,
   updateTheme: UpdateTheme,
   selected: {
@@ -42,17 +43,17 @@ interface FoodDetailsScreenProps {
 }
 
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
-  const { theme, updateTheme } = props;
+  const { userId, theme, updateTheme } = props;
   const { loading } = props.selected || {};
-  const { 
-    id, 
-    name, 
-    imageUrl, 
-    toTry, 
-    sentiment, 
-    textures, 
-    flavors, 
-    miscellaneous 
+  const {
+    id,
+    name,
+    imageUrl,
+    toTry,
+    sentiment,
+    textures,
+    flavors,
+    miscellaneous
   } = props.selected?.data ?? {};
 
   const [markedLiked, setMarkedLiked] = useState(false);
@@ -88,10 +89,9 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
   // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
   // Do the same for the arrows
-  // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item
-  // TODO: 'Foods Like This' section?
+  // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item. Maybe we can resolve this by having the API return the object once the manage request has finished, and then we can spread the new response into the reducer
   // TODO: Debounce the liked / disliked stuff
-  // TODO: Fix issue where if you go to a food from disliked, then go back, go to liked, then go to another one, the first food's theme color is still there
+  // TODO: Fix strange issue where going to tags screen back to details makes the tags colors funny :(
 
   useEffect(() => {
     navigation.addListener('blur', e => {
@@ -101,6 +101,21 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
         primaryThemeTextColor: GetDefaultPrimaryThemeTextColor(),
         clickableTextColor: GetDefaultPrimaryThemeColor()
       })
+    });
+    navigation.addListener('focus', e => {
+      if (!imageUrl) return;
+
+      const GetThemeColor = async () => {
+        const res = await getColorFromURL(imageUrl);
+        updateTheme({
+          ...theme,
+          primaryThemeColor: res.primary,
+          primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
+          clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary
+        })
+        navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
+      }
+      GetThemeColor();
     });
   }, [])
 
@@ -122,6 +137,10 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   }, [navigation, theme, markedToTry])
 
   useEffect(() => {
+    if (!userId) dispatch(GetCurrentUserAction());
+  }, [])
+
+  useEffect(() => {
     dispatch(GetFoodDetailsAction(id));
   }, [props.selected.data.id])
 
@@ -132,7 +151,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
   useEffect(() => {
     setMarkedToTry(toTry);
-  }, [toTry])
+  }, [toTry]);
 
   useEffect(() => {
     if (!imageUrl) return;
@@ -171,9 +190,18 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
               </View>
               <IngredientsList items={ingredients} />
               <View style={styles.attributeListsContainer}>
-                <AttributeList title={`What textures does ${name} have?`} attributeType='texture' items={textures ? textures : []} />
-                <AttributeList title={`What flavors does ${name} have?`} attributeType='flavor' items={flavors ? flavors : []} />
-                <AttributeList title={`What makes ${name} unique?`} attributeType='miscellaneous' items={miscellaneous ? miscellaneous : []} />
+                <AttributeList
+                  title={`What textures does ${name} have?`}
+                  attributeType='texture'
+                  items={textures ? textures : []} />
+                <AttributeList
+                  title={`What flavors does ${name} have?`}
+                  attributeType='flavor'
+                  items={flavors ? flavors : []} />
+                <AttributeList
+                  title={`What makes ${name} unique?`}
+                  attributeType='miscellaneous'
+                  items={miscellaneous ? miscellaneous : []} />
               </View>
               <CommentsSection />
             </View>
@@ -187,7 +215,8 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 export default withTheme(connect((state: MouthfeelState) => {
 
   return {
-    selected: state.foods.selected
+    selected: state.foods.selected,
+    userId: state.user.profile.data?.id
   }
 
 })(FoodDetailsScreen));

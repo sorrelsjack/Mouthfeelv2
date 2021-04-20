@@ -1,19 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     View,
-    StyleSheet
+    StyleSheet,
+    KeyboardAvoidingView
 } from 'react-native';
 import { InputField } from '..';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
+import { CreateUserRequest } from '../../Redux/Models';
 
 interface RegisterFormProps {
-    theme: ThemeProp
+    theme: ThemeProp;
+    onSubmitAllowed: (request: CreateUserRequest) => any;
 }
 
-// TODO: Have a canSubmit conditional here
 const RegisterForm = (props: RegisterFormProps) => {
-    const { theme } = props;
+    const { theme, onSubmitAllowed } = props;
 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -21,12 +23,24 @@ const RegisterForm = (props: RegisterFormProps) => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     // TODO: Have an error corresponding to this
-    const passwordsMatch = password === confirmPassword;
+    // TODO: handle any errors the register endpoint comes back wtih
+    const passwordsMatch = password === confirmPassword && password.length >= 1;
+    const canSubmit = !!email && !!username && passwordsMatch;
     
     const styles = createStyles(theme);
 
+    useEffect(() => {
+        const request: CreateUserRequest = {
+            username: username,
+            password: password,
+            email: email
+        };
+
+        if (canSubmit) onSubmitAllowed(request);
+    }, [canSubmit]);
+
     return (
-        <View style={styles.wrapper}>
+        <KeyboardAvoidingView style={styles.wrapper}>
             <InputField 
                 style={styles.inputField} 
                 placeholder={'Email'} 
@@ -53,7 +67,7 @@ const RegisterForm = (props: RegisterFormProps) => {
                 placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
                 value={confirmPassword}
                 onTextChange={setConfirmPassword} />
-        </View>
+        </KeyboardAvoidingView>
     )
 }
 

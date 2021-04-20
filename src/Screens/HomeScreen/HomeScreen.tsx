@@ -10,20 +10,20 @@ import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config';
 import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
 import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
+import { useNavigation } from '@react-navigation/native';
 
 interface HomeScreenProps {
     theme: ThemeProp,
     searchResults: ApiData<FoodDetails[]>
-    navigation: any // TODO: Fix
 }
 
-// TODO: Issue where the loading doesn't happen anymore if you execute a second search
 const HomeScreen = (props: HomeScreenProps) => {
     const { theme, searchResults } = props;
 
     const [searchIsActive, setSearchIsActive] = useState(false);
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const styles = createStyles(theme);
 
     const renderItemSeparator = () => {
@@ -49,7 +49,7 @@ const HomeScreen = (props: HomeScreenProps) => {
     const SearchResults = () => {
         return (
             <View style={{ justifyContent: 'flex-start', height: '100%' }}>
-                {searchResults.loading ? <LoadingSpinner /> : <View style={{ alignItems: 'center' }}><FoodList items={searchResults.data ? searchResults.data : []} /></View>}
+                {searchResults.loading ? <LoadingSpinner /> : <View><FoodList items={searchResults.data ? searchResults.data : []} /></View>}
                 <NoDataView />
             </View>
         )
@@ -63,7 +63,7 @@ const HomeScreen = (props: HomeScreenProps) => {
                 : <FlatList
                     data={items}
                     ItemSeparatorComponent={renderItemSeparator}
-                    renderItem={({ item }) => <HomeListItem item={item} onPress={() => props.navigation.navigate(item.route || Routes.FoodDetails)} />}
+                    renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
                     keyExtractor={item => item.text} />}
         </View>
     )

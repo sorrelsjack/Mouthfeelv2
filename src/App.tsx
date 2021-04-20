@@ -26,21 +26,19 @@ console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
-// TODO: Maybe remove headerbar when screens are loading
-
 export const App = () => {
   return (
     <ThemeProvider theme={Colors}>
       <Provider store={store}>
         <NavigationContainer ref={navigationRef}>
-          <Stack.Navigator 
-          screenOptions={{
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontFamily: GlobalFontName
-            }
-          }} 
-          initialRouteName={Routes.Login}>
+          <Stack.Navigator
+            screenOptions={{
+              headerTitleAlign: 'center',
+              headerTitleStyle: {
+                fontFamily: GlobalFontName
+              }
+            }}
+            initialRouteName={Routes.Login}>
             <Stack.Screen name={Routes.Login} component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen
               name={Routes.Home}

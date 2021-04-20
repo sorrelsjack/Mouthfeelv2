@@ -1,18 +1,18 @@
-import { Comment } from '../Models';
+import { ApiData, Comment } from '../Models';
+import { ApiOperation } from './ApiOperation';
 
 export class CommentsState {
-    byFood: {
-        loading: boolean,
-        [foodId: number]: Comment[]
-    }
+    create: ApiOperation;
+
+    byFood: ApiData<Comment[]>
+
     manageVote: {
         loading: boolean
     }
 
     constructor() {
-        this.byFood = {
-            loading: false
-        };
+        this.create = new ApiOperation();
+        this.byFood = new ApiData();
         this.manageVote = {
             loading: false
         }

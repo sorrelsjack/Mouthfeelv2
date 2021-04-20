@@ -35,6 +35,7 @@ export const Actions = {
     },
 
     Comments: {
+        Create: new Action('CREATE_COMMENT'),
         GetForFood: new Action('GET_COMMENTS_FOR_FOOD'),
         ManageVote: new Action('MANAGE_COMMENT_VOTE')
     },
@@ -45,6 +46,7 @@ export const Actions = {
     GetRecommendedFoods: new Action('GET_RECOMMENDED_FOODS'),
     GetFoodsToTry: new Action('GET_FOODS_TO_TRY'),
     AddOrRemoveFoodToTry: new Action('ADD_OR_REMOVE_FOOD_TO_TRY'),
+    AddOrUpdateAttributeAction: new Action('ADD_OR_UPDATE_ATTRIBUTE'),
     SearchFoods: new Action('SEARCH_FOODS'),
     ClearSearch: 'CLEAR_SEARCH',
     AddOrUpdateAttribute: new Action('ADD_OR_UPDATE_ATTRIBUTE'),

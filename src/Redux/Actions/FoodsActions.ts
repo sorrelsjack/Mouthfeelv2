@@ -2,7 +2,8 @@ import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch, } from 'redux';
 import { Urls } from '../../Common';
-import { FoodDetails, MouthfeelState } from '../Models';
+import { AddOrUpdateAttributeRequest, FoodDetails, MouthfeelState } from '../Models';
+import { AttributeType } from '../../Models';
 
 export const SetSelectedFoodAction = (food: FoodDetails) => {
     return async (dispatch: Dispatch) => {
@@ -115,6 +116,29 @@ export const ClearSearchAction = () => {
     }
 }
 
-export const AddOrUpdateAttributeAction = () => {
+export const AddOrUpdateAttributeAction = (attributeType: AttributeType, request: AddOrUpdateAttributeRequest) => {
+    return async (dispatch: Dispatch) => {
 
+        let url = '';
+        switch (attributeType) {
+            case 'flavor':
+                url = Urls.foods.flavors(request.foodId);
+                break;
+            case 'miscellaneous':
+                url = Urls.foods.misc(request.foodId);
+                break;
+            case 'texture':
+                url = Urls.foods.textures(request.foodId);
+                break;
+        }
+
+        try {
+            dispatch({ type: Actions.AddOrUpdateAttribute.Loading })
+            await axios.post(url, request);
+            dispatch({ type: Actions.AddOrUpdateAttribute.Success })
+        }
+        catch (error) {
+            dispatch({ type: Actions.AddOrUpdateAttribute.Failed, error });
+        }
+    }
 }

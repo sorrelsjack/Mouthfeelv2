@@ -1,49 +1,76 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import {
     View,
     Text,
     TouchableOpacity,
     StyleSheet,
-    FlatList
+    FlatList,
+    KeyboardAvoidingView
 } from 'react-native';
 import { Comment } from '..';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../../../Models';
 import { BaseAnimatedView, LoadingSpinner, InputField } from '../../../../Components';
 import LottieView from 'lottie-react-native';
-import { GetCommentsForFoodAction } from '../../../../Redux/Actions';
-import { FoodDetails, MouthfeelState, Comment as CommentModel } from '../../../../Redux/Models';
+import { CreateCommentAction, GetCommentsForFoodAction, GetCurrentUserAction } from '../../../../Redux/Actions';
+import { FoodDetails, MouthfeelState, Comment as CommentModel, ApiOperation, CreateCommentRequest, ApiData } from '../../../../Redux/Models';
+import { IsIos } from '../../../../Common';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface CommentsSectionProps {
     theme: ThemeProp,
+    userId: number,
+    create: ApiOperation,
+    comments: ApiData<CommentModel[]>,
     selected: {
         loading: boolean,
         data: FoodDetails
     },
-    comments: {
-        loading: boolean,
-        data: CommentModel[]
-    }
 }
 
-// TODO: Fix issue where the empty view shows up before comments are even loading
-// TODO: Add button for new comment UI
-// TODO: Maybe snap the screen to scroll down to comments section end
+// TODO: API should return new object for that new comment, so we can spread it into the global state
+// TODO: Error handling
+// TODO: Failure once you add a comment
 const CommentsSection = (props: CommentsSectionProps) => {
-    const { theme, selected, comments } = props;
+    const { theme, create, userId, selected, comments } = props;
 
     const [isExpanded, setIsExpanded] = useState(false);
+    const [componentIsReady, setComponentIsReady] = useState(false);
+    const [newComment, setNewComment] = useState('');
 
     const dispatch = useDispatch();
     const styles = createStyles(theme);
 
+    const buttonDisabled = !userId || create.loading;
+
     const sortItems = (items: CommentModel[]) =>
         items ? items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1) : [];
 
+    useEffect(() => {
+        if (create.success) setNewComment('');
+
+    }, [create])
+
     const handleHeaderTextPressed = () => {
         if (!isExpanded) dispatch(GetCommentsForFoodAction(selected?.data?.id));
-        setIsExpanded(!isExpanded)
+        setComponentIsReady(isExpanded ? true : false);
+        setIsExpanded(!isExpanded);
+    }
+
+    const handleButtonPressed = () => {
+        const request: CreateCommentRequest = {
+            userId: userId,
+            foodId: selected?.data?.id,
+            body: newComment
+        }
+
+        if (!userId) dispatch(GetCurrentUserAction());
+        dispatch(CreateCommentAction(request));
+    }
+
+    const getButtonStyle = () => {
+        return !buttonDisabled ? styles.button : { ...styles.button, opacity: .7 } ;
     }
 
     const NoCommentsView = () => {
@@ -58,9 +85,9 @@ const CommentsSection = (props: CommentsSectionProps) => {
         }
 
         return (
-            <BaseAnimatedView 
-                text='There are no comments here. Add the first!' 
-                fontSize={16} 
+            <BaseAnimatedView
+                text='There are no comments here. Add the first!'
+                fontSize={16}
                 view={<LottieComponent />} />
         )
     }
@@ -74,27 +101,40 @@ const CommentsSection = (props: CommentsSectionProps) => {
                         <FlatList
                             data={comments?.data ? sortItems(comments.data) : []}
                             renderItem={({ item }) => <Comment details={item} />}
-                            keyExtractor={item => item.userDetails.id.toString()} />
-                        {comments?.data?.length ?
-                            <InputField
-                                multiline
-                                placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like`}
-                                placeholderTextColor={'rgba(0, 0 , 0 , .7)'}
-                                style={{ backgroundColor: theme.page.backgroundColor }} /> : null}
+                            keyExtractor={item => item.id.toString()} />
                     </View>}
-                {(!comments?.loading && !comments?.data?.length) && <NoCommentsView />}
+                {(!comments?.loading && !comments?.data?.length && componentIsReady) && <NoCommentsView />}
             </View>
 
         )
     }
 
     return (
-        <View style={styles.wrapper}>
+        <KeyboardAvoidingView
+            behavior={IsIos() ? 'padding' : 'height'}
+            style={styles.wrapper}>
             <TouchableOpacity onPress={handleHeaderTextPressed}>
                 <Text style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
             </TouchableOpacity>
             { isExpanded && <CommentList />}
-        </View>
+            {(comments?.data?.length && isExpanded) ?
+                <View style={styles.commentInputContainer}>
+                    <View style={{ width: newComment.length ? '90%' : '100%' }}>
+                        <InputField
+                            multiline
+                            value={newComment}
+                            onTextChange={setNewComment}
+                            placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like`}
+                            placeholderTextColor={'rgba(0, 0 , 0 , .7)'}
+                            style={styles.commentInput} />
+                    </View>
+                    {newComment.length ? <View style={styles.buttonContainer}>
+                        <TouchableOpacity disabled={buttonDisabled} style={getButtonStyle()} onPress={handleButtonPressed}>
+                            <Icon name='paper-plane' size={16} solid color={theme.primaryThemeTextColor} />
+                        </TouchableOpacity>
+                    </View> : null}
+                </View> : null}
+        </KeyboardAvoidingView>
     )
 }
 
@@ -102,7 +142,9 @@ export default withTheme(connect((state: MouthfeelState) => {
     const { selected } = state.foods;
 
     return {
-        comments: selected?.data?.id ? state.comments.byFood[selected?.data?.id] : [],
+        create: state.comments.create,
+        comments: selected?.data?.id ? state.comments.byFood : [],
+        userId: state.user.profile.data?.id,
         selected
     }
 
@@ -115,6 +157,24 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     },
     headerText: {
         color: theme.clickableTextColor
+    },
+    commentInputContainer: {
+        flexDirection: 'row'
+    },
+    commentInput: {
+        width: '100%', 
+        backgroundColor: theme.page.backgroundColor
+    },
+    buttonContainer: {
+        alignItems: 'center', 
+        justifyContent: 'center'
+    },
+    button: {
+        flex: 1, 
+        justifyContent: 'center', 
+        backgroundColor: 
+        theme.primaryThemeColor, 
+        padding: 10
     },
     image: {
         width: '80%',

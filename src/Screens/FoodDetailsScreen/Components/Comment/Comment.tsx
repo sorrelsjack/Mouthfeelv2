@@ -66,8 +66,8 @@ const Comment = (props: CommentProps) => {
 
     const calculateCurrentVoteTotal = () => {
         if (upvoted && sentiment !== 1) return details.votes + 1;
-        if (downvoted && sentiment !== -1) return details.votes - 1;
-        if (!upvoted && !downvoted && userId === details.userDetails.id) return details.votes - 1;
+        if (downvoted && sentiment !== -1 && details.votes !== 0) return details.votes - 1;
+        if (!upvoted && !downvoted && userId === details.userDetails.id && details.votes !== 0) return details.votes - 1;
         return details.votes;
     }
 

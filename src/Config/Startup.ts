@@ -18,8 +18,6 @@ export const Startup = () => {
         if (config.url === Urls.users.authenticate() || config.url === Urls.users.register()) 
             return config;
 
-        // TODO: Can we dispatch this to redux?
-        // TODO: Endpoint to fetch user info
         const jwt = await RetrieveJwt();
         if (jwt) config.headers['Authorization'] = jwt;
 

@@ -1,3 +1,4 @@
+export { default as ArrowAccordion } from './ArrowAccordion';
 export { default as AttributeList } from './AttributeList';
 export { default as AttributeListAddButton } from './AttributeListAddButton';
 export { default as Tag } from './Tag';
