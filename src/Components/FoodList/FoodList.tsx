@@ -21,7 +21,6 @@ interface FoodListProps {
     items: FoodDetails[],
 }
 
-// TODO: For each food, have "sub-foods" -- e.g., you can rate a specific recipe. The "parent food" will serve as a general page for that food
 const FoodList = (props: FoodListProps) => {
     const { items } = props;
 
@@ -59,7 +58,7 @@ const FoodList = (props: FoodListProps) => {
                                             {`${v.name} `}
                                         </Text>
                                     )
-                                }) : <Text>N/A</Text>}
+                                }) : <Text>None yet!</Text>}
                         </View>
                     </View>
                 </View>
@@ -68,7 +67,7 @@ const FoodList = (props: FoodListProps) => {
     }
 
     return (
-        <View>
+        <View style={styles.wrapper}>
             <FlatList
                 data={items}
                 renderItem={({ item }) => <Cell item={item} />}
@@ -80,6 +79,10 @@ const FoodList = (props: FoodListProps) => {
 export default FoodList;
 
 const styles = StyleSheet.create({
+    wrapper: {
+        width: '100%', 
+        height: '100%'
+    },
     cellWrapper: {
         backgroundColor: 'white',
         flexDirection: 'row',

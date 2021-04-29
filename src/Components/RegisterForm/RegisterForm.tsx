@@ -2,29 +2,31 @@ import React, { useEffect, useState } from 'react';
 import {
     View,
     StyleSheet,
-    KeyboardAvoidingView
+    KeyboardAvoidingView,
+    Text
 } from 'react-native';
 import { InputField } from '..';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
-import { CreateUserRequest } from '../../Redux/Models';
+import { ApiOperation, CreateUserRequest, MouthfeelState } from '../../Redux/Models';
+import ErrorText from '../ErrorText';
+import { connect } from 'react-redux';
 
 interface RegisterFormProps {
     theme: ThemeProp;
+    createNewUser: ApiOperation;
     onSubmitAllowed: (request: CreateUserRequest) => any;
 }
 
 const RegisterForm = (props: RegisterFormProps) => {
-    const { theme, onSubmitAllowed } = props;
+    const { theme, createNewUser, onSubmitAllowed } = props;
 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    // TODO: Have an error corresponding to this
-    // TODO: handle any errors the register endpoint comes back wtih
-    const passwordsMatch = password === confirmPassword && password.length >= 1;
+    const passwordsMatch = password === confirmPassword;
     const canSubmit = !!email && !!username && passwordsMatch;
     
     const styles = createStyles(theme);
@@ -67,11 +69,19 @@ const RegisterForm = (props: RegisterFormProps) => {
                 placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
                 value={confirmPassword}
                 onTextChange={setConfirmPassword} />
+                {(!passwordsMatch && password.length >= 1 && !createNewUser.error) ? <ErrorText text='Passwords must match!' scheme='dark' style={{ marginTop: 10 }} /> : null}
+                {createNewUser.error ? <ErrorText text={createNewUser.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
         </KeyboardAvoidingView>
     )
 }
 
-export default withTheme(RegisterForm);
+export default withTheme(connect((state: MouthfeelState) => {
+
+    return {
+        createNewUser: state.user.createNewUser
+    }
+
+})(RegisterForm));
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

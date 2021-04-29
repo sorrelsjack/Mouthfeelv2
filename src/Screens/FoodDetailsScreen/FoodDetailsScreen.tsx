@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction, ManageFoodSentimentAction, GetCurrentUserAction } from '../../Redux/Actions';
 import {
@@ -20,7 +20,11 @@ import {
   GetDefaultPrimaryThemeTextColor,
   DetermineColorBrightness,
   GetTextColorBasedOnBrightness,
-  InvertColor
+  InvertColor,
+  GetDeltaE,
+  ConvertHexToRgbaArray,
+  GetDefaultHeartSelectedColor,
+  GetDefaultHeartBrokenSelectedColor
 } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
 import { getColorFromURL } from 'rn-dominant-color';
@@ -31,6 +35,7 @@ import { FoodDetails, VotableAttribute, MouthfeelState } from '../../Redux/Model
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
+import _ from 'lodash';
 
 interface FoodDetailsScreenProps {
   userId: number,
@@ -60,6 +65,9 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const [markedDisliked, setMarkedDisliked] = useState(false);
   const [markedToTry, setMarkedToTry] = useState(false);
 
+  const delayedDispatch = useCallback(_.debounce((foodId: number, sentiment: number) =>
+  dispatch(ManageFoodSentimentAction(foodId, sentiment)), 2000), []);
+
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const styles = createStyles(theme);
@@ -69,7 +77,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
     setMarkedLiked(updatedStatus);
     if (updatedStatus === true) setMarkedDisliked(false);
-    dispatch(ManageFoodSentimentAction(id, updatedStatus === true ? 1 : 0));
+    delayedDispatch(id, updatedStatus === true ? 1 : 0);
   }
 
   const handleDislikedPressed = () => {
@@ -77,7 +85,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
     setMarkedDisliked(updatedStatus);
     if (updatedStatus === true) setMarkedLiked(false);
-    dispatch(ManageFoodSentimentAction(id, updatedStatus === true ? -1 : 0));
+    delayedDispatch(id, updatedStatus === true ? -1 : 0);
   }
 
   const handleToTryButtonPressed = () => {
@@ -87,10 +95,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     dispatch(AddOrRemoveFoodToTryAction(id));
   }
 
-  // TODO: For the hearts, determine how close the theme color is to the default color. if its close, then change the heart color
-  // Do the same for the arrows
   // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item. Maybe we can resolve this by having the API return the object once the manage request has finished, and then we can spread the new response into the reducer
-  // TODO: Debounce the liked / disliked stuff
   // TODO: Fix strange issue where going to tags screen back to details makes the tags colors funny :(
 
   useEffect(() => {
@@ -99,9 +104,12 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
         ...theme,
         primaryThemeColor: GetDefaultPrimaryThemeColor(),
         primaryThemeTextColor: GetDefaultPrimaryThemeTextColor(),
-        clickableTextColor: GetDefaultPrimaryThemeColor()
+        clickableTextColor: GetDefaultPrimaryThemeColor(),
+        heartSelectedColor: GetDefaultHeartSelectedColor(),
+        heartBrokenSelectedColor: GetDefaultHeartBrokenSelectedColor()
       })
     });
+
     navigation.addListener('focus', e => {
       if (!imageUrl) return;
 
@@ -111,7 +119,9 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
           ...theme,
           primaryThemeColor: res.primary,
           primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
-          clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary
+          clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary,
+          heartSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(res.primary) : GetDefaultHeartSelectedColor(),
+          heartBrokenSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartBrokenSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(GetTextColorBasedOnBrightness(res.primary)) : GetDefaultHeartBrokenSelectedColor(),
         })
         navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
       }
@@ -162,7 +172,9 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
         ...theme,
         primaryThemeColor: res.primary,
         primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
-        clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary
+        clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary,
+        heartSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(res.primary) : GetDefaultHeartSelectedColor(),
+        heartBrokenSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartBrokenSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(GetTextColorBasedOnBrightness(res.primary)) : GetDefaultHeartBrokenSelectedColor()
       })
       navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
     }
@@ -188,7 +200,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
               <View style={styles.titleSection}>
                 <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>
               </View>
-              <IngredientsList items={ingredients} />
+              {/*<IngredientsList items={ingredients} />*/}
               <View style={styles.attributeListsContainer}>
                 <AttributeList
                   title={`What textures does ${name} have?`}
@@ -250,7 +262,9 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
   titleSection: {
     padding: 20,
     backgroundColor: theme.section.backgroundColor,
-    marginVertical: 30
+    marginTop: 30,
+    marginBottom: 10 // Remove this line after ingredients are added back
+    //marginVertical: 30
   },
   titleText: {
     fontSize: 28

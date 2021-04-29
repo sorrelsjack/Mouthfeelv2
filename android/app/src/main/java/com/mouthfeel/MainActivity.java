@@ -1,4 +1,4 @@
-package com.mouthfeel;
+package com.deerveloper.mouthfeel;
 
 import com.facebook.react.ReactActivity;
 

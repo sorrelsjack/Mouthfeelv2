@@ -1,4 +1,4 @@
-package com.mouthfeel;
+package com.deerveloper.mouthfeel;
 
 import android.app.Application;
 import android.content.Context;

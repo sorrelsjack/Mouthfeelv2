@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="com.mouthfeel">
+  package="com.deerveloper.mouthfeel">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

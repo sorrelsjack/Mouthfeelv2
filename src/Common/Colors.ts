@@ -1,6 +1,8 @@
 export const Colors = {
     primaryThemeColor: '#6200ea',
     primaryThemeTextColor: '#ffffff',
+    errorColorLight: '#ff0000',
+    errorColorDark: '#470000',
     clickableTextColor: '#6200ea',
     heartSelectedColor: '#ff0000',
     heartBrokenSelectedColor: '#910900',
@@ -77,3 +79,7 @@ export const GetColor = () => Colors;
 export const GetDefaultPrimaryThemeColor = () => '#6200ea';
 
 export const GetDefaultPrimaryThemeTextColor = () => '#ffffff';
+
+export const GetDefaultHeartSelectedColor = () => '#ff0000';
+
+export const GetDefaultHeartBrokenSelectedColor = () => '#910900';

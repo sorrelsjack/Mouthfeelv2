@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { RemoveUserProfile, RetrieveJwt, Routes, Urls, JwtIsValid } from '../Common';
 import { navigate } from '../Config';
+import { Actions } from '../Redux/Actions';
+import store from '../Redux/ConfigureStore';
+import Toast from 'react-native-simple-toast';
 
-// TODO: Method to refresh JWT
-// TODO: Add a message for if a user gets logged out
 export const Startup = () => {
     const deauthenticate = async () => {
-        // TODO: This almost works. But we have the user info still in the store... so it just throws you back onto the home screen. Fix that
         await RemoveUserProfile();
+        store.dispatch({ type: Actions.User.Logout });
         navigate(Routes.Login);
+        Toast.show('Logged out due to token expiration');
         return Promise.reject();
     }
 
@@ -19,6 +21,7 @@ export const Startup = () => {
             return config;
 
         const jwt = await RetrieveJwt();
+        console.log(jwt)
         if (jwt) config.headers['Authorization'] = jwt;
 
         return JwtIsValid(jwt) ? config : deauthenticate();

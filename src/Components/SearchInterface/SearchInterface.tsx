@@ -11,11 +11,11 @@ import { SearchFoodsAction, ClearSearchAction } from '../../Redux/Actions';
 
 interface SearchInterfaceProps {
     theme: ThemeProp,
-    onSearchStateChange: (searchIsActive: boolean) => any;
+    onSearchStateChange?: (searchIsActive: boolean) => any;
 }
 
 const SearchInterface = (props: SearchInterfaceProps) => {
-    const { theme, onSearchStateChange } = props;
+    const { theme, onSearchStateChange = () => {} } = props;
 
     const [searchQuery, setSearchQuery] = useState('');
     const [nameChecked, setNameChecked] = useState(true);

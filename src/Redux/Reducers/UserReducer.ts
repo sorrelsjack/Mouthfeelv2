@@ -2,6 +2,7 @@ import { Actions } from '../Actions';
 import { UserState, ReduxAction } from '../Models';
 
 export const User = (state: UserState = new UserState(), action: ReduxAction) => {
+    
     switch (action.type) {
         case Actions.User.Register.Loading:
             return { ...state, createNewUser: state.createNewUser.startLoading() }
@@ -25,6 +26,7 @@ export const User = (state: UserState = new UserState(), action: ReduxAction) =>
                     data: action.data
                 }
             }
+            
         default:
             return state;
     }

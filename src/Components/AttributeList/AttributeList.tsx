@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     View,
@@ -12,8 +12,9 @@ import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { VotableAttribute } from '../../Redux/Models';
 import { AttributeType } from '../../Models';
+import { onChange } from 'react-native-reanimated';
 
-type SortType = 'alphabetically' | 'byVotes';
+type SortType = 'alphabetically' | 'byVotes' | 'custom';
 
 interface AttributeListProps {
     title?: string,
@@ -25,10 +26,12 @@ interface AttributeListProps {
     tagSize?: 'small' | 'regular',
     tagStyle?: object,
     sortBy?: SortType,
-    items: VotableAttribute[]
+    customSort?: (a: any, b: any) => any,
+    onChange?: (ids: number[]) => any,
+    items: VotableAttribute[],
+    disabledItems?: number[]
 }
 
-// TODO: onItemsSelected event
 const AttributeList = (props: AttributeListProps) => {
     const {
         title,
@@ -40,22 +43,41 @@ const AttributeList = (props: AttributeListProps) => {
         tagSize = 'regular',
         tagStyle = {},
         sortBy = 'byVotes',
+        customSort,
+        onChange,
         items,
+        disabledItems
     } = props;
 
     const navigation = useNavigation();
 
+    const [selectedItems, setSelectedItems] = useState<number[]>([]);
+
     const sortItems = (items: VotableAttribute[]) => {
+        if (sortBy === 'custom') return items.sort(customSort);
         return sortBy === 'byVotes' 
             ? items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1)
             : items.sort((a, b) => ((a.name > b.name) ? 1 : -1))
+    }
+
+    const handleTagPressed = (attributeId: number) => {
+        const existing = selectedItems;
+        let selected: number[] = [];
+
+        if (existing.find(e => e === attributeId))
+            selected = existing.filter(e => e !== attributeId)
+        else
+            selected = selected.concat(attributeId);
+
+        setSelectedItems(selected);
+        onChange(selected);
     }
 
     return (
         <View style={styles.wrapper}>
             {title && <Text style={styles.text}>{title}</Text>}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.list}>
-                {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags, { attributeType })} />}
+                {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags, { attributeType, preselectedAttributes: items.filter(i => i.votes ?? 0 > 0).map(i => i.id) })} />}
                 <FlatList
                     numColumns={numColumns}
                     scrollEnabled={false}
@@ -63,7 +85,7 @@ const AttributeList = (props: AttributeListProps) => {
                     contentContainerStyle={contentContainerStyle}
                     horizontal={horizontal}
                     data={sortItems(items)}
-                    renderItem={({ item }) => <Tag style={tagStyle} size={tagSize} item={item} attributeType={attributeType} />}
+                    renderItem={({ item }) => <Tag style={tagStyle} disabled={disabledItems?.some(i => i === item.id)} size={tagSize} item={item} attributeType={attributeType} onPress={handleTagPressed} />}
                     keyExtractor={item => item.id.toString()} />
             </ScrollView>
         </View>
@@ -82,7 +104,7 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     list: {
-        flexDirection: 'row', 
+        flexDirection: 'row',
         marginRight: -20
     }
 })

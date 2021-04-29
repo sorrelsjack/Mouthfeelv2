@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { connect, useDispatch } from 'react-redux';
 import {
     View,
     Text,
@@ -12,24 +12,31 @@ import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { Routes } from '../../Common';
 import { ArrowAccordion } from '../../Components';
-import { LogoutAction } from '../../Redux/Actions';
+import { GetCurrentUserAction, LogoutAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
+import { ApiData, AuthenticateUserResponse, MouthfeelState } from '../../Redux/Models';
 
 interface SettingsScreenProps {
-    theme: ThemeProp
+    theme: ThemeProp,
+    profile: ApiData<AuthenticateUserResponse>
 }
 
 const SettingsScreen = (props: SettingsScreenProps) => {
-    const { theme } = props;
+    const { theme, profile } = props;
 
-    const [activeSections, setActiveSections] = useState([]);
+    const [logoutPressed, setLogoutPressed] = useState(false);
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
+    useEffect(() => {
+        if (!profile.data && logoutPressed) navigation.navigate(Routes.Login);
+
+    }, [profile || logoutPressed])
+
     const handleLogOutPressed = () => {
+        setLogoutPressed(true);
         dispatch(LogoutAction());
-        navigation.navigate(Routes.Login);
     }
 
     const handleAboutPressed = () => {
@@ -120,7 +127,13 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     )
 }
 
-export default withTheme(SettingsScreen);
+export default withTheme(connect((state: MouthfeelState) => {
+
+    return {
+        profile: state.user.profile
+    }
+
+})(SettingsScreen));
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
@@ -12,8 +12,10 @@ interface InputFieldProps {
     placeholder: string,
     placeholderTextColor?: string
     multiline?: boolean;
-    value?: string
+    value?: string;
+    onBlur?: (value: string) => any;
     onTextChange?: (value: string) => any;
+    onSubmitEditing?: (value: string) => any;
 }
 
 const InputField = (props: InputFieldProps) => {
@@ -26,10 +28,14 @@ const InputField = (props: InputFieldProps) => {
         placeholderTextColor,
         multiline,
         value,
-        onTextChange
+        onBlur = (value: string) => {},
+        onTextChange = (value: string) => {},
+        onSubmitEditing = (value: string) => {}
     } = props;
 
     const styles = createStyles(theme);
+
+    const [text, setText] = useState('');
 
     return (
         <View>
@@ -42,7 +48,9 @@ const InputField = (props: InputFieldProps) => {
                 secureTextEntry={secureTextEntry}
                 placeholder={placeholder}
                 value={value}
-                onChangeText={onTextChange} />
+                onBlur={() => onBlur(text)}
+                onChangeText={(val) => { onTextChange(val); setText(val) }}
+                onSubmitEditing={() => onSubmitEditing(text)} />
         </View>
     )
 }

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
-import { Routes } from '../../Common';
+import { Routes, Colors, GetDeltaE, ConvertHexToRgbaArray } from '../../Common';
 import { FoodList, SearchInterface, LoadingSpinner, EmptyView, ErrorView } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';

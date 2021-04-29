@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
-import { InputField, RegisterForm, Button } from '../../Components';
+import { InputField, RegisterForm, Button, ErrorText } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
 import { Routes, RetrieveJwt, JwtIsValid, IsIos } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { AuthenticateUserAction, GetCurrentUserAction, RegisterUserAction } from '../../Redux/Actions';
 import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData, CreateUserRequest } from '../../Redux/Models';
+import { useNavigation } from '@react-navigation/native';
+import LottieView from 'lottie-react-native';
 
 interface LoginScreenProps {
     theme: ThemeProp,
     profile: ApiData<AuthenticateUserResponse>,
-    navigation: any // TODO: Fix
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
-    const { theme, profile, navigation } = props;
+    const { theme, profile } = props;
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -29,6 +30,7 @@ const LoginScreen = (props: LoginScreenProps) => {
     const canLogin = (showLoginForm && !profile.loading && (username && password)) || showRegisterForm;
 
     const dispatch = useDispatch();
+    const navigation = useNavigation<any>();
     const styles = createStyles(theme);
 
     useEffect(() => {
@@ -77,6 +79,15 @@ const LoginScreen = (props: LoginScreenProps) => {
         if (canRegister) dispatch(RegisterUserAction(registrationRequest));
     }
 
+    const LoadingView = () => {
+        return (
+            <View style={styles.loadingView}>
+                <LottieView source={require('../../Assets/linear_loading.json')} autoPlay />
+                <Text style={{ color: theme.primaryThemeTextColor, fontSize: 16 }}>Loading...</Text>
+            </View>
+        )
+    }
+
     return (
         <LinearGradient colors={[theme.loginScreen.gradient.topColor, theme.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
             <View style={styles.container}>
@@ -84,20 +95,21 @@ const LoginScreen = (props: LoginScreenProps) => {
                 <View style={styles.inputFieldsContainer}>
                     {showLoginForm &&
                         <>
-                            <InputField
+                            {!profile.loading ? <><InputField
                                 style={styles.inputField}
                                 placeholder={'Username'}
                                 value={username}
                                 onTextChange={setUsername}
                                 placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
                                 secureTextEntry={false} />
-                            <InputField
-                                style={styles.inputField}
-                                placeholder={'Password'}
-                                value={password}
-                                onTextChange={setPassword}
-                                placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
-                                secureTextEntry={true} />
+                                <InputField
+                                    style={styles.inputField}
+                                    placeholder={'Password'}
+                                    value={password}
+                                    onTextChange={setPassword}
+                                    placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
+                                    secureTextEntry={true} /></> : <LoadingView />}
+
                         </>}
                     {showRegisterForm && <RegisterForm onSubmitAllowed={handleRegisterAllowed} />}
                 </View>
@@ -108,7 +120,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                     disabled={!canLogin}
                     onPress={handleLoginPressed}
                     text='Log In' />
-                {profile.error ? <Text>{profile.error.Message}</Text> : null}
+                {(profile.error && !showRegisterForm) ? <ErrorText text={profile.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
                 <Button
                     style={styles.registerButton}
                     backgroundColor={theme.loginScreen.registerButton.backgroundColor}
@@ -143,6 +155,11 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         justifyContent: 'center',
         marginVertical: 20,
         width: '80%'
+    },
+    loadingView: {
+        marginTop: 20,
+        height: 100,
+        alignItems: 'center'
     },
     title: {
         color: theme.loginScreen.title.textColor,

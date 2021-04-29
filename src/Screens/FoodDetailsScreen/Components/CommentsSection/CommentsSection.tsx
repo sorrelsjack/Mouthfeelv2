@@ -11,7 +11,7 @@ import {
 import { Comment } from '..';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../../../Models';
-import { BaseAnimatedView, LoadingSpinner, InputField } from '../../../../Components';
+import { BaseAnimatedView, LoadingSpinner, InputField, ErrorText } from '../../../../Components';
 import LottieView from 'lottie-react-native';
 import { CreateCommentAction, GetCommentsForFoodAction, GetCurrentUserAction } from '../../../../Redux/Actions';
 import { FoodDetails, MouthfeelState, Comment as CommentModel, ApiOperation, CreateCommentRequest, ApiData } from '../../../../Redux/Models';
@@ -29,9 +29,6 @@ interface CommentsSectionProps {
     },
 }
 
-// TODO: API should return new object for that new comment, so we can spread it into the global state
-// TODO: Error handling
-// TODO: Failure once you add a comment
 const CommentsSection = (props: CommentsSectionProps) => {
     const { theme, create, userId, selected, comments } = props;
 
@@ -45,7 +42,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
     const buttonDisabled = !userId || create.loading;
 
     const sortItems = (items: CommentModel[]) =>
-        items ? items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1) : [];
+        items ? items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) || a.dateTime < b.dateTime ? 1 : -1) : [];
 
     useEffect(() => {
         if (create.success) setNewComment('');
@@ -122,8 +119,8 @@ const CommentsSection = (props: CommentsSectionProps) => {
                     <View style={{ width: newComment.length ? '90%' : '100%' }}>
                         <InputField
                             multiline
-                            value={newComment}
-                            onTextChange={setNewComment}
+                            onBlur={setNewComment}
+                            onSubmitEditing={setNewComment}
                             placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like`}
                             placeholderTextColor={'rgba(0, 0 , 0 , .7)'}
                             style={styles.commentInput} />
@@ -134,6 +131,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
                         </TouchableOpacity>
                     </View> : null}
                 </View> : null}
+                {isExpanded && create.error ? <ErrorText text='There was an error submitting this comment.' style={{ marginTop: 10 }} /> : null}
         </KeyboardAvoidingView>
     )
 }
@@ -163,11 +161,13 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     },
     commentInput: {
         width: '100%', 
+        marginTop: 20,
         backgroundColor: theme.page.backgroundColor
     },
     buttonContainer: {
         alignItems: 'center', 
-        justifyContent: 'center'
+        justifyContent: 'center',
+        marginTop: 20,
     },
     button: {
         flex: 1, 

@@ -7,7 +7,8 @@ import {
     StyleSheet,
     TouchableOpacity,
     ScrollView,
-    Image
+    Image,
+    Platform
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import {
@@ -16,41 +17,36 @@ import {
     LoadingSpinner,
     InputField,
     Button,
-    ArrowAccordion
+    ArrowAccordion,
+    SearchInterface,
+    ErrorText
 } from '../../Components';
-import { withTheme } from 'react-native-elements';
+import { SearchBar, withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GetAllVotableAttributesAction } from '../../Redux/Actions';
-import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData } from '../../Redux/Models';
+import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
+import { GlobalFontName } from '../../Config';
 
 interface SubmitFoodScreenProps {
     theme: ThemeProp,
+    createNewFood: ApiOperation,
     flavors: ApiData<VotableAttribute[]>,
     textures: ApiData<VotableAttribute[]>,
     misc: ApiData<VotableAttribute[]>
 }
 
-// Put a touchable opacity with a stock image that you can tap to upload an image
-// Selecting textures / flavors / misc will cause them to appear on the screen
-// TODO: With ingredients, include prep time, if applicable
-// TODO: Include "subtypes" of food - e.g., chicken nuggets, then chicken nuggets from wendy's, or chicken nuggets from a pinterest recipe. in the DB, this would be a string representing location. could be a URL or a location
-// TODO: Add "parent food" input
+// TODO: There seems to be rendering issues here with the lists; inconsistnet though. sometimes the list gets chopped off or whatnot
 // TODO: Handle errors here, for if a name is already being used or something else...
 // TODO: When the user finishes typing the name, call and endpoint to fetch foods with the same / similar names and ask if they meant that one instead
-// TODO: Also, allow for multiple images
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
-    const { theme, flavors, textures, misc } = props;
+    const { theme, createNewFood, flavors, textures, misc } = props;
 
     const [name, setName] = useState('');
-    const [flavorListVisible] = useState(false);
-    const [miscListVisible] = useState(false);
-    const [textureListVisible] = useState(false);
+    //const [searchText, setSearchText] = useState('');
     const [selectedFlavors, setSelectedFlavors] = useState([]);
     const [selectedTextures, setSelectedTextures] = useState([]);
     const [selectedMisc, setSelectedMisc] = useState([]);
 
-    // TODO: The loading spinner flickers in a really gross way presumably because the state of these guys keeps updating. Can we fix?
-    const loading = flavors.loading || textures.loading || misc.loading;
     const styles = createStyles(theme);
     const dispatch = useDispatch();
 
@@ -71,6 +67,10 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
         // Gather up name, imageUrl (or imageData?), flavor ids, texture ids, and misc ids, then pile them into an object and do a request
     }
 
+    const handleSearchTextChanged = (text: string) => {
+        //setSearchText(text);
+    }
+
     const Sections = [
         {
             title: 'Images',
@@ -82,70 +82,87 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
         },
         {
             title: 'Flavors',
-            content: <AttributeList
-                includeAddButton={false}
-                horizontal={false}
-                numColumns={2}
-                attributeType='texture'
-                contentContainerStyle={styles.attributeListContainer}
-                tagStyle={styles.tagStyle}
-                tagSize={'small'}
-                items={flavors.data || []}
-                sortBy={'alphabetically'} />
+            content: (
+                flavors.loading
+                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                    : <View style={styles.sectionContainer}>
+                        <AttributeList
+                            includeAddButton={false}
+                            horizontal={false}
+                            numColumns={2}
+                            attributeType='texture'
+                            contentContainerStyle={styles.attributeListContainer}
+                            tagStyle={styles.tagStyle}
+                            tagSize={'small'}
+                            items={flavors.data || []}
+                            sortBy={'alphabetically'} /></View>
+            )
         },
         {
             title: 'Texture',
-            content: <AttributeList
-                includeAddButton={false}
-                horizontal={false}
-                numColumns={2}
-                attributeType='texture'
-                contentContainerStyle={styles.attributeListContainer}
-                tagStyle={styles.tagStyle}
-                tagSize={'small'}
-                items={textures.data || []}
-                sortBy={'alphabetically'} />
+            content: (
+                textures.loading
+                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                    : <View style={styles.sectionContainer}>
+                        <AttributeList
+                            includeAddButton={false}
+                            horizontal={false}
+                            numColumns={2}
+                            attributeType='texture'
+                            contentContainerStyle={styles.attributeListContainer}
+                            tagStyle={styles.tagStyle}
+                            tagSize={'small'}
+                            items={textures.data || []}
+                            sortBy={'alphabetically'} /></View>
+            )
         },
         {
             title: 'Miscellaneous',
-            content: <AttributeList
-                includeAddButton={false}
-                horizontal={false}
-                numColumns={2}
-                attributeType='miscellaneous'
-                contentContainerStyle={styles.attributeListContainer}
-                tagStyle={styles.tagStyle}
-                tagSize={'small'}
-                items={misc.data || []}
-                sortBy={'alphabetically'} />
+            content: (
+                misc.loading
+                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                    : <View style={styles.sectionContainer}>
+                        <AttributeList
+                            includeAddButton={false}
+                            horizontal={false}
+                            numColumns={2}
+                            attributeType='miscellaneous'
+                            contentContainerStyle={styles.attributeListContainer}
+                            tagStyle={styles.tagStyle}
+                            tagSize={'small'}
+                            items={misc.data || []}
+                            sortBy={'alphabetically'} /></View>
+            )
         }
     ]
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.wrapper}>
-                {loading ?
-                    <View style={styles.loadingSpinnerContainer}>
-                        <LoadingSpinner fullScreen />
-                    </View> :
-                    <>
-                        <InputField
-                            style={styles.nameInput}
-                            placeholder={'Food Name'}
-                            value={name}
-                            onTextChange={setName} />
-                        <View style={{ flex: 1, justifyContent: 'center' }}>
-                            <ArrowAccordion sections={Sections} />
-                        </View>
-                        <View style={styles.submitButtonContainer}>
-                            <Button
-                                disabled={!canSubmit}
-                                onPress={handleSubmitButtonPress}
-                                text='Submit'
-                                backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor}
-                                textColor={theme.submitFoodScreen.submitButton.textColor} />
-                        </View>
-                    </>}
+                <InputField
+                    style={styles.textInput}
+                    placeholder={'Food Name'}
+                    textPosition='center'
+                    value={name}
+                    onTextChange={setName} />
+                {/*<InputField
+                    style={styles.textInput}
+                    placeholder={'Search Attributes...'}
+                    textPosition='center'
+                    value={searchText}
+                onTextChange={handleSearchTextChanged} />*/}
+                <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <ArrowAccordion sections={Sections} />
+                </View>
+                <View style={styles.submitButtonContainer}>
+                    {createNewFood.error ? <ErrorText text={createNewFood.error.Message} style={{ marginBottom: 20 }} /> : null}
+                    <Button
+                        disabled={!canSubmit}
+                        onPress={handleSubmitButtonPress}
+                        text='Submit'
+                        backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor}
+                        textColor={theme.submitFoodScreen.submitButton.textColor} />
+                </View>
             </View>
         </ScrollView>
     )
@@ -153,6 +170,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
 
 export default withTheme(connect((state: MouthfeelState) => {
     return {
+        createNewFood: state.foods.createNewFood,
         flavors: state.flavors.all,
         textures: state.textures.all,
         misc: state.miscellaneous.all
@@ -168,11 +186,11 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    nameInput: {
+    textInput: {
         backgroundColor: 'white',
         textAlignVertical: 'center',
         marginBottom: 20,
-        borderWidth: 2,
+        borderWidth: 1,
         borderColor: theme.halfTransparent
     },
     imageContainer: {
@@ -191,7 +209,12 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     title: {
         fontWeight: 'bold'
     },
+    sectionContainer: {
+        width: '100%',
+        alignItems: 'center'
+    },
     attributeListContainer: {
+        width: '100%',
         flexDirection: 'column',
         marginTop: 10
     },

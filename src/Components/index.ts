@@ -5,6 +5,7 @@ export { default as Tag } from './Tag';
 export { default as InputField } from './InputField';
 export { default as CircleButton } from './CircleButton';
 export { default as ErrorView } from './ErrorView';
+export { default as ErrorText } from './ErrorText';
 export { default as FoodList } from './FoodList';
 export { default as LoadingSpinner } from './LoadingSpinner';
 export { default as RegisterForm } from './RegisterForm';

@@ -22,37 +22,40 @@ interface TagProps {
     style?: object,
     item: VotableAttribute;
     attributeType: AttributeType;
+    disabled?: boolean;
+    onPress: (attributeId: number) => any;
 }
 
-// TODO: Need logic here to determine if a user needs tihs to be pre-selected or not -- probably requires a backend change
 const Tag = (props: TagProps) => {
-    const { 
+    const {
         userId,
         selected,
-        theme, 
-        size = 'regular', 
-        style, 
-        item, 
-        attributeType 
+        theme,
+        size = 'regular',
+        style,
+        item,
+        attributeType,
+        disabled = false,
+        onPress
     } = props;
+
     const { id, name, votes, sentiment, description } = item;
 
     const [tooltipHeight, setTooltipHeight] = useState(size === 'regular' ? 60 : 40);
+    const [fontSize, setFontSize] = useState(size === 'regular' ? 18 : 13);
     const [isPressed, setIsPressed] = useState(false);
 
     const dispatch = useDispatch();
 
-    const styles = createStyles(size);
-
-    const iconSize = size === 'regular' ? 18 : 14;
+    const styles = createStyles(size, disabled);
 
     const setWrapperStyle = () => isPressed
         ? { ...styles.wrapper, backgroundColor: InvertColor(theme.primaryThemeColor) }
         : { ...styles.wrapper, backgroundColor: theme.primaryThemeColor }
 
     const setTextStyle = () => isPressed
-        ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor) }
-        : { ...styles.text, color: theme.primaryThemeTextColor }
+        ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor), fontSize: fontSize }
+        : { ...styles.text, color: theme.primaryThemeTextColor, fontSize: fontSize }
 
     const setCounterContainerStyle = () => isPressed
         ? { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(InvertColor(theme.primaryThemeTextColor), .3) }
@@ -60,15 +63,15 @@ const Tag = (props: TagProps) => {
 
     const handlePress = () => {
         if (!selected.data || !userId) return;
-        // TODO: Fix strange issue where this is effecting every single attribute
-        // Might be related to the call to fetch food details
+
         const request: AddOrUpdateAttributeRequest = {
             foodId: selected.data?.id,
             userId: userId,
             attributeId: id
         };
 
-        dispatch(AddOrUpdateAttributeAction(attributeType, request));
+        onPress(id);
+        if (!onPress) dispatch(AddOrUpdateAttributeAction(attributeType, request));
         setIsPressed(!isPressed);
     }
 
@@ -77,19 +80,21 @@ const Tag = (props: TagProps) => {
         setTooltipHeight(height + 30);
     }
 
-    /*const calculateCurrentVoteTotal = () => {
-        if (upvoted && sentiment !== 1) return details.votes + 1;
-        if (downvoted && sentiment !== -1 && details.votes !== 0) return details.votes - 1;
-        if (!upvoted && !downvoted && userId === details.userDetails.id && details.votes !== 0) return details.votes - 1;
-        return details.votes;
-    }*/
-
+    // TODO: Refine the logic here... The inclusion of sentiment is throwing everything off
     const calculateCurrentVoteTotal = () => {
+        if (isPressed && votes === 1 && sentiment === 1) return 1;
         if (isPressed) return (votes ?? 0) + 1;
-        // TODO: There is logic that should be implemented here. Need to handle cases where we go into a screen with a tag pre-selected, and then un-selecting it
-        // maybe need to know who originated this tag
         return votes;
     }
+
+    const MAX_CHARS_BEFORE_RESIZE = 7;
+
+    useEffect(() => {
+        if (name.length >= MAX_CHARS_BEFORE_RESIZE && size === 'small') {
+            const characterDifference = name.length - MAX_CHARS_BEFORE_RESIZE;
+            setFontSize(fontSize - (characterDifference * .5));
+        }
+    }, [name])
 
     useEffect(() => {
         if (sentiment > 0) setIsPressed(true);
@@ -97,23 +102,35 @@ const Tag = (props: TagProps) => {
 
     return (
         <View style={[setWrapperStyle(), style]}>
-            <TouchableOpacity onPress={handlePress}>
-                <View style={{ flexDirection: 'row' }}>
-                    {votes && <View style={setCounterContainerStyle()}>
-                        <Text style={setTextStyle()}>{calculateCurrentVoteTotal()}</Text>
-                    </View>}
-                    <Text style={setTextStyle()}>{name}</Text>
+            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                <TouchableOpacity style={{ flexGrow: 1 }} disabled={disabled} onPress={handlePress}>
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        {votes && <View style={setCounterContainerStyle()}>
+                            <Text adjustsFontSizeToFit style={setTextStyle()}>{calculateCurrentVoteTotal()}</Text>
+                        </View>}
+                        <Text adjustsFontSizeToFit style={setTextStyle()} onTextLayout={(e) => {
+                            /*if (name.length >= MAX_CHARS_BEFORE_RESIZE && fontSize >= 10) {
+                                const characterDifference = name.length - MAX_CHARS_BEFORE_RESIZE;
+                                console.log(fontSize - characterDifference)
+                                setFontSize(fontSize - characterDifference);
+                            }*/
+                        }}>{name}</Text>
+                    </View>
+                </TouchableOpacity>
+                <View style={styles.iconContainer}>
+                    <Tooltip
+                        overlayColor='transparent'
+                        backgroundColor={theme.tooltip.backgroundColor}
+                        skipAndroidStatusBar
+                        height={tooltipHeight}
+                        popover={<Text onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor }}>{description.toLowerCase()}</Text>}>
+                        <Icon
+                            name={'question-circle'}
+                            size={fontSize}
+                            solid
+                            color={isPressed ? InvertColor(theme.primaryThemeTextColor) : theme.primaryThemeTextColor} />
+                    </Tooltip>
                 </View>
-            </TouchableOpacity>
-            <View style={styles.iconContainer}>
-                <Tooltip
-                    overlayColor='transparent'
-                    backgroundColor={theme.tooltip.backgroundColor}
-                    skipAndroidStatusBar
-                    height={tooltipHeight}
-                    popover={<Text onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor }}>{description.toLowerCase()}</Text>}>
-                    <Icon name={'question-circle'} size={iconSize} solid color={isPressed ? InvertColor(theme.primaryThemeTextColor) : theme.primaryThemeTextColor} />
-                </Tooltip>
             </View>
         </View>
     )
@@ -126,19 +143,21 @@ export default withTheme(connect((state: MouthfeelState) => {
     }
 })(Tag));
 
-const createStyles = (size: TagSize) => StyleSheet.create({
+const createStyles = (size: TagSize, disabled: boolean) => StyleSheet.create({
     wrapper: {
-        justifyContent: 'center',
+        flex: 1,
         alignItems: 'center',
+        justifyContent: 'center',
         flexDirection: 'row',
+        opacity: disabled ? .8 : 1,
         borderRadius: 20,
         paddingVertical: 5,
         paddingHorizontal: 10,
         marginHorizontal: 10
     },
     text: {
+        justifyContent: 'center',
         textTransform: 'uppercase',
-        fontSize: size === 'regular' ? 18 : 14,
         padding: 5
     },
     counterContainer: {
@@ -149,6 +168,7 @@ const createStyles = (size: TagSize) => StyleSheet.create({
         flexGrow: 0,
     },
     iconContainer: {
+        justifyContent: 'flex-end',
         marginLeft: 5,
         paddingHorizontal: 7
     }
