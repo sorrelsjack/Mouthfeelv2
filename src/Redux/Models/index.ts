@@ -13,6 +13,7 @@ export * from './FoodIngredient';
 export * from './FoodsState';
 export * from './ManageCommentVoteRequest';
 export * from './ManageFoodSentimentRequest';
+export * from './ManageFoodSentimentResponse';
 export * from './MouthfeelState';
 export * from './ReduxAction';
 export * from './VotableAttribute';

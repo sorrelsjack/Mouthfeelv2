@@ -14,11 +14,12 @@ import { useNavigation } from '@react-navigation/native';
 
 interface HomeScreenProps {
     theme: ThemeProp,
-    searchResults: ApiData<FoodDetails[]>
+    all: FoodDetails[],
+    searchResults: ApiData<number[]>
 }
 
 const HomeScreen = (props: HomeScreenProps) => {
-    const { theme, searchResults } = props;
+    const { theme, all, searchResults } = props;
 
     const [searchIsActive, setSearchIsActive] = useState(false);
 
@@ -41,7 +42,7 @@ const HomeScreen = (props: HomeScreenProps) => {
     ]
 
     const NoDataView = () => {
-        if (searchResults.error) return <ErrorView text={searchResults.error.Message} onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} />
+        if (searchResults.error) return <ErrorView onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
         if (!searchResults.loading && !searchResults.data?.length) return <EmptyView text='No results found' />
         return null;
     }
@@ -49,7 +50,7 @@ const HomeScreen = (props: HomeScreenProps) => {
     const SearchResults = () => {
         return (
             <View style={{ justifyContent: 'flex-start', height: '100%' }}>
-                {searchResults.loading ? <LoadingSpinner /> : <View><FoodList items={searchResults.data ? searchResults.data : []} /></View>}
+                {searchResults.loading ? <LoadingSpinner /> : <View><FoodList items={searchResults.data ? all.filter(f => searchResults.data?.some(r => r === f.id)) : []} /></View>}
                 <NoDataView />
             </View>
         )
@@ -71,6 +72,7 @@ const HomeScreen = (props: HomeScreenProps) => {
 
 export default withTheme(connect((state: MouthfeelState) => {
     return {
+        all: state.foods.all,
         searchResults: state.foods.searchResults
     }
 })(HomeScreen));

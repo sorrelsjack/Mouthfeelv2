@@ -9,7 +9,7 @@ import {
   Text,
   Image
 } from 'react-native';
-import { FormatAsTitleCase } from '../../Common';
+import { FormatAsTitleCase, Routes } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
 import LottieView from 'lottie-react-native';
 import { withTheme, UpdateTheme } from 'react-native-elements';
@@ -17,29 +17,32 @@ import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
 import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { GetFoodsToTryAction } from '../../Redux/Actions';
+import { useNavigation } from '@react-navigation/native';
 
 interface ToTryScreenProps {
-    toTry: ApiData<FoodDetails[]>
+    all: FoodDetails[];
+    toTry: ApiData<FoodDetails[]>;
 }
 
 const ToTryScreen = (props: ToTryScreenProps) => {
-    const { toTry } = props;
+    const { all, toTry } = props;
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     useEffect(() => {
         dispatch(GetFoodsToTryAction());
     }, [])
 
     const NoDataView = () => {
-        if (toTry.error) return <ErrorView fullScreen text={toTry.error.Message} onButtonPress={() => { dispatch(GetFoodsToTryAction()) }} />
+        if (toTry.error) return <ErrorView fullScreen onButtonPress={() => { dispatch(GetFoodsToTryAction()) }} onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
         if (!toTry.loading && !toTry.data?.length) return <EmptyView fullScreen text='No foods To Try found' />
         return null;
     }
 
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
-            {toTry.loading ? <LoadingSpinner fullScreen /> : toTry.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={toTry.data ? toTry.data : []} /></View> : null}
+            {toTry.loading ? <LoadingSpinner fullScreen /> : toTry.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={toTry.data ? all.filter(f => f.toTry) : []} /></View> : null}
             <NoDataView />
         </View>
     )
@@ -47,6 +50,7 @@ const ToTryScreen = (props: ToTryScreenProps) => {
 
 export default connect((state: MouthfeelState) => {
     return {
+        all: state.foods.all,
         toTry: state.foods.toTry
     }
 })(ToTryScreen);

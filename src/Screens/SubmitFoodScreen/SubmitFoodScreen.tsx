@@ -26,6 +26,8 @@ import { ThemeProp } from '../../Models';
 import { GetAllVotableAttributesAction } from '../../Redux/Actions';
 import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
 import { GlobalFontName } from '../../Config';
+import { launchImageLibrary } from 'react-native-image-picker'
+import Carousel from 'react-native-snap-carousel';
 
 interface SubmitFoodScreenProps {
     theme: ThemeProp,
@@ -35,13 +37,12 @@ interface SubmitFoodScreenProps {
     misc: ApiData<VotableAttribute[]>
 }
 
-// TODO: There seems to be rendering issues here with the lists; inconsistnet though. sometimes the list gets chopped off or whatnot
-// TODO: Handle errors here, for if a name is already being used or something else...
-// TODO: When the user finishes typing the name, call and endpoint to fetch foods with the same / similar names and ask if they meant that one instead
+// TODO: Allow URLs as well
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { theme, createNewFood, flavors, textures, misc } = props;
 
     const [name, setName] = useState('');
+    const [image, setImage] = useState();
     //const [searchText, setSearchText] = useState('');
     const [selectedFlavors, setSelectedFlavors] = useState([]);
     const [selectedTextures, setSelectedTextures] = useState([]);
@@ -50,7 +51,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const styles = createStyles(theme);
     const dispatch = useDispatch();
 
-    const canSubmit = !!name;
+    const canSubmit = !!name && !createNewFood.error;
 
     useEffect(() => {
         dispatch(GetAllVotableAttributesAction());
@@ -71,12 +72,28 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
         //setSearchText(text);
     }
 
+    const handleImagePlaceholderPressed = () => {
+        launchImageLibrary({ mediaType: 'photo' }, response => {
+            if (response.uri) {
+                setImage(response);
+            }
+        });
+    }
+
+    /*const ImageGallery = () => {
+        return (
+            <Carousel 
+                ref={(c) => { this._carousel = c }}
+                 />
+        )
+    }*/
+
     const Sections = [
         {
             title: 'Images',
             content: <View style={{ marginTop: 10 }}>
-                <TouchableOpacity style={styles.imageContainer}>
-                    <Image source={require('../../Assets/plate.png')} style={styles.image} />
+                <TouchableOpacity style={image ? {} : styles.imageContainer} onPress={handleImagePlaceholderPressed}>
+                    <Image source={image ? { uri: image.uri } : require('../../Assets/plate.png')} style={image ? styles.image : styles.placeholderImage} />
                 </TouchableOpacity>
             </View>
         },
@@ -87,10 +104,13 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                     : <View style={styles.sectionContainer}>
                         <AttributeList
+                            columnWrapperStyle={{ flexWrap: 'wrap' }}
+                            wrapperStyle={styles.attributeListWrapper}
+                            listStyle={styles.attributeList}
                             includeAddButton={false}
                             horizontal={false}
                             numColumns={2}
-                            attributeType='texture'
+                            attributeType='flavor'
                             contentContainerStyle={styles.attributeListContainer}
                             tagStyle={styles.tagStyle}
                             tagSize={'small'}
@@ -105,6 +125,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                     : <View style={styles.sectionContainer}>
                         <AttributeList
+                            columnWrapperStyle={{ flexWrap: 'wrap' }}
+                            wrapperStyle={styles.attributeListWrapper}
+                            listStyle={styles.attributeList}
                             includeAddButton={false}
                             horizontal={false}
                             numColumns={2}
@@ -123,6 +146,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                     : <View style={styles.sectionContainer}>
                         <AttributeList
+                            columnWrapperStyle={{ flexWrap: 'wrap' }}
+                            wrapperStyle={styles.attributeListWrapper}
+                            listStyle={styles.attributeList}
                             includeAddButton={false}
                             horizontal={false}
                             numColumns={2}
@@ -204,19 +230,30 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         alignSelf: 'center',
         height: 175,
         width: '80%',
+    },
+    placeholderImage: {
+        resizeMode: 'contain',
+        alignSelf: 'center',
+        height: 175,
+        width: '80%',
         opacity: .09
     },
     title: {
         fontWeight: 'bold'
     },
     sectionContainer: {
-        width: '100%',
         alignItems: 'center'
     },
+    attributeList: {
+        flexDirection: 'row',
+        marginRight: 0
+    },
     attributeListContainer: {
-        width: '100%',
         flexDirection: 'column',
-        marginTop: 10
+        paddingTop: 10
+    },
+    attributeListWrapper: {
+        paddingBottom: 0
     },
     tagStyle: {
         marginTop: 10

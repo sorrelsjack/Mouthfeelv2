@@ -9,33 +9,36 @@ import {
     Text,
     Image
 } from 'react-native';
-import { FormatAsTitleCase } from '../../Common';
+import { FormatAsTitleCase, Routes } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
 import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { GetLikedFoodsAction } from '../../Redux/Actions';
+import { useNavigation } from '@react-navigation/native';
 
 interface LikedScreenProps {
-    liked: ApiData<FoodDetails[]>
+    all: FoodDetails[],
+    liked: ApiData<number[]>
 }
 
 const LikedScreen = (props: LikedScreenProps) => {
-    const { liked } = props;
+    const { all, liked } = props;
 
     const dispatch = useDispatch();
+    const navigation = useNavigation();
 
     useEffect(() => {
         dispatch(GetLikedFoodsAction());
     }, [])
 
     const NoDataView = () => {
-        if (liked.error) return <ErrorView fullScreen text={liked.error.Message} onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} />
+        if (liked.error) return <ErrorView fullScreen onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
         if (!liked.loading && !liked.data?.length) return <EmptyView fullScreen text='No Liked foods found' />
         return null;
     }
 
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
-            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={{ alignItems: 'center' }}><FoodList items={liked.data ? liked.data : []} /></View> : null}
+            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={{ alignItems: 'center' }}><FoodList items={liked.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
             <NoDataView />
         </View>
     )
@@ -43,6 +46,7 @@ const LikedScreen = (props: LikedScreenProps) => {
 
 export default connect((state: MouthfeelState) => {
     return {
+        all: state.foods.all,
         liked: state.foods.liked
     }
 })(LikedScreen);

@@ -66,6 +66,12 @@
 	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>For choosing a photo.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>For taking a photo.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>For saving a photo.</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>

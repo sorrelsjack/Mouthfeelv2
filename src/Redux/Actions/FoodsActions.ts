@@ -45,17 +45,13 @@ export const ManageFoodSentimentAction = (foodId: number, sentiment: number) => 
     return async (dispatch: Dispatch) => {
         dispatch({ type: Actions.ManageFoodSentiment.Loading });
         try {
-            await axios.post(Urls.foods.sentiment(), { foodId, sentiment });
-            dispatch({ type: Actions.ManageFoodSentiment.Success });
+            const res = await axios.post(Urls.foods.sentiment(), { foodId, sentiment });
+            dispatch({ type: Actions.ManageFoodSentiment.Success, data: res });
         }
         catch (error) {
             dispatch({ type: Actions.ManageFoodSentiment.Failed, error })
         }
     }
-}
-
-export const GetRecommendedFoodsAction = () => {
-
 }
 
 export const GetFoodsToTryAction = () => {
@@ -71,12 +67,25 @@ export const GetFoodsToTryAction = () => {
     }
 }
 
+export const GetRecommendedFoodsAction = () => {
+    return async (dispatch: Dispatch) => {
+        dispatch({ type: Actions.GetRecommendedFoods.Loading })
+        try {
+            const recommended = await axios.get(Urls.foods.recommended());
+            dispatch({ type: Actions.GetRecommendedFoods.Success, data: recommended });
+        }
+        catch (error) {
+            dispatch({ type: Actions.GetRecommendedFoods.Failed, error });
+        }
+    }
+}
+
 export const AddOrRemoveFoodToTryAction = (foodId: number) => {
     return async (dispatch: Dispatch) => {
         try {
             dispatch({ type: Actions.AddOrRemoveFoodToTry.Loading })
             await axios.post(Urls.foods.toTry(), { foodId })
-            dispatch({ type: Actions.AddOrRemoveFoodToTry.Success })
+            dispatch({ type: Actions.AddOrRemoveFoodToTry.Success, data: foodId })
         }
         catch (error) {
             dispatch({ type: Actions.AddOrRemoveFoodToTry.Failed, error })

@@ -23,7 +23,7 @@ const ArrowAccordion = (props: ArrowAccordionProps) => {
 
     const renderContent = (section, _, isActive: boolean) => {
         return (
-            <View style={{ marginBottom: 10 }}>
+            <View style={{ flex: 1, marginBottom: 10 }}>
                 {section.content}
             </View>
         )

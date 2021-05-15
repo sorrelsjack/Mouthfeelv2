@@ -25,6 +25,9 @@ interface AttributeListProps {
     contentContainerStyle?: object,
     tagSize?: 'small' | 'regular',
     tagStyle?: object,
+    listStyle?: object,
+    wrapperStyle?: object,
+    columnWrapperStyle?: object,
     sortBy?: SortType,
     customSort?: (a: any, b: any) => any,
     onChange?: (ids: number[]) => any,
@@ -42,6 +45,9 @@ const AttributeList = (props: AttributeListProps) => {
         contentContainerStyle = {},
         tagSize = 'regular',
         tagStyle = {},
+        listStyle = {},
+        wrapperStyle = {},
+        columnWrapperStyle = {},
         sortBy = 'byVotes',
         customSort,
         onChange,
@@ -73,12 +79,17 @@ const AttributeList = (props: AttributeListProps) => {
         onChange(selected);
     }
 
+    const extraProps = {
+        [numColumns > 1 ? 'columnWrapperStyle' : '']: columnWrapperStyle
+    }
+
     return (
-        <View style={styles.wrapper}>
+        <View style={[styles.wrapper, wrapperStyle]}>
             {title && <Text style={styles.text}>{title}</Text>}
-            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.list}>
+            <ScrollView horizontal showsHorizontalScrollIndicator={false} style={[styles.list, listStyle]}>
                 {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags, { attributeType, preselectedAttributes: items.filter(i => i.votes ?? 0 > 0).map(i => i.id) })} />}
                 <FlatList
+                    {...extraProps}
                     numColumns={numColumns}
                     scrollEnabled={false}
                     showsHorizontalScrollIndicator={false}

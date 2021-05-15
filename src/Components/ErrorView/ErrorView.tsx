@@ -6,17 +6,21 @@ import BaseAnimatedView from '../BaseAnimatedView';
 
 interface ErrorViewProps {
     fullScreen?: boolean,
-    text: string,
+    text?: string,
     buttonText?: string;
-    onButtonPress?: () => any; 
+    onButtonPress?: () => any;
+    secondButtonText?: string;
+    onSecondButtonPress?: () => any;
 }
 
 const ErrorView = (props: ErrorViewProps) => {
     const { 
         fullScreen = false, 
-        text, 
+        text = 'Something is wrong with the recipe!', 
         buttonText = 'Try Again', 
-        onButtonPress = () => {} 
+        onButtonPress = () => {},
+        secondButtonText = 'Report The Mix-Up',
+        onSecondButtonPress = () => {}
     } = props;
 
     const window = useWindowDimensions();
@@ -40,7 +44,9 @@ const ErrorView = (props: ErrorViewProps) => {
             fullScreen={fullScreen} 
             view={<LottieComponent />}
             buttonText={buttonText}
-            onButtonPress={onButtonPress} />
+            onButtonPress={onButtonPress}
+            secondButtonText={secondButtonText}
+            onSecondButtonPress={onSecondButtonPress} />
     )
 
 }

@@ -10,7 +10,9 @@ interface BaseAnimatedViewProps {
     text?: string;
     fontSize?: number;
     buttonText?: string;
-    onButtonPress?: () => any; 
+    onButtonPress?: () => any;
+    secondButtonText?: string;
+    onSecondButtonPress?: () => any;
 }
 
 const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
@@ -20,7 +22,9 @@ const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
         text, 
         fontSize = 20,
         buttonText,
-        onButtonPress = () => {}
+        onButtonPress = () => {},
+        secondButtonText,
+        onSecondButtonPress = () => {}
     } = props;
 
     const window = useWindowDimensions();
@@ -36,6 +40,7 @@ const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
                 <Text style={styles.text}>{text}</Text>
             </View>
             {buttonText && <Button style={styles.button} text={buttonText} onPress={onButtonPress} />}
+            {secondButtonText && <Button style={styles.button} text={secondButtonText} onPress={onSecondButtonPress} />}
         </View>
     )
 

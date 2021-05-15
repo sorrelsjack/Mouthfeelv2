@@ -25,7 +25,7 @@ interface TagsScreenProps {
     addOrUpdate: ApiOperation
 }
 
-// TODO: Fix issue where the 3rd column goes off screen
+// TODO: Fix issue where the icon is going off screen
 const TagsScreen = (props: TagsScreenProps) => {
     const { userId, selected, textures, flavors, misc, addOrUpdate } = props;
     const { id, name } = selected?.data ?? {};
@@ -85,13 +85,16 @@ const TagsScreen = (props: TagsScreenProps) => {
         <ScrollView
             showsVerticalScrollIndicator={false}
             contentInsetAdjustmentBehavior='automatic'>
-            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'flex-start', backgroundColor: 'cyan', paddingTop: 20, paddingBottom: 20 }}>
+            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: 20, paddingBottom: 20 }}>
                 {getLoadingState() ? <LoadingSpinner fullScreen /> :
                     <>
                         <AttributeList
                             items={getAttributes()}
                             disabledItems={preselectedAttributes}
                             attributeType={attributeType}
+                            columnWrapperStyle={{ flexWrap: 'wrap' }}
+                            wrapperStyle={styles.attributeListWrapper}
+                            listStyle={styles.attributeList}
                             horizontal={false}
                             numColumns={3}
                             sortBy={'alphabetically'}
@@ -123,13 +126,18 @@ export default connect((state: MouthfeelState) => {
 const styles = StyleSheet.create({
     attributeListContainer: {
         width: Dimensions.get('window').width,
-        backgroundColor: 'yellow',
         flexDirection: 'column',
         marginTop: 10
     },
     tagStyle: {
         width: ((Dimensions.get('window').width / 3) - 10),
         marginTop: 10,
-        marginRight: -5,
+    },
+    attributeList: {
+        flexDirection: 'row',
+        marginRight: 0
+    },
+    attributeListWrapper: {
+        paddingBottom: 0
     },
 });

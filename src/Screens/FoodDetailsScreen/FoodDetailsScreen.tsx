@@ -66,7 +66,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const [markedToTry, setMarkedToTry] = useState(false);
 
   const delayedDispatch = useCallback(_.debounce((foodId: number, sentiment: number) =>
-  dispatch(ManageFoodSentimentAction(foodId, sentiment)), 2000), []);
+  dispatch(ManageFoodSentimentAction(foodId, sentiment)), 500), []);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -77,6 +77,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
     setMarkedLiked(updatedStatus);
     if (updatedStatus === true) setMarkedDisliked(false);
+    Toast.show(`'${FormatAsTitleCase(name)}' ${!updatedStatus ? 'added to' : 'removed from'} list of liked foods!`);
     delayedDispatch(id, updatedStatus === true ? 1 : 0);
   }
 
@@ -85,6 +86,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
     setMarkedDisliked(updatedStatus);
     if (updatedStatus === true) setMarkedLiked(false);
+    Toast.show(`'${FormatAsTitleCase(name)}' ${!updatedStatus ? 'added to' : 'removed from'} list of disliked foods!`);
     delayedDispatch(id, updatedStatus === true ? -1 : 0);
   }
 
@@ -95,8 +97,8 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     dispatch(AddOrRemoveFoodToTryAction(id));
   }
 
-  // TODO: There's an issue where if you hit back after marking a food as liked / disliked, it won't be reflected in the list item. Maybe we can resolve this by having the API return the object once the manage request has finished, and then we can spread the new response into the reducer
   // TODO: Fix strange issue where going to tags screen back to details makes the tags colors funny :(
+    // TODO: Fix issue here where the attributes list seems to shift around after doing an action like liking / disliking
 
   useEffect(() => {
     navigation.addListener('blur', e => {
