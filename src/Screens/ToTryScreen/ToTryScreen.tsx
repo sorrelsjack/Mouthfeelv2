@@ -42,7 +42,7 @@ const ToTryScreen = (props: ToTryScreenProps) => {
 
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
-            {toTry.loading ? <LoadingSpinner fullScreen /> : toTry.data?.length ? <View style={{ alignItems: 'center' }}><FoodList items={toTry.data ? all.filter(f => f.toTry) : []} /></View> : null}
+            {toTry.loading ? <LoadingSpinner fullScreen /> : toTry.data?.length ? <View style={{ alignItems: 'center', marginTop: 10 }}><FoodList items={toTry.data ? all.filter(f => f.toTry) : []} /></View> : null}
             <NoDataView />
         </View>
     )

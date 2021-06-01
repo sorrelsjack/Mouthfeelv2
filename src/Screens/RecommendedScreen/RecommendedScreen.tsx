@@ -42,7 +42,7 @@ const RecommendedScreen = (props: RecommendedScreenProps) => {
     // TODO: Fix the filter statement here
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
-            {recommended.loading ? <LoadingSpinner fullScreen /> : (recommended.data?.length) ? <View style={{ alignItems: 'center' }}><FoodList items={recommended.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
+            {recommended.loading ? <LoadingSpinner fullScreen /> : (recommended.data?.length) ? <View style={{ alignItems: 'center', marginTop: 10 }}><FoodList items={recommended.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
             <NoDataView />
         </View>
     )

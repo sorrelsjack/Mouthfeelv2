@@ -1,13 +1,13 @@
 export class CreateFoodRequest {
     name: string;
-    imageUrl: string;
+    image: string;
     flavors: number[];
     textures: number[];
     miscellaneous: number[];
 
     constructor() {
         this.name = '';
-        this.imageUrl = '';
+        this.image = '';
         this.flavors = [];
         this.textures = [];
         this.miscellaneous = [];

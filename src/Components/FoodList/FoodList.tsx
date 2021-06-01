@@ -39,7 +39,7 @@ const FoodList = (props: FoodListProps) => {
         return (
             <TouchableOpacity key={item.id} onPress={handleItemPressed}>
                 <View style={styles.cellWrapper}>
-                    <Image style={styles.image} source={{ uri: item.imageUrl }} />
+                    <Image style={styles.image} source={{ uri: `data:image/png;base64,${item.images[0].image}` }} />
                     <View style={styles.cellTextContainer}>
                         <View style={{ width: '100%', flexDirection: 'row' }}>
                             <Text style={styles.cellTitle}>

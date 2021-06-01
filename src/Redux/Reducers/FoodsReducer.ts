@@ -6,7 +6,7 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
     const AddToAll = (data: ApiData<FoodDetails[]>) => {
         const newIds = data.data?.map(d => d.id);
         const withoutNew = state.all.filter(f => !newIds?.some(i => i === f.id));
-        return withoutNew.concat(data.data ?? []).sort
+        return withoutNew.concat(data.data ?? [])
     }
 
     switch (action.type) {
@@ -62,6 +62,14 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
             return { ...state, all: AddToAll(action.data), recommended: state.recommended.succeeded(action.data.data.map(f => f.id)) }
         case Actions.GetRecommendedFoods.Failed:
             return { ...state, recommended: state.recommended.failed(action.error?.response?.data) }
+
+        // TODO: Might need a reset associated with this
+        case Actions.CreateFood.Loading:
+            return { ...state, createNewFood: state.createNewFood.startLoading() }
+        case Actions.CreateFood.Success:
+            return { ...state, all: AddToAll(action.data), createNewFood: state.createNewFood.succeeded() }
+        case Actions.CreateFood.Failed:
+            return { ...state, createNewFood: state.createNewFood.failed(action.error?.response?.data) }
 
         case Actions.AddOrRemoveFoodToTry.Loading:
             return { ...state, toTry: state.foodToTryUpdate.startLoading() }

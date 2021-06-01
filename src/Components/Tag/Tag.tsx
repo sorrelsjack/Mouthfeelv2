@@ -62,7 +62,7 @@ const Tag = (props: TagProps) => {
         : { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(theme.primaryThemeTextColor, .3) }
 
     const handlePress = () => {
-        if (!selected.data || !userId) return;
+        if (!userId) return;
 
         const request: AddOrUpdateAttributeRequest = {
             foodId: selected.data?.id,

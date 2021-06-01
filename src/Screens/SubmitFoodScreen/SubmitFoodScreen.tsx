@@ -22,31 +22,41 @@ import {
     ErrorText
 } from '../../Components';
 import { SearchBar, withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
-import { GetAllVotableAttributesAction } from '../../Redux/Actions';
+import { ImagePickerResponse, ThemeProp } from '../../Models';
+import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction } from '../../Redux/Actions';
 import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
 import { GlobalFontName } from '../../Config';
 import { launchImageLibrary } from 'react-native-image-picker'
 import Carousel from 'react-native-snap-carousel';
+import { IsIos } from '../../Common';
 
 interface SubmitFoodScreenProps {
     theme: ThemeProp,
+    userId: number,
     createNewFood: ApiOperation,
     flavors: ApiData<VotableAttribute[]>,
     textures: ApiData<VotableAttribute[]>,
     misc: ApiData<VotableAttribute[]>
 }
 
-// TODO: Allow URLs as well
+// TODO: need error support for attributes not coming up
+// TODO: Fix issue where collapsible completely gets rid of the rendered content if a tag is tapped
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
-    const { theme, createNewFood, flavors, textures, misc } = props;
+    const { 
+        theme, 
+        userId,
+        createNewFood, 
+        flavors, 
+        textures, 
+        misc 
+    } = props;
 
     const [name, setName] = useState('');
-    const [image, setImage] = useState();
-    //const [searchText, setSearchText] = useState('');
-    const [selectedFlavors, setSelectedFlavors] = useState([]);
-    const [selectedTextures, setSelectedTextures] = useState([]);
-    const [selectedMisc, setSelectedMisc] = useState([]);
+    const [usingPlaceholderImage, setUsingPlaceholderImage] = useState(true);
+    const [image, setImage] = useState<ImagePickerResponse>({ base64: '', uri: '', width: 0, height: 0, fileSize: 0, type: '', fileName: '' });
+    const [selectedFlavors, setSelectedFlavors] = useState<number[]>([]);
+    const [selectedTextures, setSelectedTextures] = useState<number[]>([]);
+    const [selectedMisc, setSelectedMisc] = useState<number[]>([]);
 
     const styles = createStyles(theme);
     const dispatch = useDispatch();
@@ -54,49 +64,34 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const canSubmit = !!name && !createNewFood.error;
 
     useEffect(() => {
+        if (!userId) dispatch(GetCurrentUserAction());
         dispatch(GetAllVotableAttributesAction());
     }, [])
 
+    // TODO: On submit, be able to send the image to the server
     const handleSubmitButtonPress = () => {
         const request: CreateFoodRequest = {
             name: name,
-            //imageUrl: ,
+            image: IsIos() ? image.uri.replace("file://", "") : image.uri,
             flavors: selectedFlavors,
             textures: selectedTextures,
             miscellaneous: selectedMisc
         }
-        // Gather up name, imageUrl (or imageData?), flavor ids, texture ids, and misc ids, then pile them into an object and do a request
-    }
 
-    const handleSearchTextChanged = (text: string) => {
-        //setSearchText(text);
+        dispatch(CreateFoodAction(request));
+        // Gather up name, imageUrl (or imageData?), flavor ids, texture ids, and misc ids, then pile them into an object and do a request
     }
 
     const handleImagePlaceholderPressed = () => {
         launchImageLibrary({ mediaType: 'photo' }, response => {
             if (response.uri) {
                 setImage(response);
+                setUsingPlaceholderImage(false);
             }
         });
     }
 
-    /*const ImageGallery = () => {
-        return (
-            <Carousel 
-                ref={(c) => { this._carousel = c }}
-                 />
-        )
-    }*/
-
     const Sections = [
-        {
-            title: 'Images',
-            content: <View style={{ marginTop: 10 }}>
-                <TouchableOpacity style={image ? {} : styles.imageContainer} onPress={handleImagePlaceholderPressed}>
-                    <Image source={image ? { uri: image.uri } : require('../../Assets/plate.png')} style={image ? styles.image : styles.placeholderImage} />
-                </TouchableOpacity>
-            </View>
-        },
         {
             title: 'Flavors',
             content: (
@@ -114,6 +109,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             contentContainerStyle={styles.attributeListContainer}
                             tagStyle={styles.tagStyle}
                             tagSize={'small'}
+                            onChange={(ids: number[]) => setSelectedFlavors(ids)}
                             items={flavors.data || []}
                             sortBy={'alphabetically'} /></View>
             )
@@ -135,6 +131,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             contentContainerStyle={styles.attributeListContainer}
                             tagStyle={styles.tagStyle}
                             tagSize={'small'}
+                            onChange={(ids: number[]) => setSelectedTextures(ids)}
                             items={textures.data || []}
                             sortBy={'alphabetically'} /></View>
             )
@@ -156,6 +153,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             contentContainerStyle={styles.attributeListContainer}
                             tagStyle={styles.tagStyle}
                             tagSize={'small'}
+                            onChange={(ids: number[]) => setSelectedMisc(ids)}
                             items={misc.data || []}
                             sortBy={'alphabetically'} /></View>
             )
@@ -171,13 +169,17 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     textPosition='center'
                     value={name}
                     onTextChange={setName} />
-                {/*<InputField
-                    style={styles.textInput}
-                    placeholder={'Search Attributes...'}
-                    textPosition='center'
-                    value={searchText}
-                onTextChange={handleSearchTextChanged} />*/}
                 <View style={{ flex: 1, justifyContent: 'center' }}>
+                    <View style={{ marginTop: 10 }}>
+                        <TouchableOpacity style={!usingPlaceholderImage ? {} : styles.imageContainer} onPress={handleImagePlaceholderPressed}>
+                            {usingPlaceholderImage
+                                ? <View>
+                                    <Text style={styles.placeholderImageText}>Add An Image</Text>
+                                    <Image source={require('../../Assets/plate.png')} style={styles.placeholderImage} />
+                                </View>
+                                : <Image source={{ uri: image.uri }} style={[styles.image, { height: image.height, width: image.width }]} />}
+                        </TouchableOpacity>
+                    </View>
                     <ArrowAccordion sections={Sections} />
                 </View>
                 <View style={styles.submitButtonContainer}>
@@ -196,6 +198,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
 
 export default withTheme(connect((state: MouthfeelState) => {
     return {
+        userId: state.user.profile.data?.id,
         createNewFood: state.foods.createNewFood,
         flavors: state.flavors.all,
         textures: state.textures.all,
@@ -230,6 +233,11 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         alignSelf: 'center',
         height: 175,
         width: '80%',
+    },
+    placeholderImageText: {
+        alignSelf: 'center',
+        opacity: .5,
+        marginTop: 10
     },
     placeholderImage: {
         resizeMode: 'contain',

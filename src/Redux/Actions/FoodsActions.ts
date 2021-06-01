@@ -1,9 +1,10 @@
 import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch, } from 'redux';
-import { Urls } from '../../Common';
-import { AddOrUpdateAttributeRequest, FoodDetails, MouthfeelState } from '../Models';
+import { IsIos, Urls } from '../../Common';
+import { AddOrUpdateAttributeRequest, CreateFoodRequest, FoodDetails, MouthfeelState } from '../Models';
 import { AttributeType } from '../../Models';
+import { v4 as uuidv4 } from 'uuid';
 
 export const SetSelectedFoodAction = (food: FoodDetails) => {
     return async (dispatch: Dispatch) => {
@@ -11,8 +12,36 @@ export const SetSelectedFoodAction = (food: FoodDetails) => {
     }
 }
 
-export const CreateFoodAction = () => {
+// TODO: Fix issue where it thinks there's no name entered
+export const CreateFoodAction = (food: CreateFoodRequest) => {
+    let formData = new FormData();
 
+    const imagePath = IsIos() ? food.image.replace("file://", "") : food.image;
+
+    formData.append('name', food.name);
+    formData.append('image', { uri: imagePath, name: `image-${uuidv4()}`, type: 'image/jpeg' });
+    formData.append('flavors', food.flavors);
+    formData.append('textures', food.textures);
+    formData.append('miscellaneous', food.miscellaneous);
+
+    // TODO: Fix some fucking axios network error
+
+    return async (dispatch: Dispatch) => {
+        try {
+            dispatch({ type: Actions.CreateFood.Loading });
+            const newFood = await axios.post(
+                Urls.foods.new(),
+                formData,
+                {
+                    headers: { 'Content-Type': 'multipart/form-data' }
+                }
+            );
+            dispatch({ type: Actions.CreateFood.Success, data: newFood });
+        }
+        catch (error) {
+            dispatch({ type: Actions.CreateFood.Failed, error });
+        }
+    }
 }
 
 export const GetLikedFoodsAction = () => {

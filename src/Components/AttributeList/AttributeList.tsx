@@ -73,10 +73,10 @@ const AttributeList = (props: AttributeListProps) => {
         if (existing.find(e => e === attributeId))
             selected = existing.filter(e => e !== attributeId)
         else
-            selected = selected.concat(attributeId);
+            selected = existing.concat(selected.concat(attributeId));
 
         setSelectedItems(selected);
-        onChange(selected);
+        if (onChange) onChange(selected);
     }
 
     const extraProps = {

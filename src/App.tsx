@@ -33,7 +33,9 @@ export const App = () => {
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator
             screenOptions={{
+              headerTintColor: Colors.primaryThemeTextColor,
               headerTitleAlign: 'center',
+              headerStyle: { backgroundColor: Colors.primaryThemeColor },
               headerTitleStyle: {
                 fontFamily: GlobalFontName
               }
@@ -48,7 +50,7 @@ export const App = () => {
                 headerRight: () => (
                   <View style={{ padding: 15 }}>
                     <TouchableOpacity onPress={() => navigation.navigate(Routes.Settings)}>
-                      <Icon name={'cog'} size={20} />
+                      <Icon name={'cog'} color={Colors.primaryThemeTextColor} size={20} />
                     </TouchableOpacity>
                   </View>
                 )

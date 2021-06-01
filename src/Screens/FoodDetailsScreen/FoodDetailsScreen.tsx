@@ -53,6 +53,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   const {
     id,
     name,
+    images,
     imageUrl,
     toTry,
     sentiment,
@@ -97,44 +98,11 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     dispatch(AddOrRemoveFoodToTryAction(id));
   }
 
-  // TODO: Fix strange issue where going to tags screen back to details makes the tags colors funny :(
-    // TODO: Fix issue here where the attributes list seems to shift around after doing an action like liking / disliking
-
-  useEffect(() => {
-    navigation.addListener('blur', e => {
-      updateTheme({
-        ...theme,
-        primaryThemeColor: GetDefaultPrimaryThemeColor(),
-        primaryThemeTextColor: GetDefaultPrimaryThemeTextColor(),
-        clickableTextColor: GetDefaultPrimaryThemeColor(),
-        heartSelectedColor: GetDefaultHeartSelectedColor(),
-        heartBrokenSelectedColor: GetDefaultHeartBrokenSelectedColor()
-      })
-    });
-
-    navigation.addListener('focus', e => {
-      if (!imageUrl) return;
-
-      const GetThemeColor = async () => {
-        const res = await getColorFromURL(imageUrl);
-        updateTheme({
-          ...theme,
-          primaryThemeColor: res.primary,
-          primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
-          clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary,
-          heartSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(res.primary) : GetDefaultHeartSelectedColor(),
-          heartBrokenSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartBrokenSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(GetTextColorBasedOnBrightness(res.primary)) : GetDefaultHeartBrokenSelectedColor(),
-        })
-        navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
-      }
-      GetThemeColor();
-    });
-  }, [])
+  // TODO: Fix issue here where the attributes list seems to shift around after doing an action like liking / disliking
 
   useLayoutEffect(() => {
     navigation.setOptions({
       title: FormatAsTitleCase(name),
-      headerTintColor: theme.primaryThemeTextColor,
       headerRight: () => (
         <TouchableOpacity onPress={handleToTryButtonPressed}>
           <Icon
@@ -165,27 +133,6 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     setMarkedToTry(toTry);
   }, [toTry]);
 
-  useEffect(() => {
-    if (!imageUrl) return;
-
-    const GetThemeColor = async () => {
-      const res = await getColorFromURL(imageUrl);
-      updateTheme({
-        ...theme,
-        primaryThemeColor: res.primary,
-        primaryThemeTextColor: GetTextColorBasedOnBrightness(res.primary),
-        clickableTextColor: DetermineColorBrightness(res.primary) === 'light' ? InvertColor(res.primary) : res.primary,
-        heartSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(res.primary) : GetDefaultHeartSelectedColor(),
-        heartBrokenSelectedColor: GetDeltaE(ConvertHexToRgbaArray(GetDefaultHeartBrokenSelectedColor()), ConvertHexToRgbaArray(res.primary)) <= 49 ? InvertColor(GetTextColorBasedOnBrightness(res.primary)) : GetDefaultHeartBrokenSelectedColor()
-      })
-      navigation.setOptions({ headerStyle: { backgroundColor: res.primary } })
-    }
-    GetThemeColor();
-
-  }, [imageUrl])
-
-  const ingredients = ['yeast', 'water', 'flour', 'oil', 'salt', 'sugar'];
-
   return (
     <SafeAreaView>
       <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false}>
@@ -197,7 +144,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
             </View>
             <View style={styles.container}>
               <View style={styles.imageContainer}>
-                <Image source={{ uri: imageUrl }} style={styles.image} />
+                <Image source={{ uri: `data:image/png;base64,${images[0].image}` }} style={styles.image} />
               </View>
               <View style={styles.titleSection}>
                 <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>

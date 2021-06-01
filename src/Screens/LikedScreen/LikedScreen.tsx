@@ -38,7 +38,7 @@ const LikedScreen = (props: LikedScreenProps) => {
 
     return (
         <View style={{ justifyContent: 'center', height: '100%' }}>
-            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={{ alignItems: 'center' }}><FoodList items={liked.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
+            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={{ alignItems: 'center', marginTop: 10 }}><FoodList items={liked.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
             <NoDataView />
         </View>
     )

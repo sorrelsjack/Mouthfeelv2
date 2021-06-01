@@ -9,6 +9,7 @@ export * from './CreateFoodRequest';
 export * from './CreateUserRequest';
 export * from './Food';
 export * from './FoodDetails';
+export * from './FoodImage';
 export * from './FoodIngredient';
 export * from './FoodsState';
 export * from './ManageCommentVoteRequest';
