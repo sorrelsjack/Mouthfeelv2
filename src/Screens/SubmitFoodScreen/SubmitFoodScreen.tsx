@@ -41,6 +41,7 @@ interface SubmitFoodScreenProps {
 
 // TODO: need error support for attributes not coming up
 // TODO: Fix issue where collapsible completely gets rid of the rendered content if a tag is tapped
+// TODO: need loading UX here -- fullscreen loading indicator while the food is being created
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const { 
         theme, 

@@ -67,7 +67,7 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.CreateFood.Loading:
             return { ...state, createNewFood: state.createNewFood.startLoading() }
         case Actions.CreateFood.Success:
-            return { ...state, all: AddToAll(action.data), createNewFood: state.createNewFood.succeeded() }
+            return { ...state, all: state.all.concat(action.data), createNewFood: state.createNewFood.succeeded() }
         case Actions.CreateFood.Failed:
             return { ...state, createNewFood: state.createNewFood.failed(action.error?.response?.data) }
 
@@ -98,7 +98,7 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.SearchFoods.Loading:
             return { ...state, searchResults: state.searchResults.startLoading() }
         case Actions.SearchFoods.Success:
-            return { ...state, all: AddToAll(action.data), searchResults: state.searchResults.succeeded(action.data.data.map(f => f.id)) }
+            return { ...state, all: AddToAll(action.data.data), searchResults: state.searchResults.succeeded(action.data.data.map(f => f.id)) }
         case Actions.SearchFoods.Failed:
             return { ...state, searchResults: state.searchResults.failed(action.error?.response?.data) }
 

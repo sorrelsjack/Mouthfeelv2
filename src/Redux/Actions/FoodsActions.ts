@@ -16,15 +16,16 @@ export const SetSelectedFoodAction = (food: FoodDetails) => {
 export const CreateFoodAction = (food: CreateFoodRequest) => {
     let formData = new FormData();
 
+    console.log(food)
+
     const imagePath = IsIos() ? food.image.replace("file://", "") : food.image;
 
     formData.append('name', food.name);
     formData.append('image', { uri: imagePath, name: `image-${uuidv4()}`, type: 'image/jpeg' });
+    // TODO: OK, flavors, textures, and misc are the issue
     formData.append('flavors', food.flavors);
     formData.append('textures', food.textures);
     formData.append('miscellaneous', food.miscellaneous);
-
-    // TODO: Fix some fucking axios network error
 
     return async (dispatch: Dispatch) => {
         try {
