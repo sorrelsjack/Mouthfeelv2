@@ -7,7 +7,6 @@ interface ArrowAccordionProps {
     sections: { title: string, content: JSX.Element }[]
 }
 
-// TODO: Sometimes each section doesnt render properly once the data comes in???
 const ArrowAccordion = (props: ArrowAccordionProps) => {
     const { sections } = props;
 

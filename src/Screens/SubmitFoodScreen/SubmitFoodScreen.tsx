@@ -39,17 +39,14 @@ interface SubmitFoodScreenProps {
     misc: ApiData<VotableAttribute[]>
 }
 
-// TODO: need error support for attributes not coming up
-// TODO: Fix issue where collapsible completely gets rid of the rendered content if a tag is tapped
-// TODO: need loading UX here -- fullscreen loading indicator while the food is being created
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
-    const { 
-        theme, 
+    const {
+        theme,
         userId,
-        createNewFood, 
-        flavors, 
-        textures, 
-        misc 
+        createNewFood,
+        flavors,
+        textures,
+        misc
     } = props;
 
     const [name, setName] = useState('');
@@ -62,14 +59,13 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const styles = createStyles(theme);
     const dispatch = useDispatch();
 
-    const canSubmit = !!name && !createNewFood.error;
+    const canSubmit = !!name && !createNewFood.error && !createNewFood.loading;
 
     useEffect(() => {
         if (!userId) dispatch(GetCurrentUserAction());
         dispatch(GetAllVotableAttributesAction());
     }, [])
 
-    // TODO: On submit, be able to send the image to the server
     const handleSubmitButtonPress = () => {
         const request: CreateFoodRequest = {
             name: name,
@@ -80,7 +76,6 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
         }
 
         dispatch(CreateFoodAction(request));
-        // Gather up name, imageUrl (or imageData?), flavor ids, texture ids, and misc ids, then pile them into an object and do a request
     }
 
     const handleImagePlaceholderPressed = () => {
@@ -91,75 +86,6 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
             }
         });
     }
-
-    const Sections = [
-        {
-            title: 'Flavors',
-            content: (
-                flavors.loading
-                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
-                    : <View style={styles.sectionContainer}>
-                        <AttributeList
-                            columnWrapperStyle={{ flexWrap: 'wrap' }}
-                            wrapperStyle={styles.attributeListWrapper}
-                            listStyle={styles.attributeList}
-                            includeAddButton={false}
-                            horizontal={false}
-                            numColumns={2}
-                            attributeType='flavor'
-                            contentContainerStyle={styles.attributeListContainer}
-                            tagStyle={styles.tagStyle}
-                            tagSize={'small'}
-                            onChange={(ids: number[]) => setSelectedFlavors(ids)}
-                            items={flavors.data || []}
-                            sortBy={'alphabetically'} /></View>
-            )
-        },
-        {
-            title: 'Texture',
-            content: (
-                textures.loading
-                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
-                    : <View style={styles.sectionContainer}>
-                        <AttributeList
-                            columnWrapperStyle={{ flexWrap: 'wrap' }}
-                            wrapperStyle={styles.attributeListWrapper}
-                            listStyle={styles.attributeList}
-                            includeAddButton={false}
-                            horizontal={false}
-                            numColumns={2}
-                            attributeType='texture'
-                            contentContainerStyle={styles.attributeListContainer}
-                            tagStyle={styles.tagStyle}
-                            tagSize={'small'}
-                            onChange={(ids: number[]) => setSelectedTextures(ids)}
-                            items={textures.data || []}
-                            sortBy={'alphabetically'} /></View>
-            )
-        },
-        {
-            title: 'Miscellaneous',
-            content: (
-                misc.loading
-                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
-                    : <View style={styles.sectionContainer}>
-                        <AttributeList
-                            columnWrapperStyle={{ flexWrap: 'wrap' }}
-                            wrapperStyle={styles.attributeListWrapper}
-                            listStyle={styles.attributeList}
-                            includeAddButton={false}
-                            horizontal={false}
-                            numColumns={2}
-                            attributeType='miscellaneous'
-                            contentContainerStyle={styles.attributeListContainer}
-                            tagStyle={styles.tagStyle}
-                            tagSize={'small'}
-                            onChange={(ids: number[]) => setSelectedMisc(ids)}
-                            items={misc.data || []}
-                            sortBy={'alphabetically'} /></View>
-            )
-        }
-    ]
 
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
@@ -172,7 +98,10 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     onTextChange={setName} />
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <View style={{ marginTop: 10 }}>
-                        <TouchableOpacity style={!usingPlaceholderImage ? {} : styles.imageContainer} onPress={handleImagePlaceholderPressed}>
+                        <TouchableOpacity
+                            style={!usingPlaceholderImage ? {} : styles.imageContainer}
+                            onPress={handleImagePlaceholderPressed}
+                            disabled={createNewFood.loading}>
                             {usingPlaceholderImage
                                 ? <View>
                                     <Text style={styles.placeholderImageText}>Add An Image</Text>
@@ -181,16 +110,82 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 : <Image source={{ uri: image.uri }} style={[styles.image, { height: image.height, width: image.width }]} />}
                         </TouchableOpacity>
                     </View>
-                    <ArrowAccordion sections={Sections} />
-                </View>
-                <View style={styles.submitButtonContainer}>
-                    {createNewFood.error ? <ErrorText text={createNewFood.error.Message} style={{ marginBottom: 20 }} /> : null}
-                    <Button
-                        disabled={!canSubmit}
-                        onPress={handleSubmitButtonPress}
-                        text='Submit'
-                        backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor}
-                        textColor={theme.submitFoodScreen.submitButton.textColor} />
+                    {createNewFood.loading
+                        ? <LoadingSpinner fullScreen={false} />
+                        : (<View>
+                            <View>
+                                <Text style={styles.title}>Flavors</Text>
+                                {flavors.loading
+                                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                                    : <View style={styles.sectionContainer}>
+                                        <AttributeList
+                                            columnWrapperStyle={{ flexWrap: 'wrap' }}
+                                            wrapperStyle={styles.attributeListWrapper}
+                                            listStyle={styles.attributeList}
+                                            includeAddButton={false}
+                                            horizontal={false}
+                                            numColumns={2}
+                                            attributeType='flavor'
+                                            contentContainerStyle={styles.attributeListContainer}
+                                            tagStyle={styles.tagStyle}
+                                            tagSize={'small'}
+                                            onChange={(ids: number[]) => setSelectedFlavors(ids)}
+                                            items={flavors.data || []}
+                                            sortBy={'alphabetically'} /></View>}
+                                {flavors.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the flavors.' /> : null}
+                            </View>
+                            <View>
+                                <Text style={styles.title}>Textures</Text>
+                                {textures.loading
+                                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                                    : <View style={styles.sectionContainer}>
+                                        <AttributeList
+                                            columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+                                            wrapperStyle={styles.attributeListWrapper}
+                                            listStyle={styles.attributeList}
+                                            includeAddButton={false}
+                                            horizontal={false}
+                                            numColumns={2}
+                                            attributeType='texture'
+                                            contentContainerStyle={styles.attributeListContainer}
+                                            tagStyle={styles.tagStyle}
+                                            tagSize={'small'}
+                                            onChange={(ids: number[]) => setSelectedTextures(ids)}
+                                            items={textures.data || []}
+                                            sortBy={'alphabetically'} /></View>}
+                                {textures.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the textures.' /> : null}
+                            </View>
+                            <View>
+                                <Text style={styles.title}>Misc</Text>
+                                {misc.loading
+                                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                                    : <View style={styles.sectionContainer}>
+                                        <AttributeList
+                                            columnWrapperStyle={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}
+                                            wrapperStyle={styles.attributeListWrapper}
+                                            listStyle={styles.attributeList}
+                                            includeAddButton={false}
+                                            horizontal={false}
+                                            numColumns={2}
+                                            attributeType='miscellaneous'
+                                            contentContainerStyle={styles.attributeListContainer}
+                                            tagStyle={styles.tagStyle}
+                                            tagSize={'small'}
+                                            onChange={(ids: number[]) => setSelectedMisc(ids)}
+                                            items={misc.data || []}
+                                            sortBy={'alphabetically'} /></View>}
+                                {misc.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the miscellaneous attributes.' /> : null}
+                            </View>
+                        </View>)}
+                    <View style={styles.submitButtonContainer}>
+                        {createNewFood.error ? <ErrorText text={createNewFood.error.Message} style={{ marginBottom: 20 }} /> : null}
+                        <Button
+                            disabled={!canSubmit}
+                            onPress={handleSubmitButtonPress}
+                            text='Submit'
+                            backgroundColor={theme.submitFoodScreen.submitButton.backgroundColor}
+                            textColor={theme.submitFoodScreen.submitButton.textColor} />
+                    </View>
                 </View>
             </View>
         </ScrollView>
@@ -248,20 +243,25 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         opacity: .09
     },
     title: {
+        textAlign: 'center',
+        marginTop: 10,
         fontWeight: 'bold'
     },
     sectionContainer: {
-        alignItems: 'center'
+
     },
     attributeList: {
         flexDirection: 'row',
         marginRight: 0
     },
     attributeListContainer: {
+        width: '100%',
         flexDirection: 'column',
         paddingTop: 10
     },
     attributeListWrapper: {
+        width: '100%',
+        alignItems: 'center',
         paddingBottom: 0
     },
     tagStyle: {

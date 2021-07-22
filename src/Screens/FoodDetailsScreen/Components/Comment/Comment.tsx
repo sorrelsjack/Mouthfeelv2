@@ -23,6 +23,7 @@ const Comment = (props: CommentProps) => {
 
     let [upvoted, setUpvoted] = useState(false);
     let [downvoted, setDownvoted] = useState(false);
+    let [votes, setVotes] = useState(0);
 
     const delayedDispatch = useCallback(_.debounce((commentId: number, foodId: number, vote: number) =>
         dispatch(ManageCommentVoteAction({ commentId, foodId, vote })), 2000), []);
@@ -44,10 +45,14 @@ const Comment = (props: CommentProps) => {
             setUpvoted(false);
         }
 
+        setVotes(details.votes ?? 0);
+
     }, [details])
 
     const handleUpArrowPressed = () => {
         const upcomingState = !upvoted;
+
+        setVotes(calculateCurrentVoteTotal(upcomingState, false));
 
         setUpvoted(upcomingState);
         setDownvoted(false);
@@ -58,17 +63,19 @@ const Comment = (props: CommentProps) => {
     const handleDownArrowPressed = () => {
         const upcomingState = !downvoted;
 
+        setVotes(calculateCurrentVoteTotal(false, upcomingState));
+
         setDownvoted(upcomingState);
         setUpvoted(false);
 
         delayedDispatch(id, foodId, upcomingState === true ? -1 : 0);
     }
 
-    const calculateCurrentVoteTotal = () => {
-        if (upvoted && sentiment !== 1) return details.votes + 1;
-        if (downvoted && sentiment !== -1 && details.votes !== 0) return details.votes - 1;
-        if (!upvoted && !downvoted && userId === details.userDetails.id && details.votes !== 0) return details.votes - 1;
-        return details.votes;
+    const calculateCurrentVoteTotal = (up: boolean, down: boolean) => {
+        if (up) return votes + 1;
+        else if (down && votes !== 0) return votes - 1;
+        else if (!up && !down && userId === details.userDetails.id && votes !== 0) return votes - 1;
+        return votes;
     }
 
     return (
@@ -78,7 +85,7 @@ const Comment = (props: CommentProps) => {
                     <Icon style={styles.icon} size={14} name={'arrow-up'} color={upvoted ? theme.clickableTextColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
                 <Text style={styles.vote}>
-                    {calculateCurrentVoteTotal()}
+                    {votes}
                 </Text>
                 <TouchableOpacity onPress={handleDownArrowPressed}>
                     <Icon style={styles.icon} size={14} name={'arrow-down'} color={downvoted ? theme.clickableTextColor : theme.comment.arrow.default.color} />

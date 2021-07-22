@@ -33,6 +33,23 @@ export const Comments = (state: CommentsState = new CommentsState(), action: Red
                 }
             }
         }
+        /*
+        case Actions.Comments.ManageVote.Success: {
+            const { id, votes } = action.data.data;
+
+            let current = state.byFood.data?.find(c => c.id === id) ?? {};
+            current.votes = votes;
+            const withoutNew = state.byFood.data?.filter(c => c.id !== id);
+
+            return {
+                ...state,
+                byFood: { ...state.byFood, data: withoutNew?.concat(current) },
+                manageVote: {
+                    loading: false
+                }
+            }
+        }
+        */
         default:
             return state;
     }

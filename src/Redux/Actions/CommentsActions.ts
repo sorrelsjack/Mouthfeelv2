@@ -43,3 +43,18 @@ export const ManageCommentVoteAction = (request: ManageCommentVoteRequest) => {
         }
     }
 }
+
+/*
+export const ManageCommentVoteAction = (request: ManageCommentVoteRequest) => {
+    return async (dispatch: Dispatch) => {
+        try {
+            dispatch({ type: Actions.Comments.ManageVote.Loading })
+            const comment = await axios.put(Urls.comments.vote(), request);
+            dispatch({ type: Actions.Comments.ManageVote.Success, data: comment })
+        }
+        catch (error) {
+            dispatch({ type: Actions.Comments.ManageVote.Failed, error })
+        }
+    }
+}
+*/

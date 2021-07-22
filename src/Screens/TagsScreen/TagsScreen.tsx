@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { connect, useDispatch } from 'react-redux';
 import { ThemeProp } from '../../Models';
-import { AttributeList, Button, LoadingSpinner } from '../../Components';
+import { AttributeList, Button, ErrorText, LoadingSpinner } from '../../Components';
 import {
     GetAllFlavorsAction,
     GetAllTexturesAction,
@@ -12,6 +12,7 @@ import {
 import { useRoute, useNavigation } from '@react-navigation/native';
 import { MouthfeelState, FoodDetails, ApiData, VotableAttribute, AddOrUpdateAttributeRequest, ApiOperation } from '../../Redux/Models';
 import { FormatAsTitleCase } from '../../Common';
+import Toast from 'react-native-simple-toast';
 
 interface TagsScreenProps {
     userId: number,
@@ -25,7 +26,6 @@ interface TagsScreenProps {
     addOrUpdate: ApiOperation
 }
 
-// TODO: Fix issue where the icon is going off screen
 const TagsScreen = (props: TagsScreenProps) => {
     const { userId, selected, textures, flavors, misc, addOrUpdate } = props;
     const { id, name } = selected?.data ?? {};
@@ -36,7 +36,6 @@ const TagsScreen = (props: TagsScreenProps) => {
     const navigation = useNavigation();
     const route = useRoute();
 
-    // TODO: Spread result of new attribute being added into the global state... Or maybe the API should return a response that is jsut the whole object
     const { attributeType, preselectedAttributes } = route.params;
 
     useEffect(() => {
@@ -55,10 +54,15 @@ const TagsScreen = (props: TagsScreenProps) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: FormatAsTitleCase(`${FormatAsTitleCase(`${attributeType}s For ${name}`)}`),
+            title: FormatAsTitleCase(`${FormatAsTitleCase(`${attributeType}${attributeType !== 'miscellaneous' ? `s` : ''} For ${name}`)}`),
         });
     }, [navigation]);
-    
+
+    useEffect(() => {
+        if (addOrUpdate.success) Toast.show(`'${getAttributes().filter(a => selectedAttributes.some(s => s === a.id)).map(a => a.name).join(', ')}' added to ${FormatAsTitleCase(name)}!`);
+
+    }, [addOrUpdate.success])
+
     const getLoadingState = () => {
         switch (attributeType) {
             case 'flavor': return flavors.loading
@@ -77,7 +81,7 @@ const TagsScreen = (props: TagsScreenProps) => {
         }
     }
 
-    const handleSubmitPressed = () => {       
+    const handleSubmitPressed = () => {
         selectedAttributes.forEach(a => dispatch(AddOrUpdateAttributeAction(attributeType, { foodId: id, userId: userId, attributeId: a })));
     }
 
@@ -107,6 +111,7 @@ const TagsScreen = (props: TagsScreenProps) => {
                             <Button text='Submit' disabled={addOrUpdate.loading} onPress={handleSubmitPressed} />
                         </View>
                     </>}
+                {addOrUpdate.error ? <ErrorText style={{ textAlign: 'center' }} scheme='light' text='There was an error updating the attributes.' /> : null}
             </View>
         </ScrollView>
     )

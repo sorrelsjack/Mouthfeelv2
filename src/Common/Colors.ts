@@ -1,9 +1,9 @@
 export const Colors = {
-    primaryThemeColor: '#6200ea',
+    primaryThemeColor: '#270061',
     primaryThemeTextColor: '#ffffff',
     errorColorLight: '#ff0000',
     errorColorDark: '#470000',
-    clickableTextColor: '#6200ea',
+    clickableTextColor: '#270061',
     heartSelectedColor: '#ff0000',
     heartBrokenSelectedColor: '#910900',
     bookmarkSelectedColor: '#e38d02',
@@ -76,7 +76,7 @@ export const Colors = {
 
 export const GetColor = () => Colors;
 
-export const GetDefaultPrimaryThemeColor = () => '#6200ea';
+export const GetDefaultPrimaryThemeColor = () => '#270061';
 
 export const GetDefaultPrimaryThemeTextColor = () => '#ffffff';
 

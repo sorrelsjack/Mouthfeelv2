@@ -7,17 +7,18 @@ import { Routes, RetrieveJwt, JwtIsValid, IsIos } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { AuthenticateUserAction, GetCurrentUserAction, RegisterUserAction } from '../../Redux/Actions';
-import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData, CreateUserRequest } from '../../Redux/Models';
+import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData, CreateUserRequest, ApiOperation } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
 
 interface LoginScreenProps {
     theme: ThemeProp,
     profile: ApiData<AuthenticateUserResponse>,
+    createNewUser: ApiOperation
 }
 
 const LoginScreen = (props: LoginScreenProps) => {
-    const { theme, profile } = props;
+    const { theme, profile, createNewUser } = props;
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -111,7 +112,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                                     secureTextEntry={true} /></> : <LoadingView />}
 
                         </>}
-                    {showRegisterForm && <RegisterForm onSubmitAllowed={handleRegisterAllowed} />}
+                    {(showRegisterForm) && !createNewUser.loading ? <><RegisterForm onSubmitAllowed={handleRegisterAllowed} /></> : <><LoadingView /></>}
                 </View>
                 <Button
                     style={styles.loginButton}
@@ -137,7 +138,8 @@ const LoginScreen = (props: LoginScreenProps) => {
 export default withTheme(connect((state: MouthfeelState) => {
 
     return {
-        profile: state.user.profile
+        profile: state.user.profile,
+        createNewUser: state.user.createNewUser
     }
 
 })(LoginScreen));

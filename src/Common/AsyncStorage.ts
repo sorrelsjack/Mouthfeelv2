@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { AuthenticateUserResponse } from '../Redux/Models';
 
 export const AsyncStorageKeys = {
+    seenAppIntro: 'seenAppIntro',
     userProfile: 'userProfile',
     jwt: 'jwt'
 }
@@ -24,3 +25,8 @@ export const RemoveUserProfile = async () => {
 export const RetrieveJwt = async () => {
     return (await RetrieveUserProfile())?.token;
 }
+
+// TODO: maybe have multiple keys
+export const RetrieveSeenIntroStatus = async () => await AsyncStorage.getItem(AsyncStorageKeys.seenAppIntro);
+
+export const SetSeenIntroStatus = async () => await AsyncStorage.setItem(AsyncStorageKeys.seenAppIntro, 'true');

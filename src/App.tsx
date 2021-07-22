@@ -12,7 +12,8 @@ import {
   LikedScreen,
   DislikedScreen,
   RecommendedScreen,
-  ToTryScreen
+  ToTryScreen,
+  AppIntroScreen
 } from './Screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -25,6 +26,8 @@ import { Startup, GlobalFontName, navigationRef } from './Config'
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
+
+// TODO: Help icon needs to do something -- help screen?
 
 export const App = () => {
   return (
@@ -41,6 +44,7 @@ export const App = () => {
               }
             }}
             initialRouteName={Routes.Login}>
+            <Stack.Screen name={Routes.AppIntro} component={AppIntroScreen} options={{ headerShown: false }} />
             <Stack.Screen name={Routes.Login} component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen
               name={Routes.Home}
@@ -48,9 +52,12 @@ export const App = () => {
               options={({ navigation }) =>
               ({
                 headerRight: () => (
-                  <View style={{ padding: 15 }}>
+                  <View style={{ padding: 15, flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => navigation.navigate(Routes.Settings)}>
-                      <Icon name={'cog'} color={Colors.primaryThemeTextColor} size={20} />
+                      <Icon name={'cog'} style={{ paddingLeft: 10, paddingRight: 5 }} color={Colors.primaryThemeTextColor} size={20} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => { }}>
+                      <Icon name={'question'} style={{ paddingLeft: 5 }} color={Colors.primaryThemeTextColor} size={20} />
                     </TouchableOpacity>
                   </View>
                 )

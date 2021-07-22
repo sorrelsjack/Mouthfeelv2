@@ -11,19 +11,18 @@ import { GlobalFontName } from '../../Config';
 import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
 import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface HomeScreenProps {
     theme: ThemeProp,
-    all: FoodDetails[],
-    searchResults: ApiData<number[]>
+    all: FoodDetails[]
 }
 
 const HomeScreen = (props: HomeScreenProps) => {
-    const { theme, all, searchResults } = props;
+    const { theme, all } = props;
 
     const [searchIsActive, setSearchIsActive] = useState(false);
 
-    const dispatch = useDispatch();
     const navigation = useNavigation();
     const styles = createStyles(theme);
 
@@ -36,37 +35,22 @@ const HomeScreen = (props: HomeScreenProps) => {
     const items = [
         { icon: 'heart', text: 'Liked', route: Routes.Liked },
         { icon: 'heart-broken', text: 'Disliked', route: Routes.Disliked },
-        { icon: 'location-arrow', text: 'Recommended', route: Routes.Recommended },
-        { icon: 'list-ul', text: 'To Try', route: Routes.ToTry },
+        { icon: 'location-arrow', text: 'Recommended Foods', route: Routes.Recommended },
+        { icon: 'list-ul', text: 'Foods To Try', route: Routes.ToTry },
         { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
     ]
 
-    const NoDataView = () => {
-        if (searchResults.error) return <ErrorView onButtonPress={() => { dispatch(GetLikedFoodsAction()) }} onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
-        if (!searchResults.loading && !searchResults.data?.length) return <EmptyView text='No results found' />
-        return null;
-    }
-
-    const SearchResults = () => {
-        return (
-            <View style={{ justifyContent: 'flex-start', height: '100%' }}>
-                {searchResults.loading ? <LoadingSpinner /> : <View><FoodList items={searchResults.data ? all.filter(f => searchResults.data?.some(r => r === f.id)) : []} /></View>}
-                <NoDataView />
-            </View>
-        )
-    }
-
     return (
-        <View style={styles.wrapper}>
-            <SearchInterface onSearchStateChange={setSearchIsActive} />
-            { searchIsActive 
-                ? <SearchResults /> 
-                : <FlatList
+        <ScrollView style={styles.wrapper}>
+            <SearchInterface
+                onSearchStateChange={setSearchIsActive} />
+            {!searchIsActive &&
+                (<FlatList
                     data={items}
                     ItemSeparatorComponent={renderItemSeparator}
                     renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
-                    keyExtractor={item => item.text} />}
-        </View>
+                    keyExtractor={item => item.text} />)}
+        </ScrollView>
     )
 }
 

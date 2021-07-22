@@ -16,15 +16,15 @@ interface BaseAnimatedViewProps {
 }
 
 const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
-    const { 
-        fullScreen = false, 
-        view, 
-        text, 
-        fontSize = 20,
+    const {
+        fullScreen = false,
+        view,
+        text,
+        fontSize = 18,
         buttonText,
-        onButtonPress = () => {},
+        onButtonPress = () => { },
         secondButtonText,
-        onSecondButtonPress = () => {}
+        onSecondButtonPress = () => { }
     } = props;
 
     const window = useWindowDimensions();
@@ -39,8 +39,10 @@ const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
                 {view}
                 <Text style={styles.text}>{text}</Text>
             </View>
-            {buttonText && <Button style={styles.button} text={buttonText} onPress={onButtonPress} />}
-            {secondButtonText && <Button style={styles.button} text={secondButtonText} onPress={onSecondButtonPress} />}
+            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+                {buttonText && <Button style={styles.button} textStyle={styles.buttonText} text={buttonText} onPress={onButtonPress} />}
+                {secondButtonText && <Button style={styles.button} textStyle={styles.buttonText} text={secondButtonText} onPress={onSecondButtonPress} />}
+            </View>
         </View>
     )
 
@@ -50,7 +52,7 @@ export default BaseAnimatedView;
 
 const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: number, extraAnimationHeight: number, fontSize: number) => StyleSheet.create({
     fullScreenWrapper: {
-        height: fullScreen ? windowHeight - headerHeight - extraAnimationHeight : '100%', 
+        height: fullScreen ? windowHeight - headerHeight - extraAnimationHeight : '100%',
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -59,17 +61,20 @@ const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: n
         height: fullScreen ? (windowHeight - headerHeight - extraAnimationHeight) / 2 : 250
     },
     button: {
-        width: '70%', 
+        width: '70%',
         marginTop: 20
+    },
+    buttonText: {
+        fontSize: 14
     },
     container: {
         marginTop: extraAnimationHeight,
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center'
     },
     fullScreenContainer: {
         marginTop: -extraAnimationHeight,
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center',
     },
     text: {

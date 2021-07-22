@@ -62,7 +62,11 @@ const AttributeList = (props: AttributeListProps) => {
     const sortItems = (items: VotableAttribute[]) => {
         if (sortBy === 'custom') return items.sort(customSort);
         return sortBy === 'byVotes' 
-            ? items.sort((a, b) => ((a.votes ?? 0) < (b.votes ?? 0)) ? 1 : -1)
+            ? items.sort((a, b) => {
+                var diff = (a.votes ?? 0) - (b.votes ?? 0);
+                if (diff === 0) return (a.name > b.name) ? 1 : -1;
+                return (a.votes ?? 0) < (b.votes ?? 0) ? 1 : -1
+            })
             : items.sort((a, b) => ((a.name > b.name) ? 1 : -1))
     }
 

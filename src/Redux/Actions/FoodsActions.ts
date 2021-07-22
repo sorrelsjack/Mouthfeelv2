@@ -12,20 +12,16 @@ export const SetSelectedFoodAction = (food: FoodDetails) => {
     }
 }
 
-// TODO: Fix issue where it thinks there's no name entered
 export const CreateFoodAction = (food: CreateFoodRequest) => {
     let formData = new FormData();
-
-    console.log(food)
 
     const imagePath = IsIos() ? food.image.replace("file://", "") : food.image;
 
     formData.append('name', food.name);
     formData.append('image', { uri: imagePath, name: `image-${uuidv4()}`, type: 'image/jpeg' });
-    // TODO: OK, flavors, textures, and misc are the issue
-    formData.append('flavors', food.flavors);
-    formData.append('textures', food.textures);
-    formData.append('miscellaneous', food.miscellaneous);
+    formData.append('flavors', food.flavors.toString());
+    formData.append('textures', food.textures.toString());
+    formData.append('miscellaneous', food.miscellaneous.toString());
 
     return async (dispatch: Dispatch) => {
         try {
@@ -173,8 +169,8 @@ export const AddOrUpdateAttributeAction = (attributeType: AttributeType, request
 
         try {
             dispatch({ type: Actions.AddOrUpdateAttribute.Loading })
-            await axios.post(url, request);
-            dispatch({ type: Actions.AddOrUpdateAttribute.Success })
+            const res = (await axios.post(url, request)).data;
+            dispatch({ type: Actions.AddOrUpdateAttribute.Success, data: { response: res, foodId: request.foodId, attributeType: attributeType, attributeId: request.attributeId } })
         }
         catch (error) {
             dispatch({ type: Actions.AddOrUpdateAttribute.Failed, error });

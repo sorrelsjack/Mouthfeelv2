@@ -42,7 +42,7 @@ const Tag = (props: TagProps) => {
     const { id, name, votes, sentiment, description } = item;
 
     const [tooltipHeight, setTooltipHeight] = useState(size === 'regular' ? 60 : 40);
-    const [fontSize, setFontSize] = useState(size === 'regular' ? 18 : 13);
+    const [fontSize, setFontSize] = useState(size === 'regular' ? 18 : 11);
     const [isPressed, setIsPressed] = useState(false);
 
     const dispatch = useDispatch();
@@ -50,8 +50,8 @@ const Tag = (props: TagProps) => {
     const styles = createStyles(size, disabled);
 
     const setWrapperStyle = () => isPressed
-        ? { ...styles.wrapper, backgroundColor: InvertColor(theme.primaryThemeColor) }
-        : { ...styles.wrapper, backgroundColor: theme.primaryThemeColor }
+        ? { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : InvertColor(theme.primaryThemeColor) }
+        : { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : theme.primaryThemeColor }
 
     const setTextStyle = () => isPressed
         ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor), fontSize: fontSize }
@@ -80,7 +80,6 @@ const Tag = (props: TagProps) => {
         setTooltipHeight(height + 30);
     }
 
-    // TODO: Refine the logic here... The inclusion of sentiment is throwing everything off
     const calculateCurrentVoteTotal = () => {
         if (isPressed && votes === 1 && sentiment === 1) return 1;
         if (isPressed) return (votes ?? 0) + 1;
@@ -149,7 +148,6 @@ const createStyles = (size: TagSize, disabled: boolean) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        opacity: disabled ? .8 : 1,
         borderRadius: 20,
         paddingVertical: 5,
         paddingHorizontal: 10,

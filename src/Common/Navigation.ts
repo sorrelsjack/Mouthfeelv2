@@ -1,4 +1,5 @@
 const Routes = {
+    AppIntro: 'AppIntro',
     Login: 'Login',
     Home: 'Home',
     FoodDetails: 'FoodDetails',

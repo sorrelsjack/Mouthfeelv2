@@ -98,8 +98,6 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     dispatch(AddOrRemoveFoodToTryAction(id));
   }
 
-  // TODO: Fix issue here where the attributes list seems to shift around after doing an action like liking / disliking
-
   useLayoutEffect(() => {
     navigation.setOptions({
       title: FormatAsTitleCase(name),
@@ -143,8 +141,8 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
               <CircleButton icon='heart-broken' iconSelectedColor={theme.heartBrokenSelectedColor} onPress={handleDislikedPressed} isActive={markedDisliked} />
             </View>
             <View style={styles.container}>
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: `data:image/png;base64,${images[0].image}` }} style={styles.image} />
+              <View style={[styles.imageContainer, !images[0]?.image ? { opacity: .3 } : {}]}>
+                <Image source={images[0]?.image ? { uri: `data:image/png;base64,${images[0]?.image}` } : require('../../Assets/plate.png')} style={styles.image} />
               </View>
               <View style={styles.titleSection}>
                 <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>

@@ -12,7 +12,7 @@ import {
 import { InputField, Button } from '../../Components';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
-import { CONTACT_US_EMAIl } from '@env';
+import { CONTACT_US_EMAIL } from '@env';
 
 interface ContactUsScreenProps {
     theme: ThemeProp;
@@ -28,7 +28,7 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
     const styles = createStyles(theme);
 
     const onSendPressed = () => {
-        Linking.openURL(`mailto:${CONTACT_US_EMAIl}?subject=${subject}&body=${message}`)
+        Linking.openURL(`mailto:${CONTACT_US_EMAIL}?subject=${subject}&body=${message}`)
     }
 
     return (

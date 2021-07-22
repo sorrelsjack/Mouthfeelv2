@@ -63,7 +63,6 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.GetRecommendedFoods.Failed:
             return { ...state, recommended: state.recommended.failed(action.error?.response?.data) }
 
-        // TODO: Might need a reset associated with this
         case Actions.CreateFood.Loading:
             return { ...state, createNewFood: state.createNewFood.startLoading() }
         case Actions.CreateFood.Success:
@@ -87,18 +86,29 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.AddOrRemoveFoodToTry.Failed:
             return { ...state, toTry: state.foodToTryUpdate.failed(action.error?.response?.data) }
 
-        // TODO: do an update in All
         case Actions.AddOrUpdateAttribute.Loading:
             return { ...state, addOrUpdateAttribute: state.addOrUpdateAttribute.startLoading() }
-        case Actions.AddOrUpdateAttribute.Success:
-            return { ...state, addOrUpdateAttribute: state.addOrUpdateAttribute.succeeded() }
+        case Actions.AddOrUpdateAttribute.Success: {
+            const { response, foodId, attributeType, attributeId } = action.data;
+
+            let food = state.all.find(f => f.id === foodId) ?? {};
+            const withoutNew = state.all.filter(f => f.id !== foodId);
+
+            switch (attributeType) {
+                case 'flavor': food.flavors = !food?.flavors.some(f => f.id === attributeId) ? food?.flavors.concat(response) : food?.flavors; break;
+                case 'texture': food.textures = !food?.textures.some(f => f.id === attributeId) ? food?.textures.concat(response) : food?.textures; break;
+                case 'miscellaneous': food.miscellaneous = !food?.miscellaneous.some(f => f.id === attributeId) ? food?.miscellaneous.concat(response) : food?.miscellaneous; break;
+            }
+
+            return { ...state, all: withoutNew.concat(food), selected: { ...state.selected, data: food }, addOrUpdateAttribute: state.addOrUpdateAttribute.succeeded() }
+        }
         case Actions.AddOrUpdateAttribute.Failed:
             return { ...state, addOrUpdateAttribute: state.addOrUpdateAttribute.failed(action.error?.response?.data) }
 
         case Actions.SearchFoods.Loading:
             return { ...state, searchResults: state.searchResults.startLoading() }
         case Actions.SearchFoods.Success:
-            return { ...state, all: AddToAll(action.data.data), searchResults: state.searchResults.succeeded(action.data.data.map(f => f.id)) }
+            return { ...state, all: AddToAll(action.data), searchResults: state.searchResults.succeeded(action.data.data.map(f => f.id)) }
         case Actions.SearchFoods.Failed:
             return { ...state, searchResults: state.searchResults.failed(action.error?.response?.data) }
 

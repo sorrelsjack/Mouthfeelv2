@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     View,
@@ -39,7 +39,7 @@ const FoodList = (props: FoodListProps) => {
         return (
             <TouchableOpacity key={item.id} onPress={handleItemPressed}>
                 <View style={styles.cellWrapper}>
-                    <Image style={styles.image} source={{ uri: `data:image/png;base64,${item.images[0].image}` }} />
+                    <Image style={[styles.image, !item.images[0]?.image ? { opacity: .3 } : {}]} source={item.images[0]?.image ? { uri: `data:image/png;base64,${item.images[0]?.image}` } : require('../../Assets/plate.png')} />
                     <View style={styles.cellTextContainer}>
                         <View style={{ width: '100%', flexDirection: 'row' }}>
                             <Text style={styles.cellTitle}>

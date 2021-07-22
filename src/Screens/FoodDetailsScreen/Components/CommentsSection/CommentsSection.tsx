@@ -46,12 +46,11 @@ const CommentsSection = (props: CommentsSectionProps) => {
 
     useEffect(() => {
         if (create.success) setNewComment('');
-
     }, [create])
 
     const handleHeaderTextPressed = () => {
         if (!isExpanded) dispatch(GetCommentsForFoodAction(selected?.data?.id));
-        setComponentIsReady(isExpanded ? true : false);
+        setComponentIsReady(!isExpanded ? true : false);
         setIsExpanded(!isExpanded);
     }
 
@@ -67,7 +66,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
     }
 
     const getButtonStyle = () => {
-        return !buttonDisabled ? styles.button : { ...styles.button, opacity: .7 } ;
+        return !buttonDisabled ? styles.button : { ...styles.button, opacity: .7 };
     }
 
     const NoCommentsView = () => {
@@ -114,14 +113,14 @@ const CommentsSection = (props: CommentsSectionProps) => {
                 <Text style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
             </TouchableOpacity>
             { isExpanded && <CommentList />}
-            {(comments?.data?.length && isExpanded) ?
+            {isExpanded ?
                 <View style={styles.commentInputContainer}>
                     <View style={{ width: newComment.length ? '90%' : '100%' }}>
                         <InputField
                             multiline
                             onBlur={setNewComment}
                             onSubmitEditing={setNewComment}
-                            placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like`}
+                            placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like!`}
                             placeholderTextColor={'rgba(0, 0 , 0 , .7)'}
                             style={styles.commentInput} />
                     </View>
@@ -131,7 +130,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
                         </TouchableOpacity>
                     </View> : null}
                 </View> : null}
-                {isExpanded && create.error ? <ErrorText text='There was an error submitting this comment.' style={{ marginTop: 10 }} /> : null}
+            {isExpanded && create.error ? <ErrorText text='There was an error submitting this comment.' style={{ marginTop: 10 }} /> : null}
         </KeyboardAvoidingView>
     )
 }
@@ -141,7 +140,7 @@ export default withTheme(connect((state: MouthfeelState) => {
 
     return {
         create: state.comments.create,
-        comments: selected?.data?.id ? state.comments.byFood : [],
+        comments: state.comments.byFood,
         userId: state.user.profile.data?.id,
         selected
     }
@@ -160,20 +159,20 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         flexDirection: 'row'
     },
     commentInput: {
-        width: '100%', 
+        width: '100%',
         marginTop: 20,
         backgroundColor: theme.page.backgroundColor
     },
     buttonContainer: {
-        alignItems: 'center', 
+        alignItems: 'center',
         justifyContent: 'center',
         marginTop: 20,
     },
     button: {
-        flex: 1, 
-        justifyContent: 'center', 
-        backgroundColor: 
-        theme.primaryThemeColor, 
+        flex: 1,
+        justifyContent: 'center',
+        backgroundColor:
+            theme.primaryThemeColor,
         padding: 10
     },
     image: {
