@@ -1,11 +1,10 @@
 import { Food } from './Food';
 import { FoodDetails } from './FoodDetails';
 import { CreateFoodRequest } from './CreateFoodRequest';
-import { ApiData, ApiOperation } from '.';
+import { ApiData, ApiOperation, FoodSummary } from '.';
 
-// TODO: Maybe Liked / Disliked / To Try should return a more simple response in the API
 export class FoodsState {
-    all: FoodDetails[];
+    all: Food[];
 
     foodToTryUpdate: ApiOperation;
     sentimentUpdate: ApiOperation;
@@ -20,7 +19,7 @@ export class FoodsState {
 
     selected: {
         loading: boolean;
-        data: FoodDetails | null;
+        data: Food | null;
     }
 
     constructor () {

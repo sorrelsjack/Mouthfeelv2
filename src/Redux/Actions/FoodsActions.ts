@@ -2,11 +2,11 @@ import { Actions } from '.';
 import axios from 'axios';
 import { Dispatch, } from 'redux';
 import { IsIos, Urls } from '../../Common';
-import { AddOrUpdateAttributeRequest, CreateFoodRequest, FoodDetails, MouthfeelState } from '../Models';
+import { AddOrUpdateAttributeRequest, CreateFoodRequest, FoodDetails, FoodSummary, MouthfeelState } from '../Models';
 import { AttributeType } from '../../Models';
 import { v4 as uuidv4 } from 'uuid';
 
-export const SetSelectedFoodAction = (food: FoodDetails) => {
+export const SetSelectedFoodAction = (food: FoodSummary) => {
     return async (dispatch: Dispatch) => {
         dispatch({ type: Actions.SetSelectedFood, data: food });
     }

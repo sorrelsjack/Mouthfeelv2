@@ -1,10 +1,25 @@
 import { Actions } from '../Actions';
-import { ApiData, FoodDetails, FoodsState, ReduxAction } from '../Models';
+import { ApiData, Food, FoodDetails, FoodsState, FoodSummary, ReduxAction } from '../Models';
 
 export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction) => {
 
-    const AddToAll = (data: ApiData<FoodDetails[]>) => {
-        const newIds = data.data?.map(d => d.id);
+    const AddToAll = (data: ApiData<any[]>) => {
+        let formattedData = data.data?.map(d => { 
+            return { 
+                id: d.id, 
+                name: d.name, 
+                images: d.images, 
+                sentiment: d.sentiment, 
+                toTry: d.toTry, 
+                topThree: d.topThree, 
+                imageUrl: d.imageUrl, 
+                flavors: d.flavors, 
+                textures: d.textures, 
+                miscellaneous: d.miscellaneous 
+            } 
+        });
+        console.log(formattedData)
+        const newIds = formattedData?.map(d => d.id);
         const withoutNew = state.all.filter(f => !newIds?.some(i => i === f.id));
         return withoutNew.concat(data.data ?? [])
     }

@@ -16,15 +16,16 @@ import { useNavigation } from '@react-navigation/native';
 import { LoadingSpinner, Tag } from '..';
 import { withTheme, Theme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { FoodSummary } from '../../Redux/Models';
 
 interface StandardIconsDisplayProps {
     theme: ThemeProp,
-    foodDetails: FoodDetails;
+    foodSummary: FoodSummary;
 }
 
 const StandardIconsDisplay = (props: StandardIconsDisplayProps) => {
     const { theme } = props;
-    const { id, sentiment, toTry } = props.foodDetails ?? {};
+    const { id, sentiment, toTry } = props.foodSummary ?? {};
 
     const dispatch = useDispatch();
 

@@ -12,6 +12,7 @@ export * from './FoodDetails';
 export * from './FoodImage';
 export * from './FoodIngredient';
 export * from './FoodsState';
+export * from './FoodSummary';
 export * from './ManageCommentVoteRequest';
 export * from './ManageFoodSentimentRequest';
 export * from './ManageFoodSentimentResponse';

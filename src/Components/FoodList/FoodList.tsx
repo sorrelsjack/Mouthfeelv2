@@ -16,9 +16,10 @@ import { useNavigation } from '@react-navigation/native';
 import { LoadingSpinner, Tag } from '..';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { StandardIconsDisplay } from '..';
+import { FoodSummary } from '../../Redux/Models';
 
 interface FoodListProps {
-    items: FoodDetails[],
+    items: FoodSummary[],
 }
 
 const FoodList = (props: FoodListProps) => {
@@ -27,9 +28,9 @@ const FoodList = (props: FoodListProps) => {
     const navigation = useNavigation();
     const dispatch = useDispatch();
 
-    const Cell = (props: { item: FoodDetails }) => {
+    const Cell = (props: { item: FoodSummary }) => {
         const { item } = props;
-        const mostVoted = item.flavors.concat(item.textures).concat(item.miscellaneous).sort((a, b) => (a.votes ?? 0) - (b.votes ?? 0)).slice(0, 3);
+        const mostVoted = item.topThree;
 
         const handleItemPressed = () => {
             dispatch(SetSelectedFoodAction(item));
@@ -45,7 +46,7 @@ const FoodList = (props: FoodListProps) => {
                             <Text style={styles.cellTitle}>
                                 {FormatAsTitleCase(item.name)}
                             </Text>
-                            <StandardIconsDisplay foodDetails={item} />
+                            <StandardIconsDisplay foodSummary={item} />
                         </View>
                         <Text style={{ fontSize: 16 }}>
                             {`Attributes:`}
