@@ -112,7 +112,7 @@ const LoginScreen = (props: LoginScreenProps) => {
                                     secureTextEntry={true} /></> : <LoadingView />}
 
                         </>}
-                    {(showRegisterForm) && !createNewUser.loading ? <><RegisterForm onSubmitAllowed={handleRegisterAllowed} /></> : <><LoadingView /></>}
+                    {(showRegisterForm) && (!createNewUser.loading ? <><RegisterForm onSubmitAllowed={handleRegisterAllowed} /></> : <><LoadingView /></>)}
                 </View>
                 <Button
                     style={styles.loginButton}

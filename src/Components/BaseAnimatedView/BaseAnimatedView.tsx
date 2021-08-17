@@ -62,6 +62,7 @@ const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: n
     },
     button: {
         width: '70%',
+        padding: 15,
         marginTop: 20
     },
     buttonText: {
