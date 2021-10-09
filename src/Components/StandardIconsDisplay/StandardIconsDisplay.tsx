@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     View,
@@ -16,6 +16,8 @@ import { useNavigation } from '@react-navigation/native';
 import { LoadingSpinner, Tag } from '..';
 import { withTheme, Theme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import Toast from 'react-native-simple-toast';
+import _ from 'lodash';
 
 interface StandardIconsDisplayProps {
     theme: ThemeProp,
@@ -24,13 +26,16 @@ interface StandardIconsDisplayProps {
 
 const StandardIconsDisplay = (props: StandardIconsDisplayProps) => {
     const { theme } = props;
-    const { id, sentiment, toTry } = props.foodDetails ?? {};
+    const { id, name, sentiment, toTry } = props.foodDetails ?? {};
 
     const dispatch = useDispatch();
 
     const [markedLiked, setMarkedLiked] = useState(false);
     const [markedDisliked, setMarkedDisliked] = useState(false);
     const [markedToTry, setMarkedToTry] = useState(false);
+
+    const delayedDispatch = useCallback(_.debounce((foodId: number, sentiment: number) =>
+    dispatch(ManageFoodSentimentAction(foodId, sentiment)), 500), []);
 
     useEffect(() => {
         if (sentiment === 1) setMarkedLiked(true);
@@ -46,7 +51,8 @@ const StandardIconsDisplay = (props: StandardIconsDisplayProps) => {
 
         setMarkedLiked(updatedStatus);
         if (updatedStatus === true) setMarkedDisliked(false);
-        dispatch(ManageFoodSentimentAction(id, updatedStatus === true ? 1 : 0));
+        Toast.show(`'${FormatAsTitleCase(name)}' ${!updatedStatus ? 'added to' : 'removed from'} list of liked foods!`);
+        delayedDispatch(id, updatedStatus === true ? 1 : 0);
     }
 
     const handleDislikedPressed = () => {
@@ -54,13 +60,14 @@ const StandardIconsDisplay = (props: StandardIconsDisplayProps) => {
 
         setMarkedDisliked(updatedStatus);
         if (updatedStatus === true) setMarkedLiked(false);
-        dispatch(ManageFoodSentimentAction(id, updatedStatus === true ? -1 : 0));
+        Toast.show(`'${FormatAsTitleCase(name)}' ${!updatedStatus ? 'added to' : 'removed from'} list of disliked foods!`);
+        delayedDispatch(id, updatedStatus === true ? -1 : 0);
     }
 
     const handleToTryPressed = () => {
-        const updatedStatus = !markedToTry;
-
-        setMarkedToTry(updatedStatus);
+        const initialMarkedToTry = markedToTry;
+        setMarkedToTry(!markedToTry);
+        Toast.show(`'${FormatAsTitleCase(name)}' ${!initialMarkedToTry ? 'added to' : 'removed from'} list of foods to try!`);
         dispatch(AddOrRemoveFoodToTryAction(id));
     }
 

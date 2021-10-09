@@ -27,7 +27,7 @@ import {
   GetDefaultHeartBrokenSelectedColor
 } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
-import { getColorFromURL } from 'rn-dominant-color';
+//import { getColorFromURL } from 'rn-dominant-color';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
