@@ -10,7 +10,8 @@ const Routes = {
     Liked: 'Liked',
     Disliked: 'Disliked',
     Recommended: 'Recommended',
-    ToTry: 'ToTry'
+    ToTry: 'ToTry',
+    Help: 'Help'
 }
 
 export default Routes;

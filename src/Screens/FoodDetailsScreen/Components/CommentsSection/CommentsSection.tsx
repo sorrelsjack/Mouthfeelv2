@@ -118,6 +118,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
                     <View style={{ width: newComment.length ? '90%' : '100%' }}>
                         <InputField
                             multiline
+                            editable={!comments.loading}
                             onBlur={setNewComment}
                             onSubmitEditing={setNewComment}
                             placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like!`}

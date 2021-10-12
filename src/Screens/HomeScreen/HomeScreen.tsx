@@ -18,6 +18,7 @@ interface HomeScreenProps {
     all: FoodDetails[]
 }
 
+// TODO: Analytics
 const HomeScreen = (props: HomeScreenProps) => {
     const { theme, all } = props;
 

@@ -95,21 +95,21 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setNameChecked(!nameChecked)}
                     checkedColor={theme.primaryThemeColor}
-                    containerStyle={{ marginLeft: 0, marginRight: 0 }} />
+                    containerStyle={{ flexShrink: 1, marginLeft: 0, marginRight: 0 }} />
                 <CheckBox
                     title='Ingredients'
                     checked={ingredientsChecked}
                     size={14}
                     onPress={() => setIngredientsChecked(!ingredientsChecked)}
                     checkedColor={theme.primaryThemeColor}
-                    containerStyle={{ marginRight: 0 }} />
+                    containerStyle={{ flexShrink: 1, marginRight: 0 }} />
                 <CheckBox
                     title='Attributes'
                     checked={attributesChecked}
                     size={14}
                     onPress={() => setAttributesChecked(!attributesChecked)}
                     checkedColor={theme.primaryThemeColor}
-                    containerStyle={{ marginRight: 0 }} />
+                    containerStyle={{ flexShrink: 1, marginRight: 0 }} />
             </View>
             <View style={styles.buttonsContainer}>
                 <Button style={styles.button} textStyle={styles.buttonText} text='Search' onPress={handleSubmit} />
@@ -124,10 +124,9 @@ export default withTheme(SearchInterface);
 
 const styles = StyleSheet.create({
     checkboxContainer: {
+        flex: 1,
         flexDirection: 'row',
-        flexWrap: 'wrap',
         marginLeft: 0,
-        marginRight: -15,
         marginTop: 5,
         marginBottom: -5
     },

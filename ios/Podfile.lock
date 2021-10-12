@@ -347,8 +347,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-navigation"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
-  RNDominantColor:
-    :path: "../node_modules/rn-dominant-color"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNReanimated:

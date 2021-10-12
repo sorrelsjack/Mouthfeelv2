@@ -13,6 +13,7 @@ interface InputFieldProps {
     placeholderTextColor?: string
     multiline?: boolean;
     value?: string;
+    editable?: boolean;
     onBlur?: (value: string) => any;
     onTextChange?: (value: string) => any;
     onSubmitEditing?: (value: string) => any;
@@ -28,6 +29,7 @@ const InputField = (props: InputFieldProps) => {
         placeholderTextColor,
         multiline,
         value,
+        editable = true,
         onBlur = (value: string) => {},
         onTextChange = (value: string) => {},
         onSubmitEditing = (value: string) => {}
@@ -48,6 +50,7 @@ const InputField = (props: InputFieldProps) => {
                 secureTextEntry={secureTextEntry}
                 placeholder={placeholder}
                 value={value}
+                editable={editable}
                 onBlur={() => onBlur(text)}
                 onChangeText={(val) => { onTextChange(val); setText(val) }}
                 onSubmitEditing={() => onSubmitEditing(text)} />

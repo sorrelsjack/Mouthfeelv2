@@ -10,3 +10,4 @@ export { default as LikedScreen } from './LikedScreen';
 export { default as DislikedScreen } from './DislikedScreen';
 export { default as RecommendedScreen } from './RecommendedScreen';
 export { default as ToTryScreen } from './ToTryScreen';
+export { default as HelpScreen } from './HelpScreen';

@@ -364,7 +364,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1240;
+						DevelopmentTeam = YUBZYX2798;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
@@ -729,6 +729,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mouthfeel.app/Mouthfeel";
+				DEVELOPMENT_TEAM = YUBZYX2798;
 			};
 			name = Debug;
 		};
@@ -750,6 +751,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Mouthfeel.app/Mouthfeel";
+				DEVELOPMENT_TEAM = YUBZYX2798;
 			};
 			name = Release;
 		};

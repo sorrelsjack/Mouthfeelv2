@@ -13,7 +13,8 @@ import {
   DislikedScreen,
   RecommendedScreen,
   ToTryScreen,
-  AppIntroScreen
+  AppIntroScreen,
+  HelpScreen
 } from './Screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
@@ -26,8 +27,6 @@ import { Startup, GlobalFontName, navigationRef } from './Config'
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
-
-// TODO: Help icon needs to do something -- help screen?
 
 export const App = () => {
   return (
@@ -56,7 +55,7 @@ export const App = () => {
                     <TouchableOpacity onPress={() => navigation.navigate(Routes.Settings)}>
                       <Icon name={'cog'} style={{ paddingLeft: 10, paddingRight: 5 }} color={Colors.primaryThemeTextColor} size={20} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => { }}>
+                    <TouchableOpacity onPress={() => navigation.navigate(Routes.Help)}>
                       <Icon name={'question'} style={{ paddingLeft: 5 }} color={Colors.primaryThemeTextColor} size={20} />
                     </TouchableOpacity>
                   </View>
@@ -72,6 +71,7 @@ export const App = () => {
             <Stack.Screen name={Routes.Settings} component={SettingsScreen} options={{ title: 'Settings' }} />
             <Stack.Screen name={Routes.Tags} component={TagsScreen} options={{ title: 'Tags' }} />
             <Stack.Screen name={Routes.ContactUs} component={ContactUsScreen} options={{ title: 'Contact Us' }} />
+            <Stack.Screen name={Routes.Help} component={HelpScreen} options={{ title: 'Help' }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
