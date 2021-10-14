@@ -17,6 +17,7 @@ interface LoginScreenProps {
     createNewUser: ApiOperation
 }
 
+// TODO: Guest login
 const LoginScreen = (props: LoginScreenProps) => {
     const { theme, profile, createNewUser } = props;
 
@@ -72,6 +73,11 @@ const LoginScreen = (props: LoginScreenProps) => {
         if (canLogin) dispatch(AuthenticateUserAction(username, password));
     }
 
+    const handleGuestPressed = () => {
+        // TODO: Fill this out
+        // TODO: Create guest user flow. They'll only be able to search for foods
+    }
+
     const handleRegisterPressed = () => {
         setShowRegisterForm(true);
         setShowLoginForm(false);
@@ -115,15 +121,21 @@ const LoginScreen = (props: LoginScreenProps) => {
                     {(showRegisterForm) && (!createNewUser.loading ? <><RegisterForm onSubmitAllowed={handleRegisterAllowed} /></> : <><LoadingView /></>)}
                 </View>
                 <Button
-                    style={styles.loginButton}
+                    style={!showRegisterForm ? styles.topButton : styles.bottomButton}
                     backgroundColor={theme.loginScreen.loginButton.backgroundColor}
                     textColor={theme.loginScreen.loginButton.textColor}
                     disabled={!canLogin}
                     onPress={handleLoginPressed}
                     text='Log In' />
                 {(profile.error && !showRegisterForm) ? <ErrorText text={profile.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
+                {/*
+                Fix this so that the button doesnt overlap the login button
                 <Button
-                    style={styles.registerButton}
+                    style={styles.guestButton}
+                    onPress={handleGuestPressed}
+                text='Proceed As Guest' />*/}
+                <Button
+                    style={showRegisterForm ? styles.topButton : styles.bottomButton}
                     backgroundColor={theme.loginScreen.registerButton.backgroundColor}
                     textColor={theme.loginScreen.registerButton.textColor}
                     disabled={showRegisterForm && !canRegister}
@@ -175,19 +187,14 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     inputFieldsContainer: {
         width: '100%'
     },
-    loginButton: {
+    topButton: {
         borderRadius: 30,
         marginVertical: 25,
         backgroundColor: theme.loginScreen.loginButton.backgroundColor,
         width: '100%',
         paddingVertical: 10
     },
-    loginButtonText: {
-        fontSize: 20,
-        textAlign: 'center',
-        color: theme.loginScreen.loginButton.textColor
-    },
-    registerButton: {
+    bottomButton: {
         backgroundColor: theme.loginScreen.registerButton.backgroundColor,
         borderRadius: 30,
         position: 'absolute',
@@ -197,7 +204,21 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         justifyContent: 'center',
         bottom: 0
     },
-    registerButtonText: {
+    topButtonText: {
+        fontSize: 20,
+        textAlign: 'center',
+        color: theme.loginScreen.loginButton.textColor
+    },
+    guestButton: {
+        borderRadius: 30,
+        position: 'absolute',
+        width: '100%',
+        paddingVertical: 10,
+        alignItems: 'center',
+        justifyContent: 'center',
+        bottom: 60
+    },
+    bottomButtonText: {
         fontSize: 20,
         textAlign: 'center',
         color: theme.loginScreen.registerButton.textColor
