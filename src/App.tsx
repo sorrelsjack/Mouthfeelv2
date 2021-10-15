@@ -50,13 +50,17 @@ export const App = () => {
               component={HomeScreen}
               options={({ navigation }) =>
               ({
-                headerRight: () => (
-                  <View style={{ padding: 15, flexDirection: 'row' }}>
+                headerLeft: () => (
+                  <View style={{ padding: 10, flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => navigation.navigate(Routes.Settings)}>
-                      <Icon name={'cog'} style={{ paddingLeft: 10, paddingRight: 5 }} color={Colors.primaryThemeTextColor} size={20} />
+                      <Icon name={'cog'} color={Colors.primaryThemeTextColor} size={20} />
                     </TouchableOpacity>
+                  </View>
+                ),
+                headerRight: () => (
+                  <View style={{ padding: 10, flexDirection: 'row' }}>
                     <TouchableOpacity onPress={() => navigation.navigate(Routes.Help)}>
-                      <Icon name={'question'} style={{ paddingLeft: 5 }} color={Colors.primaryThemeTextColor} size={20} />
+                      <Icon name={'question'} color={Colors.primaryThemeTextColor} size={20} />
                     </TouchableOpacity>
                   </View>
                 )

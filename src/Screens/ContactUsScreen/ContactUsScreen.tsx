@@ -13,11 +13,13 @@ import { InputField, Button } from '../../Components';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
 import { CONTACT_US_EMAIL } from '@env';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface ContactUsScreenProps {
     theme: ThemeProp;
 }
 
+// TODO: Would be cool if we could include attachments or attach a stack trace
 const ContactUsScreen = (props: ContactUsScreenProps) => {
     const { theme } = props;
 
@@ -31,6 +33,10 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
         Linking.openURL(`mailto:${CONTACT_US_EMAIL}?subject=${subject}&body=${message}`)
     }
 
+    const handleAttachPressed = () => {
+        console.log('This needs to be implemented.');
+    }
+
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
@@ -40,10 +46,16 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
                 <Text>Have a problem? A suggestion? Tell us about it here!</Text>
                 <InputField style={styles.input} placeholder='Name' value={name} onTextChange={setName} />
                 <InputField style={styles.input} placeholder='Subject' value={subject} onTextChange={setSubject} />
-                <InputField style={styles.input} placeholder='Your Message' multiline value={message} onTextChange={setMessage} />
-                <Button 
-                    style={styles.button} 
-                    onPress={onSendPressed} 
+                <View>
+                    <TouchableOpacity onPress={handleAttachPressed} style={{ paddingVertical: 10, flexDirection: 'row', alignItems: 'center' }}>
+                        <Icon size={13} name='paperclip' />
+                        <Text style={{ marginLeft: 7, fontSize: 13 }}>Attach An Image</Text>
+                    </TouchableOpacity>
+                    <InputField style={styles.input} placeholder='Your Message' multiline value={message} onTextChange={setMessage} />
+                </View>
+                <Button
+                    style={styles.button}
+                    onPress={onSendPressed}
                     text='Send Message' />
             </KeyboardAvoidingView>
         </ScrollView>

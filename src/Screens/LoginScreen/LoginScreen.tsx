@@ -18,6 +18,7 @@ interface LoginScreenProps {
 }
 
 // TODO: Guest login
+// TODO: Forgot PW
 const LoginScreen = (props: LoginScreenProps) => {
     const { theme, profile, createNewUser } = props;
 

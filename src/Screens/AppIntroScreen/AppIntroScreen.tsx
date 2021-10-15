@@ -8,7 +8,7 @@ const AppIntroScreen = () => {
         {
             key: 1,
             title: 'Welcome To Mouthfeel',
-            text: 'Mouthfeel is an app that lets users access a descriptive repository of foods.',
+            text: 'Mouthfeel is an app that lets users access and contribute to a descriptive repository of foods.',
             backgroundColor: Colors.primaryThemeColor,
         },
         {
@@ -45,7 +45,7 @@ const AppIntroScreen = () => {
 
     const renderItem = ({ item }) => {
         return (
-            <View style={{ backgroundColor: Colors.primaryThemeColor, height: '100%', alignItems: 'center', justifyContent: 'center', paddingHorizontal: 20 }}>
+            <View style={styles.slide}>
                 <Text style={[styles.title, { color: Colors.primaryThemeTextColor }]}>{item.title}</Text>
                 <Text style={[styles.text, { color: Colors.primaryThemeTextColor }]}>{item.text}</Text>
             </View>
@@ -63,6 +63,14 @@ const AppIntroScreen = () => {
 export default AppIntroScreen;
 
 const styles = StyleSheet.create({
+    slide: {
+        backgroundColor: 
+        Colors.primaryThemeColor, 
+        height: '100%', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        paddingHorizontal: 20
+    },
     title: {
         fontSize: 24,
         padding: 20

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { View, FlatList, StyleSheet, Platform } from 'react-native';
 import { SearchBar, CheckBox } from 'react-native-elements';
-import { Routes, Colors, GetDeltaE, ConvertHexToRgbaArray } from '../../Common';
+import { Routes, Colors, GetDeltaE, ConvertHexToRgbaArray, ConvertHexToRgba } from '../../Common';
 import { FoodList, SearchInterface, LoadingSpinner, EmptyView, ErrorView } from '../../Components';
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
@@ -42,15 +42,19 @@ const HomeScreen = (props: HomeScreenProps) => {
     ]
 
     return (
-        <ScrollView style={styles.wrapper}>
-            <SearchInterface
-                onSearchStateChange={setSearchIsActive} />
-            {!searchIsActive &&
-                (<FlatList
-                    data={items}
-                    ItemSeparatorComponent={renderItemSeparator}
-                    renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
-                    keyExtractor={item => item.text} />)}
+        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-evenly' }} style={styles.wrapper}>
+            <View>
+                <SearchInterface
+                    onSearchStateChange={setSearchIsActive} />
+            </View>
+            <View>
+                {!searchIsActive &&
+                    (<FlatList
+                        data={items}
+                        ItemSeparatorComponent={renderItemSeparator}
+                        renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
+                        keyExtractor={item => item.text} />)}
+            </View>
         </ScrollView>
     )
 }
@@ -64,7 +68,8 @@ export default withTheme(connect((state: MouthfeelState) => {
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
-        height: '100%'
+        height: '100%',
+        backgroundColor: ConvertHexToRgba(theme.primaryThemeColor, .6)
     },
     itemSeparator: {
         height: 1,

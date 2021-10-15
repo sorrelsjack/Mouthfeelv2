@@ -1,12 +1,57 @@
 import React from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
+import { Routes } from '../../Common';
+import { useNavigation } from '@react-navigation/native';
+import { withTheme } from 'react-native-elements';
+import { ThemeProp } from '../../Models';
 
-const HelpScreen = () => {
+interface HelpScreenProps {
+    theme: ThemeProp;
+}
+
+const HelpScreen = (props: HelpScreenProps) => {
+    const { theme } = props;
+
+    const navigation = useNavigation();
+    const styles = createStyles(theme);
+
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-            <Text style={{ fontSize: 20 }}>Not sure what to include here.</Text>
-        </View>
+        <ScrollView
+            style={{ height: '100%' }}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{ flexGrow: 1 }}
+            contentInsetAdjustmentBehavior="automatic">
+            <View style={styles.wrapper}>
+                <View style={styles.container}>
+                    <Text style={{ fontSize: 20 }}>Not sure what to include here.</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(Routes.ContactUs)}>
+                        <Text style={styles.buttonText}>Contact Us</Text>
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </ScrollView>
     )
 }
 
-export default HelpScreen;
+export default withTheme(HelpScreen);
+
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
+    wrapper: {
+        padding: 20,
+        height: '100%'
+    },
+    container: {
+        flex: 1, 
+        height: '100%', 
+        marginTop: 20, 
+        justifyContent: 'space-between'
+    },
+    button: {
+        backgroundColor: theme.primaryThemeColor,
+        padding: 15
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: theme.primaryThemeTextColor
+    }
+})

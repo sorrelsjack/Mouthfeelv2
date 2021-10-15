@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Keyboard, View, FlatList, StyleSheet, Platform } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { SearchBar, CheckBox } from 'react-native-elements';
-import { Routes } from '../../Common';
+import { Routes, ConvertHexToRgba } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config';

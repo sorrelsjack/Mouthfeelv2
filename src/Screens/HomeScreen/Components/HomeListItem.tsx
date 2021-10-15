@@ -17,7 +17,7 @@ const HomeListItem = (props: HomeListItemProps) => {
         <TouchableOpacity onPress={onPress}>
             <View style={styles.container}>
                 <View style={styles.content}>
-                    <View style={styles.iconContainer}>
+                    <View style={[styles.iconContainer, styles.pictureIconContainer]}>
                         <Icon name={item.icon} size={20} />
                     </View>
                     <Text style={styles.text}>{item.text}</Text>
@@ -35,7 +35,8 @@ export default HomeListItem;
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        backgroundColor: 'white'
     },
     content: {
         flexDirection: 'row'
@@ -43,6 +44,13 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 20,
         padding: 20
+    },
+    pictureIconContainer: {
+        width: 40,
+        height: 40,
+        alignSelf: 'center',
+        marginLeft: 5,
+        borderRadius: 20
     },
     iconContainer: {
         paddingHorizontal: 10,

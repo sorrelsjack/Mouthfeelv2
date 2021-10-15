@@ -111,12 +111,10 @@ const SettingsScreen = (props: SettingsScreenProps) => {
                 <Text style={styles.text}>
                     Mouthfeel was made with certain groups in mind, with an aim of improving their quality of life. These include sufferers of ARFID, those on the autism spectrum, those with sensory processing issues, and generally anyone who has difficulty with food.
                 </Text>
+                <Text style={styles.text}>Tap the sections below to learn more about each condition.</Text>
                 <View style={{ flex: 1, height: '100%', marginTop: 20, justifyContent: 'space-between' }}>
                     <ArrowAccordion sections={Sections} />
                     <View style={{ marginTop: 20 }}>
-                        <TouchableOpacity style={[styles.button, { marginBottom: 15 }]} onPress={() => navigation.navigate(Routes.ContactUs)}>
-                            <Text style={styles.buttonText}>Contact Us</Text>
-                        </TouchableOpacity>
                         <TouchableOpacity style={styles.button} onPress={handleLogOutPressed}>
                             <Text style={styles.buttonText}>Log Out</Text>
                         </TouchableOpacity>
