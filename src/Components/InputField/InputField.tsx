@@ -3,11 +3,14 @@ import { View, StyleSheet, TextInput } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GlobalFontName } from '../../Config/SetTypography';
+import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface InputFieldProps {
     theme: ThemeProp,
+    containerStyle?: object,
     style?: object,
     textPosition?: 'top' | 'auto' | 'bottom' | 'center',
+    icon?: string,
     secureTextEntry?: boolean,
     placeholder: string,
     placeholderTextColor?: string
@@ -20,19 +23,21 @@ interface InputFieldProps {
 }
 
 const InputField = (props: InputFieldProps) => {
-    const { 
-        theme, 
+    const {
+        theme,
+        containerStyle,
         style,
         textPosition = 'top',
-        secureTextEntry, 
-        placeholder, 
+        icon,
+        secureTextEntry,
+        placeholder,
         placeholderTextColor,
         multiline,
         value,
         editable = true,
-        onBlur = (value: string) => {},
-        onTextChange = (value: string) => {},
-        onSubmitEditing = (value: string) => {}
+        onBlur = (value: string) => { },
+        onTextChange = (value: string) => { },
+        onSubmitEditing = (value: string) => { }
     } = props;
 
     const styles = createStyles(theme);
@@ -40,7 +45,8 @@ const InputField = (props: InputFieldProps) => {
     const [text, setText] = useState('');
 
     return (
-        <View>
+        <View style={[containerStyle, { flexDirection: 'row', justifyContent: 'center' }]}>
+            {icon && <Icon name={icon} style={{ alignSelf: 'center', padding: 10 }} />}
             <TextInput
                 style={[styles.textInput, style]}
                 textAlignVertical={textPosition}
@@ -62,6 +68,8 @@ export default withTheme(InputField);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     textInput: {
+        flex: 1,
+        backgroundColor: '#fff',
         fontFamily: GlobalFontName
     }
 })

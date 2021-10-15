@@ -37,21 +37,37 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
         console.log('This needs to be implemented.');
     }
 
+    // TODO: Register an email for this apps emails to go to
+
     return (
         <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ height: '100%' }}
+            contentContainerStyle={{ flexGrow: 1 }}
             contentInsetAdjustmentBehavior="automatic">
             <KeyboardAvoidingView style={styles.wrapper} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                <Text>Have a problem? A suggestion? Tell us about it here!</Text>
-                <InputField style={styles.input} placeholder='Name' value={name} onTextChange={setName} />
-                <InputField style={styles.input} placeholder='Subject' value={subject} onTextChange={setSubject} />
+                <Text style={{ marginBottom: 20 }}>Have a problem? A suggestion? Tell us about it here!</Text>
                 <View>
+                    <InputField
+                        containerStyle={styles.input}
+                        icon='user'
+                        placeholder='Name'
+                        textPosition='center'
+                        value={name}
+                        onTextChange={setName} />
+                    <InputField
+                        containerStyle={styles.input}
+                        icon='envelope'
+                        placeholder='Subject'
+                        textPosition='center'
+                        value={subject}
+                        onTextChange={setSubject} />
+                </View>
+                <View style={{ flexGrow: 1 }}>
                     <TouchableOpacity onPress={handleAttachPressed} style={{ paddingVertical: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <Icon size={13} name='paperclip' />
                         <Text style={{ marginLeft: 7, fontSize: 13 }}>Attach An Image</Text>
                     </TouchableOpacity>
-                    <InputField style={styles.input} placeholder='Your Message' multiline value={message} onTextChange={setMessage} />
+                    <InputField containerStyle={[styles.input, { flexGrow: 1 }]} placeholder='Your Message' multiline value={message} onTextChange={setMessage} />
                 </View>
                 <Button
                     style={styles.button}
@@ -66,6 +82,7 @@ export default withTheme(ContactUsScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
+        flexShrink: 1,
         height: '100%',
         padding: 20,
         justifyContent: 'space-between'
