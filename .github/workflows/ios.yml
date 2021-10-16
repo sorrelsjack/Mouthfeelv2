@@ -30,7 +30,7 @@ jobs:
           
       - name: Building bundle
         run: |
-          npm react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
+          react-native bundle --entry-file index.js --platform ios --dev false --bundle-output ios/main.jsbundle --assets-dest ios
       - name: Install pod dependencies
         run: |
           cd ios && pod install
