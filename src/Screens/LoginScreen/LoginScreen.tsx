@@ -182,6 +182,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     },
     inputField: {
         borderBottomWidth: 1,
+        backgroundColor: 'transparent',
         color: theme.loginScreen.textInput.textColor,
         borderBottomColor: theme.loginScreen.textInput.lineColor
     },
