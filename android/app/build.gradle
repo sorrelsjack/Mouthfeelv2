@@ -143,6 +143,9 @@ android {
         }
     }
     signingConfigs {
+        config {
+            enableV2Signing = true
+        }
         debug {
             storeFile file('debug.keystore')
             storePassword 'android'
