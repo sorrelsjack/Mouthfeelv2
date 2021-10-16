@@ -16,14 +16,14 @@ jobs:
     steps:
       - name: Getting the repo
         uses: actions/checkout@v2
+        
       - name: Installing node
-        uses: actions/setup-node@v1
-      - name: Install React Native CLI
-        run: |
-          npm global add react-native-cli
-      - name: Install yarn dependencies
+        uses: actions/setup-node@master
+        
+      - name: Install node modules
         run: |
           npm install
+          
       - name: Building bundle
         run: |
           npm react-native bundle --platform ios --dev false --entry-file index.js --bundle-output ios/main.jsbundle --assets-dest ios
