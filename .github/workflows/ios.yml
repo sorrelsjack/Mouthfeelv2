@@ -20,6 +20,10 @@ jobs:
       - name: Installing node
         uses: actions/setup-node@master
         
+      - name: Install React Native CLI
+        run: |
+          npm -g install react-native-cli
+        
       - name: Install node modules
         run: |
           npm install
