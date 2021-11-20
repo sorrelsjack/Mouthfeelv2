@@ -23,7 +23,7 @@ import {
 } from '../../Components';
 import { SearchBar, withTheme } from 'react-native-elements';
 import { ImagePickerResponse, ThemeProp } from '../../Models';
-import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction } from '../../Redux/Actions';
+import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction, ResetCreateFoodAction } from '../../Redux/Actions';
 import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
 import { GlobalFontName } from '../../Config';
 import { launchImageLibrary } from 'react-native-image-picker'
@@ -39,6 +39,7 @@ interface SubmitFoodScreenProps {
     misc: ApiData<VotableAttribute[]>
 }
 
+// TODO: Prevent the attribute lists from re-rendering and losign their selections when an error happens
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const {
         theme,
@@ -64,6 +65,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     useEffect(() => {
         if (!userId) dispatch(GetCurrentUserAction());
         dispatch(GetAllVotableAttributesAction());
+        return () => { dispatch(ResetCreateFoodAction()) }
     }, [])
 
     const handleSubmitButtonPress = () => {
@@ -81,10 +83,16 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const handleImagePlaceholderPressed = () => {
         launchImageLibrary({ mediaType: 'photo' }, response => {
             if (response.uri) {
+                dispatch(ResetCreateFoodAction());
                 setImage(response);
                 setUsingPlaceholderImage(false);
             }
         });
+    }
+
+    const handleTextChange = (text: string) => {
+        dispatch(ResetCreateFoodAction());
+        setName(text);
     }
 
     return (
@@ -95,7 +103,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     placeholder={'Food Name'}
                     textPosition='center'
                     value={name}
-                    onTextChange={setName} />
+                    onTextChange={handleTextChange} />
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <View style={{ marginTop: 10 }}>
                         <TouchableOpacity
@@ -129,7 +137,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                             contentContainerStyle={styles.attributeListContainer}
                                             tagStyle={styles.tagStyle}
                                             tagSize={'small'}
-                                            onChange={(ids: number[]) => setSelectedFlavors(ids)}
+                                            onChange={(ids: number[]) => { dispatch(ResetCreateFoodAction()); setSelectedFlavors(ids) }}
                                             items={flavors.data || []}
                                             sortBy={'alphabetically'} /></View>}
                                 {flavors.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the flavors.' /> : null}
@@ -150,7 +158,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                             contentContainerStyle={styles.attributeListContainer}
                                             tagStyle={styles.tagStyle}
                                             tagSize={'small'}
-                                            onChange={(ids: number[]) => setSelectedTextures(ids)}
+                                            onChange={(ids: number[]) => { dispatch(ResetCreateFoodAction()); setSelectedTextures(ids) }}
                                             items={textures.data || []}
                                             sortBy={'alphabetically'} /></View>}
                                 {textures.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the textures.' /> : null}
@@ -171,7 +179,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                             contentContainerStyle={styles.attributeListContainer}
                                             tagStyle={styles.tagStyle}
                                             tagSize={'small'}
-                                            onChange={(ids: number[]) => setSelectedMisc(ids)}
+                                            onChange={(ids: number[]) => { dispatch(ResetCreateFoodAction()); setSelectedMisc(ids) }}
                                             items={misc.data || []}
                                             sortBy={'alphabetically'} /></View>}
                                 {misc.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the miscellaneous attributes.' /> : null}

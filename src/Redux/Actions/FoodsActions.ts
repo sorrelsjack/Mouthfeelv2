@@ -18,7 +18,7 @@ export const CreateFoodAction = (food: CreateFoodRequest) => {
     const imagePath = IsIos() ? food.image.replace("file://", "") : food.image;
 
     formData.append('name', food.name);
-    formData.append('image', { uri: imagePath, name: `image-${uuidv4()}`, type: 'image/jpeg' });
+    if (food.image) formData.append('image', { uri: imagePath, name: `image-${uuidv4()}`, type: 'image/jpeg' });
     formData.append('flavors', food.flavors.toString());
     formData.append('textures', food.textures.toString());
     formData.append('miscellaneous', food.miscellaneous.toString());
@@ -38,6 +38,12 @@ export const CreateFoodAction = (food: CreateFoodRequest) => {
         catch (error) {
             dispatch({ type: Actions.CreateFood.Failed, error });
         }
+    }
+}
+
+export const ResetCreateFoodAction = () => {
+    return async (dispatch: Dispatch) => {
+        dispatch({ type: Actions.ResetCreateFood })
     }
 }
 

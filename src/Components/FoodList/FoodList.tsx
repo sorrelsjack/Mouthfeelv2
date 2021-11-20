@@ -47,16 +47,18 @@ const FoodList = (props: FoodListProps) => {
                             </Text>
                             <StandardIconsDisplay foodDetails={item} />
                         </View>
-                        <Text style={{ fontSize: 16 }}>
-                            {`Attributes:`}
-                        </Text>
                         <View style={styles.cellAttributeList}>
                             {mostVoted.length
                                 ? mostVoted.map(v => {
                                     return (
-                                        <Text key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
-                                            {`${v.name} `}
-                                        </Text>
+                                        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                                            <View style={{ paddingRight: 5 }}>
+                                                <Icon name='check-square' solid color={'#74b300'} size={16} />
+                                            </View>
+                                            <Text key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
+                                                {`${v.name} `}
+                                            </Text>
+                                        </View>
                                     )
                                 }) : <Text>None yet!</Text>}
                         </View>
@@ -80,7 +82,7 @@ export default FoodList;
 
 const styles = StyleSheet.create({
     wrapper: {
-        width: '100%', 
+        width: '100%',
         height: '100%'
     },
     cellWrapper: {

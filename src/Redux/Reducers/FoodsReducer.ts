@@ -69,6 +69,8 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
             return { ...state, all: state.all.concat(action.data), createNewFood: state.createNewFood.succeeded() }
         case Actions.CreateFood.Failed:
             return { ...state, createNewFood: state.createNewFood.failed(action.error?.response?.data) }
+        case Actions.ResetCreateFood:
+            return { ...state, createNewFood: state.createNewFood.reset() }
 
         case Actions.AddOrRemoveFoodToTry.Loading:
             return { ...state, toTry: state.foodToTryUpdate.startLoading() }

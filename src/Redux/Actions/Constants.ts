@@ -51,5 +51,6 @@ export const Actions = {
     ClearSearch: 'CLEAR_SEARCH',
     AddOrUpdateAttribute: new Action('ADD_OR_UPDATE_ATTRIBUTE'),
     CreateFood: new Action('CREATE_FOOD'),
+    ResetCreateFood: 'RESET_CREATE_FOOD',
     GetFoodDetails: new Action('GET_FOOD_DETAILS'),
 }

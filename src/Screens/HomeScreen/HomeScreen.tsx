@@ -42,19 +42,15 @@ const HomeScreen = (props: HomeScreenProps) => {
     ]
 
     return (
-        <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-evenly' }} style={styles.wrapper}>
-            <View>
-                <SearchInterface
-                    onSearchStateChange={setSearchIsActive} />
-            </View>
-            <View>
-                {!searchIsActive &&
-                    (<FlatList
-                        data={items}
-                        ItemSeparatorComponent={renderItemSeparator}
-                        renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
-                        keyExtractor={item => item.text} />)}
-            </View>
+        <ScrollView style={styles.wrapper}>
+            <SearchInterface
+                onSearchStateChange={setSearchIsActive} />
+            {!searchIsActive &&
+                (<FlatList
+                    data={items}
+                    ItemSeparatorComponent={renderItemSeparator}
+                    renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
+                    keyExtractor={item => item.text} />)}
         </ScrollView>
     )
 }
