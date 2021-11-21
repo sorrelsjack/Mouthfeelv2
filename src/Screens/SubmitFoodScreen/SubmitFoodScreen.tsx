@@ -103,7 +103,8 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     placeholder={'Food Name'}
                     textPosition='center'
                     value={name}
-                    onTextChange={handleTextChange} />
+                    onTextChange={handleTextChange}
+                    placeholderTextColor={'rgba(0, 0, 0, 0.7)'} />
                 <View style={{ flex: 1, justifyContent: 'center' }}>
                     <View style={{ marginTop: 10 }}>
                         <TouchableOpacity
@@ -222,6 +223,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     textInput: {
         backgroundColor: 'white',
         textAlignVertical: 'center',
+        minHeight: 60,
         marginBottom: 20,
         borderWidth: 1,
         borderColor: theme.halfTransparent

@@ -92,7 +92,7 @@ const Comment = (props: CommentProps) => {
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'column' }}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
                     <Text style={[styles.usernameText, styles.commentText]}>{details.userDetails.username}</Text>
                     <Text style={styles.dateText}>{`, ${moment(details.dateTime).format('MMM Do YYYY')}`}</Text>
                 </View>
@@ -130,11 +130,11 @@ const styles = StyleSheet.create({
         paddingHorizontal: 5
     },
     usernameText: {
+        fontSize: 14,
         fontWeight: 'bold'
     },
     dateText: {
         fontSize: 14,
-        textAlignVertical: 'center'
     },
     commentText: {
         fontSize: 16

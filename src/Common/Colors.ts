@@ -36,7 +36,7 @@ export const Colors = {
     },
     disabledButton: {
         backgroundColor: '#cfcfcf',
-        textColor: 'rgba(0, 0, 0, .3)'
+        textColor: 'rgba(0, 0, 0, .7)'
     },
     page: {
         backgroundColor: '#e5e5e5'

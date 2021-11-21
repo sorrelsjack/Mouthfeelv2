@@ -107,12 +107,11 @@ const CommentsSection = (props: CommentsSectionProps) => {
 
     return (
         <KeyboardAvoidingView
-            behavior={IsIos() ? 'padding' : 'height'}
+            behavior={IsIos() ? 'height' : 'height'}
             style={styles.wrapper}>
             <TouchableOpacity onPress={handleHeaderTextPressed}>
                 <Text style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
             </TouchableOpacity>
-            { isExpanded && <CommentList />}
             {isExpanded ?
                 <View style={styles.commentInputContainer}>
                     <View style={{ width: newComment.length ? '90%' : '100%' }}>
@@ -132,6 +131,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
                     </View> : null}
                 </View> : null}
             {isExpanded && create.error ? <ErrorText text='There was an error submitting this comment.' style={{ marginTop: 10 }} /> : null}
+            { isExpanded && <CommentList />}
         </KeyboardAvoidingView>
     )
 }

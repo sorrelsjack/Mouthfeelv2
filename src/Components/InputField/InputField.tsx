@@ -48,7 +48,7 @@ const InputField = (props: InputFieldProps) => {
         <View style={[containerStyle, { flexDirection: 'row', justifyContent: 'center' }]}>
             {icon && <Icon name={icon} style={{ alignSelf: 'center', padding: 10 }} />}
             <TextInput
-                style={[styles.textInput, style]}
+                style={[styles.textInput, style, multiline ? styles.multiline : {}]}
                 textAlignVertical={textPosition}
                 placeholderTextColor={placeholderTextColor}
                 multiline={multiline}
@@ -70,6 +70,10 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     textInput: {
         flex: 1,
         backgroundColor: '#fff',
+        padding: 10,
         fontFamily: GlobalFontName
+    },
+    multiline: {
+        minHeight: 100
     }
 })

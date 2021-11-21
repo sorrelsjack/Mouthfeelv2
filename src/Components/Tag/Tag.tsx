@@ -42,6 +42,7 @@ const Tag = (props: TagProps) => {
     const { id, name, votes, sentiment, description } = item;
 
     const [tooltipHeight, setTooltipHeight] = useState(size === 'regular' ? 60 : 40);
+    const [tooltipWidth, setTooltipWidth] = useState(size === 'regular' ? 100 : 80)
     const [fontSize, setFontSize] = useState(size === 'regular' ? 18 : 11);
     const [isPressed, setIsPressed] = useState(false);
 
@@ -76,8 +77,9 @@ const Tag = (props: TagProps) => {
     }
 
     const handleTextMount = (e) => {
-        const { height } = e.nativeEvent.layout;
+        const { height, width } = e.nativeEvent.layout;
         setTooltipHeight(height + 30);
+        setTooltipWidth(width + 30);
     }
 
     const calculateCurrentVoteTotal = () => {
@@ -121,8 +123,9 @@ const Tag = (props: TagProps) => {
                         overlayColor='transparent'
                         backgroundColor={theme.tooltip.backgroundColor}
                         skipAndroidStatusBar
+                        width={tooltipWidth}
                         height={tooltipHeight}
-                        popover={<Text onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor }}>{description.toLowerCase()}</Text>}>
+                        popover={<Text onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor, flexWrap: 'wrap' }}>{description.toLowerCase()}</Text>}>
                         <Icon
                             name={'question-circle'}
                             size={fontSize}

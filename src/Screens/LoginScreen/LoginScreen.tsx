@@ -99,7 +99,10 @@ const LoginScreen = (props: LoginScreenProps) => {
     return (
         <LinearGradient colors={[theme.loginScreen.gradient.topColor, theme.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
             <View style={styles.container}>
-                <Text style={styles.title}>Mouthfeel</Text>
+                <View style={{ marginBottom: 30, alignItems: 'center' }}>
+                    <Text style={styles.title}>Mouthfeel</Text>
+                    <Text style={styles.subtitle}>A descriptive encyclopedia of food</Text>
+                </View>
                 <View style={styles.inputFieldsContainer}>
                     {showLoginForm &&
                         <>
@@ -180,14 +183,21 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         color: theme.loginScreen.title.textColor,
         fontSize: 48
     },
+    subtitle: {
+        color: theme.loginScreen.title.textColor,
+        textAlign: 'center',
+        fontSize: 18
+    },
     inputField: {
         borderBottomWidth: 1,
         backgroundColor: 'transparent',
         color: theme.loginScreen.textInput.textColor,
-        borderBottomColor: theme.loginScreen.textInput.lineColor
+        borderBottomColor: theme.loginScreen.textInput.lineColor,
+        marginVertical: IsIos() ? 15 : 0
     },
     inputFieldsContainer: {
-        width: '100%'
+        width: '100%',
+        justifyContent: 'space-between'
     },
     topButton: {
         borderRadius: 30,
