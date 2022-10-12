@@ -26,6 +26,8 @@ interface TagsScreenProps {
     addOrUpdate: ApiOperation
 }
 
+// TODO: fix issue on this screen where if you tap on a tag after already having hit submit, it might throw an error
+// TODO: fix an issue where sometimes the toast shows up erroneously
 const TagsScreen = (props: TagsScreenProps) => {
     const { userId, selected, textures, flavors, misc, addOrUpdate } = props;
     const { id, name } = selected?.data ?? {};

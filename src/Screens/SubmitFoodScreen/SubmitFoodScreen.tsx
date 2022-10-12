@@ -40,6 +40,7 @@ interface SubmitFoodScreenProps {
 }
 
 // TODO: Prevent the attribute lists from re-rendering and losign their selections when an error happens
+// TODO: if you add the Pizza Hut picture, its really big
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const {
         theme,

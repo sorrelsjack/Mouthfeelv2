@@ -38,6 +38,7 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
     }
 
     // TODO: Register an email for this apps emails to go to
+    // TODO: SMTP or whatever, so emails can be sent through the app
 
     return (
         <ScrollView

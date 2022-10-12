@@ -12,7 +12,6 @@ import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { VotableAttribute } from '../../Redux/Models';
 import { AttributeType } from '../../Models';
-import { onChange } from 'react-native-reanimated';
 
 type SortType = 'alphabetically' | 'byVotes' | 'custom';
 
