@@ -22,13 +22,15 @@ import { Routes, Urls, Colors, RemoveUserProfile } from './Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeProvider, Button } from 'react-native-elements';
-import { Startup, GlobalFontName, navigationRef } from './Config'
+import { Startup, navigationRef } from './Config'
+import { GlobalFontName } from './Components/CustomText/CustomText';
 
 console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
 export const App = () => {
+
   return (
     <ThemeProvider theme={Colors}>
       <Provider store={store}>

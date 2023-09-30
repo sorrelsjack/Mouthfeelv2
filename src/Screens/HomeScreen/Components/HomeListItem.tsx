@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { CustomText } from '../../../Components';
 
 interface HomeListItemProps {
     onPress: () => any;
@@ -20,7 +21,7 @@ const HomeListItem = (props: HomeListItemProps) => {
                     <View style={[styles.iconContainer, styles.pictureIconContainer]}>
                         <Icon name={item.icon} size={20} />
                     </View>
-                    <Text style={styles.text}>{item.text}</Text>
+                    <CustomText style={styles.text}>{item.text}</CustomText>
                 </View>
                 <View style={styles.iconContainer}>
                     <Icon name={'chevron-right'} size={20} />

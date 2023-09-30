@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Colors } from '../../Common';
+import { CustomText } from '../../Components';
 
 const AppIntroScreen = () => {
     const slides = [
@@ -46,8 +47,8 @@ const AppIntroScreen = () => {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.slide}>
-                <Text style={[styles.title, { color: Colors.primaryThemeTextColor }]}>{item.title}</Text>
-                <Text style={[styles.text, { color: Colors.primaryThemeTextColor }]}>{item.text}</Text>
+                <CustomText style={[styles.title, { color: Colors.primaryThemeTextColor }]}>{item.title}</CustomText>
+                <CustomText style={[styles.text, { color: Colors.primaryThemeTextColor }]}>{item.text}</CustomText>
             </View>
         )
     }

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import CustomText from '../CustomText/CustomText';
 
 interface ArrowAccordionProps {
     sections: { title: string, content: JSX.Element }[]
@@ -15,7 +16,7 @@ const ArrowAccordion = (props: ArrowAccordionProps) => {
     const renderHeader = (section, _, isActive: boolean) => {
         return (
             <View style={styles.header}>
-                <Text style={styles.headerText}>{section.title}</Text>
+                <CustomText style={styles.headerText}>{section.title}</CustomText>
                 <Icon name={isActive ? 'chevron-up' : 'chevron-down'} />
             </View>
         )

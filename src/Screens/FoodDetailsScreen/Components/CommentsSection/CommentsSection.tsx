@@ -11,7 +11,7 @@ import {
 import { Comment } from '..';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../../../Models';
-import { BaseAnimatedView, LoadingSpinner, InputField, ErrorText } from '../../../../Components';
+import { BaseAnimatedView, LoadingSpinner, InputField, ErrorText, CustomText } from '../../../../Components';
 import LottieView from 'lottie-react-native';
 import { CreateCommentAction, GetCommentsForFoodAction, GetCurrentUserAction } from '../../../../Redux/Actions';
 import { FoodDetails, MouthfeelState, Comment as CommentModel, ApiOperation, CreateCommentRequest, ApiData } from '../../../../Redux/Models';
@@ -110,7 +110,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
             behavior={IsIos() ? 'height' : 'height'}
             style={styles.wrapper}>
             <TouchableOpacity onPress={handleHeaderTextPressed}>
-                <Text style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</Text>
+                <CustomText style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</CustomText>
             </TouchableOpacity>
             {isExpanded ?
                 <View style={styles.commentInputContainer}>

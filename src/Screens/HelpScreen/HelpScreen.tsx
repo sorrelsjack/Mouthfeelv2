@@ -4,6 +4,7 @@ import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
+import { Button, CustomText } from '../../Components';
 
 interface HelpScreenProps {
     theme: ThemeProp;
@@ -23,10 +24,8 @@ const HelpScreen = (props: HelpScreenProps) => {
             contentInsetAdjustmentBehavior="automatic">
             <View style={styles.wrapper}>
                 <View style={styles.container}>
-                    <Text style={{ fontSize: 20 }}>Not sure what to include here.</Text>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate(Routes.ContactUs)}>
-                        <Text style={styles.buttonText}>Contact Us</Text>
-                    </TouchableOpacity>
+                    <CustomText style={{ fontSize: 20 }}>Not sure what to include here.</CustomText>
+                    <Button text='Contact Us' textStyle={{ fontSize: 14 }} onPress={() => navigation.navigate(Routes.ContactUs)} />
                 </View>
             </View>
         </ScrollView>

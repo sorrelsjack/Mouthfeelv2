@@ -8,6 +8,7 @@ import { ConvertHexToRgba, InvertColor } from '../../Common';
 import { AddOrUpdateAttributeRequest, FoodDetails, MouthfeelState, VotableAttribute } from '../../Redux/Models';
 import { connect, useDispatch } from 'react-redux';
 import { AddOrUpdateAttributeAction } from '../../Redux/Actions';
+import CustomText from '../CustomText/CustomText';
 
 type TagSize = 'small' | 'regular';
 
@@ -107,15 +108,15 @@ const Tag = (props: TagProps) => {
                 <TouchableOpacity style={{ flexGrow: 1 }} disabled={disabled} onPress={handlePress}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         {votes && <View style={setCounterContainerStyle()}>
-                            <Text adjustsFontSizeToFit style={setTextStyle()}>{calculateCurrentVoteTotal()}</Text>
+                            <CustomText adjustsFontSizeToFit style={setTextStyle()}>{calculateCurrentVoteTotal()}</CustomText>
                         </View>}
-                        <Text adjustsFontSizeToFit style={setTextStyle()} onTextLayout={(e) => {
+                        <CustomText adjustsFontSizeToFit style={setTextStyle()} onTextLayout={(e) => {
                             /*if (name.length >= MAX_CHARS_BEFORE_RESIZE && fontSize >= 10) {
                                 const characterDifference = name.length - MAX_CHARS_BEFORE_RESIZE;
                                 console.log(fontSize - characterDifference)
                                 setFontSize(fontSize - characterDifference);
                             }*/
-                        }}>{name}</Text>
+                        }}>{name}</CustomText>
                     </View>
                 </TouchableOpacity>
                 <View style={styles.iconContainer}>
@@ -125,7 +126,7 @@ const Tag = (props: TagProps) => {
                         skipAndroidStatusBar
                         width={tooltipWidth}
                         height={tooltipHeight}
-                        popover={<Text onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor, flexWrap: 'wrap' }}>{description.toLowerCase()}</Text>}>
+                        popover={<CustomText onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor, flexWrap: 'wrap' }}>{description.toLowerCase()}</CustomText>}>
                         <Icon
                             name={'question-circle'}
                             size={fontSize}

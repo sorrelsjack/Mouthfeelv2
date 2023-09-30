@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { View, StyleSheet, TextInput } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { GlobalFontName } from '../../Config/SetTypography';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { GlobalFontName } from '../CustomText/CustomText';
 
 interface InputFieldProps {
     theme: ThemeProp,

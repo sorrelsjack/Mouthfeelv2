@@ -8,6 +8,7 @@ import {
   } from 'react-native';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../../../Models';
+import { CustomText } from '../../../../Components';
 
 interface IngredientsListProp {
     theme: ThemeProp,
@@ -22,16 +23,16 @@ const IngredientsList = (props: IngredientsListProp) => {
 
         return(
             <View style={styles.wrapper}>
-                <Text style={styles.title}>Ingredients</Text>
+                <CustomText style={styles.title}>Ingredients</CustomText>
                 <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
-                    <Text style={styles.readMoreText}>{isExpanded ? null : `READ MORE...`}</Text>
+                    <CustomText style={styles.readMoreText}>{isExpanded ? null : `READ MORE...`}</CustomText>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => setIsExpanded(!isExpanded)}>
                 { isExpanded && <FlatList
                     style={styles.listContainer}
                     showsHorizontalScrollIndicator={false}
                     data={items}
-                    renderItem={({ item }) => <Text style={styles.ingredientText}>{`• ${item}`}</Text>}
+                    renderItem={({ item }) => <CustomText style={styles.ingredientText}>{`• ${item}`}</CustomText>}
                     keyExtractor={item => item} /> }
                 </TouchableOpacity>
             </View>

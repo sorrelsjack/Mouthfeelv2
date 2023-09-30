@@ -13,7 +13,7 @@ import { FoodDetails } from '../../Redux/Models/FoodDetails';
 import { FormatAsTitleCase, Routes } from '../../Common'
 import { SetSelectedFoodAction, AddOrRemoveFoodToTryAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
-import { LoadingSpinner, Tag } from '..';
+import { CustomText, LoadingSpinner, Tag } from '..';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { StandardIconsDisplay } from '..';
 
@@ -42,9 +42,9 @@ const FoodList = (props: FoodListProps) => {
                     <Image style={[styles.image, !item.images[0]?.image ? { opacity: .3 } : {}]} source={item.images[0]?.image ? { uri: `data:image/png;base64,${item.images[0]?.image}` } : require('../../Assets/plate.png')} />
                     <View style={styles.cellTextContainer}>
                         <View style={{ width: '100%', flexDirection: 'row' }}>
-                            <Text style={styles.cellTitle}>
+                            <CustomText style={styles.cellTitle}>
                                 {FormatAsTitleCase(item.name)}
-                            </Text>
+                            </CustomText>
                             <StandardIconsDisplay foodDetails={item} />
                         </View>
                         <View style={styles.cellAttributeList}>
@@ -55,12 +55,12 @@ const FoodList = (props: FoodListProps) => {
                                             <View style={{ paddingRight: 5 }}>
                                                 <Icon name='check-square' solid color={'#74b300'} size={16} />
                                             </View>
-                                            <Text key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
+                                            <CustomText key={`${v.id}-${v.description}`} style={styles.cellAttribute}>
                                                 {`${v.name} `}
-                                            </Text>
+                                            </CustomText>
                                         </View>
                                     )
-                                }) : <Text>None yet!</Text>}
+                                }) : <CustomText>None yet!</CustomText>}
                         </View>
                     </View>
                 </View>

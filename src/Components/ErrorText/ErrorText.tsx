@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { Colors } from '../../Common';
+import CustomText from '../CustomText/CustomText';
 
 type ColorScheme = 'light' | 'dark';
 
@@ -14,9 +15,9 @@ const ErrorText = (props: ErrorTextProps) => {
     const { text, style, scheme = 'light' } = props;
 
     return (
-        <Text style={[styles(scheme).text, style]}>
+        <CustomText style={[styles(scheme).text, style]}>
             {text}
-        </Text>
+        </CustomText>
     )
 }
 

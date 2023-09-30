@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useDispatch, connect } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../../../Models';
@@ -8,6 +8,7 @@ import { Comment as CommentModel, ManageCommentVoteRequest, AuthenticateUserResp
 import { GetCurrentUserAction, ManageCommentVoteAction } from '../../../../Redux/Actions';
 import moment from 'moment';
 import _ from 'lodash';
+import { CustomText } from '../../../../Components';
 
 interface CommentProps {
     theme: ThemeProp,
@@ -84,19 +85,19 @@ const Comment = (props: CommentProps) => {
                 <TouchableOpacity onPress={handleUpArrowPressed}>
                     <Icon style={styles.icon} size={14} name={'arrow-up'} color={upvoted ? theme.clickableTextColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
-                <Text style={styles.vote}>
+                <CustomText style={styles.vote}>
                     {votes}
-                </Text>
+                </CustomText>
                 <TouchableOpacity onPress={handleDownArrowPressed}>
                     <Icon style={styles.icon} size={14} name={'arrow-down'} color={downvoted ? theme.clickableTextColor : theme.comment.arrow.default.color} />
                 </TouchableOpacity>
             </View>
             <View style={{ flexDirection: 'column' }}>
                 <View style={{ flexDirection: 'row', alignItems: 'flex-end' }}>
-                    <Text style={[styles.usernameText, styles.commentText]}>{details.userDetails.username}</Text>
-                    <Text style={styles.dateText}>{`, ${moment(details.dateTime).format('MMM Do YYYY')}`}</Text>
+                    <CustomText style={[styles.usernameText, styles.commentText]}>{details.userDetails.username}</CustomText>
+                    <CustomText style={styles.dateText}>{`, ${moment(details.dateTime).format('MMM Do YYYY')}`}</CustomText>
                 </View>
-                <Text style={styles.commentText}>{details.body}</Text>
+                <CustomText style={styles.commentText}>{details.body}</CustomText>
             </View>
         </View>
     )

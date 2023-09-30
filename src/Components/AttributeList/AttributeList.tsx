@@ -2,11 +2,10 @@ import React, { useEffect, useState } from 'react';
 import {
     StyleSheet,
     View,
-    Text,
     FlatList,
     ScrollView
 } from 'react-native';
-import { Tag } from '..';
+import { CustomText, Tag } from '..';
 import { AttributeListAddButton } from '..';
 import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
@@ -88,7 +87,7 @@ const AttributeList = (props: AttributeListProps) => {
 
     return (
         <View style={[styles.wrapper, wrapperStyle]}>
-            {title && <Text style={styles.text}>{title}</Text>}
+            {title && <CustomText style={styles.text}>{title}</CustomText>}
             <ScrollView horizontal showsHorizontalScrollIndicator={false} style={[styles.list, listStyle]}>
                 {includeAddButton && <AttributeListAddButton onPress={() => navigation.navigate(Routes.Tags, { attributeType, preselectedAttributes: items.filter(i => i.votes ?? 0 > 0).map(i => i.id) })} />}
                 <FlatList

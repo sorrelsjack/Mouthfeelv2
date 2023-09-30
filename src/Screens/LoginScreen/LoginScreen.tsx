@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import { View, Text, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
-import { InputField, RegisterForm, Button, ErrorText } from '../../Components';
+import { InputField, RegisterForm, Button, ErrorText, CustomText } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
 import { Routes, RetrieveJwt, JwtIsValid, IsIos } from '../../Common';
 import { withTheme } from 'react-native-elements';
@@ -91,7 +91,7 @@ const LoginScreen = (props: LoginScreenProps) => {
         return (
             <View style={styles.loadingView}>
                 <LottieView source={require('../../Assets/linear_loading.json')} autoPlay />
-                <Text style={{ color: theme.primaryThemeTextColor, fontSize: 16 }}>Loading...</Text>
+                <CustomText style={{ color: theme.primaryThemeTextColor, fontSize: 16 }}>Loading...</CustomText>
             </View>
         )
     }
@@ -100,8 +100,8 @@ const LoginScreen = (props: LoginScreenProps) => {
         <LinearGradient colors={[theme.loginScreen.gradient.topColor, theme.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
             <View style={styles.container}>
                 <View style={{ marginBottom: 30, alignItems: 'center' }}>
-                    <Text style={styles.title}>Mouthfeel</Text>
-                    <Text style={styles.subtitle}>A descriptive encyclopedia of food</Text>
+                    <CustomText style={styles.title}>Mouthfeel</CustomText>
+                    <CustomText style={styles.subtitle}>A descriptive encyclopedia of food</CustomText>
                 </View>
                 <View style={styles.inputFieldsContainer}>
                     {showLoginForm &&

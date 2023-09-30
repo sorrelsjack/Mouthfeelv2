@@ -10,7 +10,7 @@ import {
     Image
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
-import { Tag, AttributeList, LoadingSpinner, InputField } from '../../Components';
+import { Tag, AttributeList, LoadingSpinner, InputField, CustomText } from '../../Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
 import { GetAllVotableAttributesAction } from '../../Redux/Actions';
@@ -46,7 +46,7 @@ const Button = (props: ButtonProps) => {
 
     return (
         <TouchableOpacity style={getBackgroundStyles()} disabled={disabled} onPress={onPress}>
-            <Text style={getTextStyles()}>{text}</Text>
+            <CustomText style={getTextStyles()}>{text}</CustomText>
         </TouchableOpacity>
     )
 }

@@ -26,7 +26,7 @@ import {
   GetDefaultHeartSelectedColor,
   GetDefaultHeartBrokenSelectedColor
 } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner } from '../../Components';
+import { AttributeList, CircleButton, CustomText, LoadingSpinner } from '../../Components';
 //import { getColorFromURL } from 'rn-dominant-color';
 import { withTheme, UpdateTheme } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
@@ -145,7 +145,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
                 <Image source={images[0]?.image ? { uri: `data:image/png;base64,${images[0]?.image}` } : require('../../Assets/plate.png')} style={styles.image} />
               </View>
               <View style={styles.titleSection}>
-                <Text style={styles.titleText}>{FormatAsTitleCase(name)}</Text>
+                <CustomText style={styles.titleText}>{FormatAsTitleCase(name)}</CustomText>
               </View>
               {/*<IngredientsList items={ingredients} />*/}
               <View style={styles.attributeListsContainer}>

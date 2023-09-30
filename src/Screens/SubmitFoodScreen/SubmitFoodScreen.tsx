@@ -19,13 +19,13 @@ import {
     Button,
     ArrowAccordion,
     SearchInterface,
-    ErrorText
+    ErrorText,
+    CustomText
 } from '../../Components';
 import { SearchBar, withTheme } from 'react-native-elements';
 import { ImagePickerResponse, ThemeProp } from '../../Models';
 import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction, ResetCreateFoodAction } from '../../Redux/Actions';
 import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
-import { GlobalFontName } from '../../Config';
 import { launchImageLibrary } from 'react-native-image-picker'
 import Carousel from 'react-native-snap-carousel';
 import { IsIos } from '../../Common';
@@ -114,7 +114,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             disabled={createNewFood.loading}>
                             {usingPlaceholderImage
                                 ? <View>
-                                    <Text style={styles.placeholderImageText}>Add An Image</Text>
+                                    <CustomText style={styles.placeholderImageText}>Add An Image</CustomText>
                                     <Image source={require('../../Assets/plate.png')} style={styles.placeholderImage} />
                                 </View>
                                 : <Image source={{ uri: image.uri }} style={[styles.image, { height: image.height, width: image.width }]} />}
@@ -124,7 +124,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                         ? <LoadingSpinner fullScreen={false} />
                         : (<View>
                             <View>
-                                <Text style={styles.title}>Flavors</Text>
+                                <CustomText style={styles.title}>Flavors</CustomText>
                                 {flavors.loading
                                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                                     : <View style={styles.sectionContainer}>
@@ -145,7 +145,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 {flavors.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the flavors.' /> : null}
                             </View>
                             <View>
-                                <Text style={styles.title}>Textures</Text>
+                                <CustomText style={styles.title}>Textures</CustomText>
                                 {textures.loading
                                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                                     : <View style={styles.sectionContainer}>
@@ -166,7 +166,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 {textures.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the textures.' /> : null}
                             </View>
                             <View>
-                                <Text style={styles.title}>Misc</Text>
+                                <CustomText style={styles.title}>Misc</CustomText>
                                 {misc.loading
                                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                                     : <View style={styles.sectionContainer}>

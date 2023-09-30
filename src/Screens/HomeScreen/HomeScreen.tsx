@@ -7,7 +7,6 @@ import { FoodList, SearchInterface, LoadingSpinner, EmptyView, ErrorView } from 
 import { HomeListItem } from './Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { GlobalFontName } from '../../Config';
 import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
 import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';

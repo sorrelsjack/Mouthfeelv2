@@ -5,11 +5,11 @@ import { SearchBar, CheckBox } from 'react-native-elements';
 import { Routes, ConvertHexToRgba } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { GlobalFontName } from '../../Config';
 import { Button, EmptyView, ErrorView, FoodList, LoadingSpinner } from '../../Components';
 import { SearchFoodsAction, ClearSearchAction } from '../../Redux/Actions';
 import { ApiData, MouthfeelState } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
+import { GlobalFontName } from '../CustomText/CustomText';
 
 interface SearchInterfaceProps {
     theme: ThemeProp,
@@ -90,6 +90,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                 onClear={handleClear} />
             <View style={styles.checkboxContainer}>
                 <CheckBox
+                    fontFamily={GlobalFontName}
                     title='Name'
                     checked={nameChecked}
                     size={14}
@@ -97,6 +98,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     checkedColor={theme.primaryThemeColor}
                     containerStyle={{ flexShrink: 1, marginLeft: 0, marginRight: 0 }} />
                 <CheckBox
+                    fontFamily={GlobalFontName}
                     title='Ingredients'
                     checked={ingredientsChecked}
                     size={14}
@@ -104,6 +106,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     checkedColor={theme.primaryThemeColor}
                     containerStyle={{ flexShrink: 1, marginRight: 0 }} />
                 <CheckBox
+                    fontFamily={GlobalFontName}
                     title='Attributes'
                     checked={attributesChecked}
                     size={14}
@@ -126,6 +129,7 @@ const styles = StyleSheet.create({
     checkboxContainer: {
         flex: 1,
         flexDirection: 'row',
+        justifyContent: 'center',
         marginLeft: 0,
         marginTop: 5,
         marginBottom: -5

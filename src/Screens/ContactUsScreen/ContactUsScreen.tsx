@@ -9,7 +9,7 @@ import {
     Platform,
     Linking
 } from 'react-native';
-import { InputField, Button } from '../../Components';
+import { InputField, Button, CustomText } from '../../Components';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
 import { CONTACT_US_EMAIL } from '@env';
@@ -46,7 +46,7 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
             contentContainerStyle={{ flexGrow: 1 }}
             contentInsetAdjustmentBehavior="automatic">
             <KeyboardAvoidingView style={styles.wrapper} behavior={Platform.OS === "ios" ? "padding" : "height"}>
-                <Text style={{ marginBottom: 20 }}>Have a problem? A suggestion? Tell us about it here!</Text>
+                <CustomText style={{ marginBottom: 20 }}>Have a problem? A suggestion? Tell us about it here!</CustomText>
                 <View>
                     <InputField
                         containerStyle={styles.input}
@@ -66,7 +66,7 @@ const ContactUsScreen = (props: ContactUsScreenProps) => {
                 <View style={{ flexGrow: 1 }}>
                     <TouchableOpacity onPress={handleAttachPressed} style={{ paddingVertical: 10, flexDirection: 'row', alignItems: 'center' }}>
                         <Icon size={13} name='paperclip' />
-                        <Text style={{ marginLeft: 7, fontSize: 13 }}>Attach An Image</Text>
+                        <CustomText style={{ marginLeft: 7, fontSize: 13 }}>Attach An Image</CustomText>
                     </TouchableOpacity>
                     <InputField containerStyle={[styles.input, { flexGrow: 1 }]} placeholder='Your Message' multiline value={message} onTextChange={setMessage} />
                 </View>
