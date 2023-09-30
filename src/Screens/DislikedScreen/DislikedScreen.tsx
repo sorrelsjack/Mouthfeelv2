@@ -11,10 +11,6 @@ import {
 } from 'react-native';
 import { FormatAsTitleCase, Routes } from '../../Common';
 import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
-import LottieView from 'lottie-react-native';
-import { withTheme, UpdateTheme } from 'react-native-elements';
-import { withNavigation } from 'react-navigation';
-import { ThemeProp } from '../../Models';
 import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { GetDislikedFoodsAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';

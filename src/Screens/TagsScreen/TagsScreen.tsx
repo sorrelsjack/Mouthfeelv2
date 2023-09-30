@@ -32,7 +32,7 @@ const TagsScreen = (props: TagsScreenProps) => {
     const { userId, selected, textures, flavors, misc, addOrUpdate } = props;
     const { id, name } = selected?.data ?? {};
 
-    const [selectedAttributes, setSelectedAttributes] = useState([]);
+    const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
@@ -89,9 +89,10 @@ const TagsScreen = (props: TagsScreenProps) => {
 
     return (
         <ScrollView
+            contentContainerStyle={{ flexGrow: 1 }}
             showsVerticalScrollIndicator={false}
             contentInsetAdjustmentBehavior='automatic'>
-            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'flex-start', paddingTop: 20, paddingBottom: 20 }}>
+            <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between', paddingTop: 20, paddingBottom: 20 }}>
                 {getLoadingState() ? <LoadingSpinner fullScreen /> :
                     <>
                         <AttributeList
@@ -108,7 +109,7 @@ const TagsScreen = (props: TagsScreenProps) => {
                             contentContainerStyle={styles.attributeListContainer}
                             tagStyle={styles.tagStyle}
                             tagSize={'small'}
-                            onChange={setSelectedAttributes} />
+                            onChange={(ids: number[]) => setSelectedAttributes(ids)} />
                         <View style={{ padding: 15 }}>
                             <Button text='Submit' disabled={addOrUpdate.loading} onPress={handleSubmitPressed} />
                         </View>
