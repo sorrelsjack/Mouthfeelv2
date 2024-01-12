@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { connect, useDispatch } from 'react-redux';
 import {
     View,
@@ -8,7 +8,9 @@ import {
     TouchableOpacity,
     ScrollView,
     Image,
-    Platform
+    Platform,
+    StyleProp,
+    ViewStyle
 } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import {
@@ -23,12 +25,12 @@ import {
     CustomText
 } from '../../Components';
 import { SearchBar, withTheme } from 'react-native-elements';
-import { ImagePickerResponse, ThemeProp } from '../../Models';
+import { AttributeType, ImagePickerResponse, ThemeProp } from '../../Models';
 import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction, ResetCreateFoodAction } from '../../Redux/Actions';
 import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
 import { launchImageLibrary } from 'react-native-image-picker'
 import Carousel from 'react-native-snap-carousel';
-import { IsIos } from '../../Common';
+import { FormatAsTitleCase, IsIos } from '../../Common';
 
 interface SubmitFoodScreenProps {
     theme: ThemeProp,
@@ -96,6 +98,75 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
         setName(text);
     }
 
+    const ListOfAttributes = (props: {
+        attribute: ApiData<VotableAttribute[]>,
+        columnWrapperStyle: StyleProp<ViewStyle>,
+        attributeType: AttributeType,
+        onChange: (ids: number[]) => any,
+        nominalForm?: string
+    }) => {
+        const { attribute, columnWrapperStyle, attributeType, onChange, nominalForm } = props;
+        const pluralNoun = nominalForm || `${attributeType}s`;
+
+        return (
+            <View>
+                <CustomText style={styles.title}>{FormatAsTitleCase(pluralNoun)}</CustomText>
+                {attribute.loading
+                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
+                    : <View style={styles.sectionContainer}>
+                        <AttributeList
+                            columnWrapperStyle={columnWrapperStyle}
+                            wrapperStyle={styles.attributeListWrapper}
+                            listStyle={styles.attributeList}
+                            includeAddButton={false}
+                            horizontal={false}
+                            numColumns={2}
+                            attributeType={attributeType}
+                            contentContainerStyle={styles.attributeListContainer}
+                            tagStyle={styles.tagStyle}
+                            tagSize={'small'}
+                            onChange={(ids: number[]) => {
+                                dispatch(ResetCreateFoodAction());
+                                onChange(ids);
+                            }}
+                            items={attribute.data || []}
+                            sortBy={'alphabetically'} /></View>}
+                {attribute.error ? <ErrorText style={{ textAlign: 'center' }} text={`There was an error fetching the ${pluralNoun}.`} /> : null}
+            </View>
+        )
+    }
+
+    const flavorsList = useMemo(() => {
+        return (
+            <ListOfAttributes
+                attribute={flavors}
+                attributeType={'flavor'}
+                columnWrapperStyle={{ flexWrap: 'wrap' }}
+                onChange={(ids: number[]) => setSelectedFlavors(ids)} />
+        )
+    }, [flavors])
+
+    const texturesList = useMemo(() => {
+        return (
+            <ListOfAttributes
+                attribute={textures}
+                attributeType={'texture'}
+                columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+                onChange={(ids: number[]) => setSelectedTextures(ids)} />
+        )
+    }, [textures])
+
+    const miscList = useMemo(() => {
+        return (
+            <ListOfAttributes
+                attribute={misc}
+                attributeType={'miscellaneous'}
+                columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
+                onChange={(ids: number[]) => setSelectedMisc(ids)}
+                nominalForm='miscellaneous attributes' />
+        )
+    }, [misc])
+
     return (
         <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
             <View style={styles.wrapper}>
@@ -123,69 +194,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     {createNewFood.loading
                         ? <LoadingSpinner fullScreen={false} />
                         : (<View>
-                            <View>
-                                <CustomText style={styles.title}>Flavors</CustomText>
-                                {flavors.loading
-                                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
-                                    : <View style={styles.sectionContainer}>
-                                        <AttributeList
-                                            columnWrapperStyle={{ flexWrap: 'wrap' }}
-                                            wrapperStyle={styles.attributeListWrapper}
-                                            listStyle={styles.attributeList}
-                                            includeAddButton={false}
-                                            horizontal={false}
-                                            numColumns={2}
-                                            attributeType='flavor'
-                                            contentContainerStyle={styles.attributeListContainer}
-                                            tagStyle={styles.tagStyle}
-                                            tagSize={'small'}
-                                            onChange={(ids: number[]) => { dispatch(ResetCreateFoodAction()); setSelectedFlavors(ids) }}
-                                            items={flavors.data || []}
-                                            sortBy={'alphabetically'} /></View>}
-                                {flavors.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the flavors.' /> : null}
-                            </View>
-                            <View>
-                                <CustomText style={styles.title}>Textures</CustomText>
-                                {textures.loading
-                                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
-                                    : <View style={styles.sectionContainer}>
-                                        <AttributeList
-                                            columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
-                                            wrapperStyle={styles.attributeListWrapper}
-                                            listStyle={styles.attributeList}
-                                            includeAddButton={false}
-                                            horizontal={false}
-                                            numColumns={2}
-                                            attributeType='texture'
-                                            contentContainerStyle={styles.attributeListContainer}
-                                            tagStyle={styles.tagStyle}
-                                            tagSize={'small'}
-                                            onChange={(ids: number[]) => { dispatch(ResetCreateFoodAction()); setSelectedTextures(ids) }}
-                                            items={textures.data || []}
-                                            sortBy={'alphabetically'} /></View>}
-                                {textures.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the textures.' /> : null}
-                            </View>
-                            <View>
-                                <CustomText style={styles.title}>Misc</CustomText>
-                                {misc.loading
-                                    ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
-                                    : <View style={styles.sectionContainer}>
-                                        <AttributeList
-                                            columnWrapperStyle={{ flex: 1, flexDirection: 'row', flexWrap: 'wrap' }}
-                                            wrapperStyle={styles.attributeListWrapper}
-                                            listStyle={styles.attributeList}
-                                            includeAddButton={false}
-                                            horizontal={false}
-                                            numColumns={2}
-                                            attributeType='miscellaneous'
-                                            contentContainerStyle={styles.attributeListContainer}
-                                            tagStyle={styles.tagStyle}
-                                            tagSize={'small'}
-                                            onChange={(ids: number[]) => { dispatch(ResetCreateFoodAction()); setSelectedMisc(ids) }}
-                                            items={misc.data || []}
-                                            sortBy={'alphabetically'} /></View>}
-                                {misc.error ? <ErrorText style={{ textAlign: 'center' }} text='There was an error fetching the miscellaneous attributes.' /> : null}
-                            </View>
+                            {flavorsList}
+                            {texturesList}
+                            {miscList}
                         </View>)}
                     <View style={styles.submitButtonContainer}>
                         {createNewFood.error ? <ErrorText text={createNewFood.error.Message} style={{ marginBottom: 20 }} /> : null}

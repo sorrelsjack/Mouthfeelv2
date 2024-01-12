@@ -3,7 +3,9 @@ import {
     StyleSheet,
     View,
     FlatList,
-    ScrollView
+    ScrollView,
+    StyleProp,
+    ViewStyle
 } from 'react-native';
 import { CustomText, Tag } from '..';
 import { AttributeListAddButton } from '..';
@@ -25,7 +27,7 @@ interface AttributeListProps {
     tagStyle?: object,
     listStyle?: object,
     wrapperStyle?: object,
-    columnWrapperStyle?: object,
+    columnWrapperStyle?: StyleProp<ViewStyle>,
     sortBy?: SortType,
     customSort?: (a: any, b: any) => any,
     onChange?: (ids: number[]) => any,
@@ -38,7 +40,7 @@ const AttributeList = (props: AttributeListProps) => {
         title,
         attributeType,
         includeAddButton = true,
-        numColumns,
+        numColumns = 0,
         horizontal = true,
         contentContainerStyle = {},
         tagSize = 'regular',
