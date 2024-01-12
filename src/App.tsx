@@ -29,6 +29,12 @@ console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 
+const forFade = ({ current }) => ({
+  cardStyle: {
+    opacity: current.progress,
+  },
+});
+
 export const App = () => {
 
   return (
@@ -37,6 +43,7 @@ export const App = () => {
         <NavigationContainer ref={navigationRef}>
           <Stack.Navigator
             screenOptions={{
+              cardStyleInterpolator: forFade,
               headerTintColor: Colors.primaryThemeTextColor,
               headerTitleAlign: 'center',
               headerStyle: { backgroundColor: Colors.primaryThemeColor },
