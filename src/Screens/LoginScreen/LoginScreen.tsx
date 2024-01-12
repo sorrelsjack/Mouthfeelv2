@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { View, Text, StyleSheet, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native';
+import { View, StyleSheet, Keyboard } from 'react-native';
 import { InputField, RegisterForm, Button, ErrorText, CustomText } from '../../Components';
 import LinearGradient from 'react-native-linear-gradient';
 import { Routes, RetrieveJwt, JwtIsValid, IsIos } from '../../Common';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { AuthenticateUserAction, GetCurrentUserAction, RegisterUserAction } from '../../Redux/Actions';
-import { MouthfeelState, AuthenticateUserResponse, ApiError, ApiData, CreateUserRequest, ApiOperation } from '../../Redux/Models';
+import { AuthenticateUserAction, RegisterUserAction } from '../../Redux/Actions';
+import { MouthfeelState, AuthenticateUserResponse, ApiData, CreateUserRequest, ApiOperation } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 interface LoginScreenProps {
     theme: ThemeProp,
@@ -98,55 +99,62 @@ const LoginScreen = (props: LoginScreenProps) => {
 
     return (
         <LinearGradient colors={[theme.loginScreen.gradient.topColor, theme.loginScreen.gradient.bottomColor]} style={styles.wrapper}>
-            <View style={styles.container}>
-                <View style={{ marginBottom: 30, alignItems: 'center' }}>
-                    <CustomText style={styles.title}>Mouthfeel</CustomText>
-                    <CustomText style={styles.subtitle}>A descriptive encyclopedia of food</CustomText>
-                </View>
-                <View style={styles.inputFieldsContainer}>
-                    {showLoginForm &&
-                        <>
-                            {!profile.loading ? <><InputField
-                                style={styles.inputField}
-                                placeholder={'Username'}
-                                value={username}
-                                onTextChange={setUsername}
-                                placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
-                                secureTextEntry={false} />
-                                <InputField
+            <KeyboardAwareScrollView
+                enableAutomaticScroll
+                bounces={false}
+                enableOnAndroid
+                style={{ width: '100%' }}
+                contentContainerStyle={styles.scrollView}>
+                <View style={styles.container}>
+                    <View style={{ marginBottom: 30, alignItems: 'center' }}>
+                        <CustomText style={styles.title}>Mouthfeel</CustomText>
+                        <CustomText style={styles.subtitle}>A descriptive encyclopedia of food</CustomText>
+                    </View>
+                    <View style={styles.inputFieldsContainer}>
+                        {showLoginForm &&
+                            <>
+                                {!profile.loading ? <><InputField
                                     style={styles.inputField}
-                                    placeholder={'Password'}
-                                    value={password}
-                                    onTextChange={setPassword}
+                                    placeholder={'Username'}
+                                    value={username}
+                                    onTextChange={setUsername}
                                     placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
-                                    secureTextEntry={true} /></> : <LoadingView />}
+                                    secureTextEntry={false} />
+                                    <InputField
+                                        style={styles.inputField}
+                                        placeholder={'Password'}
+                                        value={password}
+                                        onTextChange={setPassword}
+                                        placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
+                                        secureTextEntry={true} /></> : <LoadingView />}
 
-                        </>}
-                    {(showRegisterForm) && (!createNewUser.loading ? <><RegisterForm onSubmitAllowed={handleRegisterAllowed} /></> : <><LoadingView /></>)}
-                </View>
-                <Button
-                    style={!showRegisterForm ? styles.topButton : styles.bottomButton}
-                    backgroundColor={theme.loginScreen.loginButton.backgroundColor}
-                    textColor={theme.loginScreen.loginButton.textColor}
-                    disabled={!canLogin}
-                    onPress={handleLoginPressed}
-                    text='Log In' />
-                {(profile.error && !showRegisterForm) ? <ErrorText text={profile.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
-                {/*
+                            </>}
+                        {(showRegisterForm) && (!createNewUser.loading ? <RegisterForm onSubmitAllowed={handleRegisterAllowed} /> : <LoadingView />)}
+                    </View>
+                    <Button
+                        style={!showRegisterForm ? styles.topButton : styles.bottomButton}
+                        backgroundColor={theme.loginScreen.loginButton.backgroundColor}
+                        textColor={theme.loginScreen.loginButton.textColor}
+                        disabled={!canLogin}
+                        onPress={handleLoginPressed}
+                        text='Log In' />
+                    {(profile.error && !showRegisterForm) ? <ErrorText text={profile.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
+                    {/*
                 Fix this so that the button doesnt overlap the login button
                 <Button
                     style={styles.guestButton}
                     onPress={handleGuestPressed}
                 text='Proceed As Guest' />*/}
-                <Button
-                    style={showRegisterForm ? styles.topButton : styles.bottomButton}
-                    backgroundColor={theme.loginScreen.registerButton.backgroundColor}
-                    textColor={theme.loginScreen.registerButton.textColor}
-                    disabled={showRegisterForm && !canRegister}
-                    onPress={handleRegisterPressed}
-                    text='Register' />
-            </View>
-        </LinearGradient>
+                    <Button
+                        style={showRegisterForm ? styles.bottomButton : styles.topButton}
+                        backgroundColor={theme.loginScreen.registerButton.backgroundColor}
+                        textColor={theme.loginScreen.registerButton.textColor}
+                        disabled={showRegisterForm && !canRegister}
+                        onPress={handleRegisterPressed}
+                        text='Register' />
+                </View>
+            </KeyboardAwareScrollView>
+        </LinearGradient >
     )
 
 }
@@ -163,9 +171,12 @@ export default withTheme(connect((state: MouthfeelState) => {
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
         width: '100%'
+    },
+    scrollView: {
+        flexGrow: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     container: {
         flex: 1,
@@ -201,20 +212,19 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     },
     topButton: {
         borderRadius: 30,
-        marginVertical: 25,
+        marginTop: 25,
         backgroundColor: theme.loginScreen.loginButton.backgroundColor,
         width: '100%',
         paddingVertical: 10
     },
     bottomButton: {
         backgroundColor: theme.loginScreen.registerButton.backgroundColor,
+        marginTop: 25,
         borderRadius: 30,
-        position: 'absolute',
         width: '100%',
         paddingVertical: 10,
         alignItems: 'center',
-        justifyContent: 'center',
-        bottom: 0
+        justifyContent: 'center'
     },
     topButtonText: {
         fontSize: 20,

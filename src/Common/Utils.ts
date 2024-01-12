@@ -157,3 +157,4 @@ export const JwtIsValid = (jwt: string | null) => {
 }
 
 export const IsIos = () => Platform.OS === 'ios';
+export const IsAndroid = () => Platform.OS === 'android';

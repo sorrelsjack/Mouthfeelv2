@@ -47,7 +47,7 @@ const RegisterForm = (props: RegisterFormProps) => {
     }, [createNewUser])
 
     return (
-        <KeyboardAvoidingView style={styles.wrapper}>
+        <>
             <InputField
                 style={styles.inputField}
                 placeholder={'Email'}
@@ -76,7 +76,7 @@ const RegisterForm = (props: RegisterFormProps) => {
                 onTextChange={setConfirmPassword} />
             {(!passwordsMatch && password.length >= 1 && !createNewUser.error) ? <ErrorText text='Passwords must match!' scheme='dark' style={{ marginTop: 10 }} /> : null}
             {createNewUser.error ? <ErrorText text={createNewUser.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
-        </KeyboardAvoidingView>
+        </>
     )
 }
 
@@ -89,12 +89,9 @@ export default withTheme(connect((state: MouthfeelState) => {
 })(RegisterForm));
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
-    wrapper: {
-        width: '100%',
-        paddingBottom: 30
-    },
     inputField: {
         borderBottomWidth: 1,
+        backgroundColor: 'transparent',
         color: theme.loginScreen.textInput.textColor,
         borderBottomColor: theme.loginScreen.textInput.lineColor
     },

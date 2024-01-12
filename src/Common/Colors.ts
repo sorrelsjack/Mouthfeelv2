@@ -11,8 +11,8 @@ export const Colors = {
 
     loginScreen: {
         gradient: {
-            topColor: '#e71d36',
-            bottomColor: '#ff9f1c'
+            topColor: '#2D3047',
+            bottomColor: '#40F99B'
         },
         title: {
             textColor: '#fdfffc'
