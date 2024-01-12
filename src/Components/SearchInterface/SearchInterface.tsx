@@ -77,6 +77,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
         )
     }
 
+    // Do not remove fontWeight, or font will not be Montserrat: https://github.com/react-native-elements/react-native-elements/issues/2191#issuecomment-557812813
     return (
         <View style={{ padding: 15 }}>
             <SearchBar
@@ -96,6 +97,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setNameChecked(!nameChecked)}
                     checkedColor={theme.primaryThemeColor}
+                    textStyle={{ fontWeight: 'normal' }}
                     containerStyle={{ flexShrink: 1, marginLeft: 0, marginRight: 0 }} />
                 <CheckBox
                     fontFamily={GlobalFontName}
@@ -104,6 +106,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setIngredientsChecked(!ingredientsChecked)}
                     checkedColor={theme.primaryThemeColor}
+                    textStyle={{ fontWeight: 'normal' }}
                     containerStyle={{ flexShrink: 1, marginRight: 0 }} />
                 <CheckBox
                     fontFamily={GlobalFontName}
@@ -112,6 +115,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setAttributesChecked(!attributesChecked)}
                     checkedColor={theme.primaryThemeColor}
+                    textStyle={{ fontWeight: 'normal' }}
                     containerStyle={{ flexShrink: 1, marginRight: 0 }} />
             </View>
             <View style={styles.buttonsContainer}>
