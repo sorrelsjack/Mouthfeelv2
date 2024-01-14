@@ -43,6 +43,7 @@ interface SubmitFoodScreenProps {
 
 // TODO: Prevent the attribute lists from re-rendering and losign their selections when an error happens
 // TODO: if you add the Pizza Hut picture, its really big
+// TODO: fix issue where the tag lists re-render their sizes once or twice on initial load
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const {
         theme,
@@ -120,7 +121,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                             listStyle={styles.attributeList}
                             includeAddButton={false}
                             horizontal={false}
-                            numColumns={2}
+                            numColumns={3}
                             attributeType={attributeType}
                             contentContainerStyle={styles.attributeListContainer}
                             tagStyle={styles.tagStyle}

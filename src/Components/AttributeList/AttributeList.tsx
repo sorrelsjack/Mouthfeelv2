@@ -13,6 +13,7 @@ import { Routes } from '../../Common';
 import { useNavigation } from '@react-navigation/native';
 import { VotableAttribute } from '../../Redux/Models';
 import { AttributeType } from '../../Models';
+import MasonryList from '@react-native-seoul/masonry-list';
 
 type SortType = 'alphabetically' | 'byVotes' | 'custom';
 

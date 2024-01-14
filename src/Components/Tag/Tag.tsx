@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Tooltip } from 'react-native-elements';
@@ -51,17 +51,23 @@ const Tag = (props: TagProps) => {
 
     const styles = createStyles(size, disabled);
 
-    const setWrapperStyle = () => isPressed
+    const currentVoteTotal = useMemo(() => {
+        if (isPressed && votes === 1 && sentiment === 1) return 1;
+        if (isPressed) return (votes ?? 0) + 1;
+        return votes;
+    }, [isPressed, votes, sentiment]);
+
+    const wrapperStyle = useMemo(() => isPressed
         ? { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : InvertColor(theme.primaryThemeColor) }
-        : { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : theme.primaryThemeColor }
+        : { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : theme.primaryThemeColor }, [name, isPressed])
 
-    const setTextStyle = () => isPressed
+    const textStyle = useMemo(() => isPressed
         ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor), fontSize: fontSize }
-        : { ...styles.text, color: theme.primaryThemeTextColor, fontSize: fontSize }
+        : { ...styles.text, color: theme.primaryThemeTextColor, fontSize: fontSize }, [name, fontSize, isPressed])
 
-    const setCounterContainerStyle = () => isPressed
+    const counterContainerStyle = useMemo(() => isPressed
         ? { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(InvertColor(theme.primaryThemeTextColor), .3) }
-        : { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(theme.primaryThemeTextColor, .3) }
+        : { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(theme.primaryThemeTextColor, .3) }, [name, isPressed, currentVoteTotal])
 
     const handlePress = () => {
         if (!userId) return;
@@ -83,12 +89,6 @@ const Tag = (props: TagProps) => {
         setTooltipWidth(width + 30);
     }
 
-    const calculateCurrentVoteTotal = () => {
-        if (isPressed && votes === 1 && sentiment === 1) return 1;
-        if (isPressed) return (votes ?? 0) + 1;
-        return votes;
-    }
-
     const MAX_CHARS_BEFORE_RESIZE = 7;
 
     useEffect(() => {
@@ -103,14 +103,14 @@ const Tag = (props: TagProps) => {
     }, [sentiment])
 
     return (
-        <View style={[setWrapperStyle(), style]}>
+        <View style={[wrapperStyle, style]}>
             <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                 <TouchableOpacity style={{ flexGrow: 1 }} disabled={disabled} onPress={handlePress}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
-                        {votes && <View style={setCounterContainerStyle()}>
-                            <CustomText adjustsFontSizeToFit style={setTextStyle()}>{calculateCurrentVoteTotal()}</CustomText>
+                        {votes && <View style={counterContainerStyle}>
+                            <CustomText adjustsFontSizeToFit style={textStyle}>{currentVoteTotal}</CustomText>
                         </View>}
-                        <CustomText adjustsFontSizeToFit style={setTextStyle()} onTextLayout={(e) => {
+                        <CustomText adjustsFontSizeToFit style={textStyle} onTextLayout={(e) => {
                             /*if (name.length >= MAX_CHARS_BEFORE_RESIZE && fontSize >= 10) {
                                 const characterDifference = name.length - MAX_CHARS_BEFORE_RESIZE;
                                 console.log(fontSize - characterDifference)
@@ -119,7 +119,7 @@ const Tag = (props: TagProps) => {
                         }}>{name}</CustomText>
                     </View>
                 </TouchableOpacity>
-                <View style={styles.iconContainer}>
+                <View style={[styles.iconContainer, !votes ? { marginLeft: 0 } : {}]}>
                     <Tooltip
                         overlayColor='transparent'
                         backgroundColor={theme.tooltip.backgroundColor}
@@ -152,15 +152,15 @@ const createStyles = (size: TagSize, disabled: boolean) => StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         flexDirection: 'row',
-        borderRadius: 20,
-        paddingVertical: 5,
+        borderRadius: 30,
+        paddingVertical: 10,
         paddingHorizontal: 10,
         marginHorizontal: 10
     },
     text: {
         justifyContent: 'center',
         textTransform: 'uppercase',
-        padding: 5
+        paddingHorizontal: 5
     },
     counterContainer: {
         flexDirection: 'row',

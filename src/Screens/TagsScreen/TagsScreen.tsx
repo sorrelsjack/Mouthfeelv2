@@ -1,6 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { connect, useDispatch } from 'react-redux';
+import { connect, useDispatch, useSelector } from 'react-redux';
 import { ThemeProp } from '../../Models';
 import { AttributeList, Button, ErrorText, LoadingSpinner } from '../../Components';
 import {
@@ -13,6 +13,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { MouthfeelState, FoodDetails, ApiData, VotableAttribute, AddOrUpdateAttributeRequest, ApiOperation } from '../../Redux/Models';
 import { FormatAsTitleCase } from '../../Common';
 import Toast from 'react-native-simple-toast';
+import { useAttributeState } from '../../Hooks/useAttributeState';
 
 interface TagsScreenProps {
     userId: number,
@@ -29,7 +30,7 @@ interface TagsScreenProps {
 // TODO: fix issue on this screen where if you tap on a tag after already having hit submit, it might throw an error
 // TODO: fix an issue where sometimes the toast shows up erroneously
 const TagsScreen = (props: TagsScreenProps) => {
-    const { userId, selected, textures, flavors, misc, addOrUpdate } = props;
+    const { userId, selected, addOrUpdate } = props;
     const { id, name } = selected?.data ?? {};
 
     const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
@@ -39,6 +40,8 @@ const TagsScreen = (props: TagsScreenProps) => {
     const route = useRoute();
 
     const { attributeType, preselectedAttributes } = route.params;
+
+    const attribute = useAttributeState(attributeType);
 
     useEffect(() => {
         switch (attributeType) {
@@ -61,27 +64,10 @@ const TagsScreen = (props: TagsScreenProps) => {
     }, [navigation]);
 
     useEffect(() => {
-        if (addOrUpdate.success) Toast.show(`'${getAttributes().filter(a => selectedAttributes.some(s => s === a.id)).map(a => a.name).join(', ')}' added to ${FormatAsTitleCase(name)}!`);
+        if (!attribute?.data?.length) return;
+        if (addOrUpdate.success) Toast.show(`'${attribute.data.filter(a => selectedAttributes.some(s => s === a.id)).map(a => a.name).join(', ')}' added to ${FormatAsTitleCase(name)}!`);
 
     }, [addOrUpdate.success])
-
-    const getLoadingState = () => {
-        switch (attributeType) {
-            case 'flavor': return flavors.loading
-            case 'texture': return textures.loading
-            case 'miscellaneous': return misc.loading
-            default: return false
-        }
-    }
-
-    const getAttributes = () => {
-        switch (attributeType) {
-            case 'flavor': return flavors.data ?? [];
-            case 'texture': return textures.data ?? [];
-            case 'miscellaneous': return misc.data ?? [];
-            default: return []
-        }
-    }
 
     const handleSubmitPressed = () => {
         selectedAttributes.forEach(a => dispatch(AddOrUpdateAttributeAction(attributeType, { foodId: id, userId: userId, attributeId: a })));
@@ -93,10 +79,10 @@ const TagsScreen = (props: TagsScreenProps) => {
             showsVerticalScrollIndicator={false}
             contentInsetAdjustmentBehavior='automatic'>
             <View style={{ height: '100%', flexDirection: 'column', justifyContent: 'space-between', paddingTop: 20, paddingBottom: 20 }}>
-                {getLoadingState() ? <LoadingSpinner fullScreen /> :
+                {attribute?.loading ? <LoadingSpinner fullScreen /> :
                     <>
                         <AttributeList
-                            items={getAttributes()}
+                            items={attribute?.data ?? []}
                             disabledItems={preselectedAttributes}
                             attributeType={attributeType}
                             columnWrapperStyle={{ flexWrap: 'wrap' }}
@@ -124,9 +110,6 @@ export default connect((state: MouthfeelState) => {
     return {
         userId: state.user.profile.data?.id,
         selected: state.foods.selected,
-        flavors: state.flavors.all,
-        textures: state.textures.all,
-        misc: state.miscellaneous.all,
         addOrUpdate: state.foods.addOrUpdateAttribute
     }
 })(TagsScreen);

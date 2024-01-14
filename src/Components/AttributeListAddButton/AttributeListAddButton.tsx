@@ -9,19 +9,20 @@ interface AttributeListAddButton {
     onPress: () => any;
 }
 
+// TODO: make more circular
 const AttributeListAddButton = (props: AttributeListAddButton) => {
     const { theme, onPress } = props;
 
     const styles = createStyles(theme);
 
     return (
-        <View style={styles.wrapper}>
-            <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity onPress={onPress}>
+            <View style={styles.wrapper}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Icon name='plus' size={14} color={theme.primaryThemeTextColor} />
+                    <Icon adjustsFontSizeToFit name='plus' color={theme.primaryThemeTextColor} />
                 </View>
-            </TouchableOpacity>
-        </View>
+            </View>
+        </TouchableOpacity>
     )
 }
 
