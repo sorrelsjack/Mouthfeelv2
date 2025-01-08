@@ -9,7 +9,6 @@ const Routes = {
     ContactUs: 'ContactUs',
     Liked: 'Liked',
     Disliked: 'Disliked',
-    Recommended: 'Recommended',
     ToTry: 'ToTry',
     Help: 'Help'
 }

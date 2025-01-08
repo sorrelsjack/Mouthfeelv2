@@ -35,7 +35,6 @@ const HomeScreen = (props: HomeScreenProps) => {
     const items = [
         { icon: 'heart', text: 'Liked', route: Routes.Liked },
         { icon: 'heart-broken', text: 'Disliked', route: Routes.Disliked },
-        { icon: 'location-arrow', text: 'Recommended Foods', route: Routes.Recommended },
         { icon: 'list-ul', text: 'Foods To Try', route: Routes.ToTry },
         { icon: 'plus-circle', text: 'Submit New Food', route: Routes.SubmitFood }
     ]

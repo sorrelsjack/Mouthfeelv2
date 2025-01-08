@@ -11,7 +11,6 @@ import {
   ContactUsScreen,
   LikedScreen,
   DislikedScreen,
-  RecommendedScreen,
   ToTryScreen,
   AppIntroScreen,
   HelpScreen
@@ -78,7 +77,6 @@ export const App = () => {
             <Stack.Screen name={Routes.FoodDetails} component={FoodDetailsScreen} />
             <Stack.Screen name={Routes.Liked} component={LikedScreen} />
             <Stack.Screen name={Routes.Disliked} component={DislikedScreen} />
-            <Stack.Screen name={Routes.Recommended} component={RecommendedScreen} />
             <Stack.Screen name={Routes.ToTry} component={ToTryScreen} options={{ title: 'To Try' }} />
             <Stack.Screen name={Routes.SubmitFood} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
             <Stack.Screen name={Routes.Settings} component={SettingsScreen} options={{ title: 'Settings' }} />

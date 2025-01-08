@@ -56,13 +56,6 @@ export const Foods = (state: FoodsState = new FoodsState(), action: ReduxAction)
         case Actions.GetFoodsToTry.Failed:
             return { ...state, toTry: state.toTry.failed(action.error?.response?.data) }
 
-        case Actions.GetRecommendedFoods.Loading:
-            return { ...state, recommended: state.recommended.startLoading() }
-        case Actions.GetRecommendedFoods.Success:
-            return { ...state, all: AddToAll(action.data), recommended: state.recommended.succeeded(action.data.data.map(f => f.id)) }
-        case Actions.GetRecommendedFoods.Failed:
-            return { ...state, recommended: state.recommended.failed(action.error?.response?.data) }
-
         case Actions.CreateFood.Loading:
             return { ...state, createNewFood: state.createNewFood.startLoading() }
         case Actions.CreateFood.Success:

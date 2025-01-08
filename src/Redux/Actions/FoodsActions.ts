@@ -99,19 +99,6 @@ export const GetFoodsToTryAction = () => {
     }
 }
 
-export const GetRecommendedFoodsAction = () => {
-    return async (dispatch: Dispatch) => {
-        dispatch({ type: Actions.GetRecommendedFoods.Loading })
-        try {
-            const recommended = await axios.get(Urls.foods.recommended());
-            dispatch({ type: Actions.GetRecommendedFoods.Success, data: recommended });
-        }
-        catch (error) {
-            dispatch({ type: Actions.GetRecommendedFoods.Failed, error });
-        }
-    }
-}
-
 export const AddOrRemoveFoodToTryAction = (foodId: number) => {
     return async (dispatch: Dispatch) => {
         try {

@@ -16,7 +16,6 @@ export class FoodsState {
     liked: ApiData<number[]>;
     disliked: ApiData<number[]>;
     toTry: ApiData<number[]>;
-    recommended: ApiData<number[]>;
 
     selected: {
         loading: boolean;
@@ -35,7 +34,6 @@ export class FoodsState {
         this.liked = new ApiData<number[]>([]);
         this.disliked = new ApiData<number[]>([]);
         this.toTry = new ApiData<number[]>([]);
-        this.recommended = new ApiData<number[]>([]);
         
         this.selected = {
             loading: false,

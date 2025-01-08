@@ -43,7 +43,6 @@ export const Actions = {
     GetLikedFoods: new Action('GET_LIKED_FOODS'),
     GetDislikedFoods: new Action('GET_DISLIKED_FOODS'),
     ManageFoodSentiment: new Action('MANAGE_FOOD_SENTIMENT'),
-    GetRecommendedFoods: new Action('GET_RECOMMENDED_FOODS'),
     GetFoodsToTry: new Action('GET_FOODS_TO_TRY'),
     AddOrRemoveFoodToTry: new Action('ADD_OR_REMOVE_FOOD_TO_TRY'),
     AddOrUpdateAttributeAction: new Action('ADD_OR_UPDATE_ATTRIBUTE'),

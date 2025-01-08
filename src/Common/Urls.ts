@@ -9,7 +9,6 @@ export const Urls = {
         disliked: () => `${rootUrl}/foods/disliked`,
         sentiment: () => `${rootUrl}/foods/sentiment`,
         new: () => `${rootUrl}/foods`,
-        recommended: () => `${rootUrl}/foods/recommended`,
         toTry: () => `${rootUrl}/foods/to-try`,
         flavors: (id: number) => `${rootUrl}/foods/${id}/flavors`,
         textures: (id: number) => `${rootUrl}/foods/${id}/textures`,
