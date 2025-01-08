@@ -18,7 +18,7 @@ const AttributeListAddButton = (props: AttributeListAddButton) => {
     return (
         <TouchableOpacity onPress={onPress}>
             <View style={styles.wrapper}>
-                <View style={{ flexDirection: 'row' }}>
+                <View style={styles.container}>
                     <Icon adjustsFontSizeToFit name='plus' color={theme.primaryThemeTextColor} />
                 </View>
             </View>
@@ -38,4 +38,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         marginRight: 7,
         backgroundColor: theme.primaryThemeColor
     },
+    container: {
+        flexDirection: 'row'
+    }
 });

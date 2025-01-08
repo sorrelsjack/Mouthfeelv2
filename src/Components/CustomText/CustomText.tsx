@@ -1,19 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
-    TouchableOpacity,
     StyleSheet,
     TextProps,
     Text
 } from 'react-native';
 import { withTheme } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { ThemeProp } from '../../Models';
 
 export const GlobalFontName = 'Montserrat-Regular';
 export const GlobalFontNameBold = 'Montserrat-Bold'
 
 const CustomText = (props: TextProps) => {
-    const isBold = props.style
+    const isBold = props.style && 'fontWeight' in props.style
         ? props.style['fontWeight'] === 'bold'
         : false;
 

@@ -1,21 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
+import React, {  } from 'react';
 import {
-    View,
-    Text,
-    TextInput,
     StyleSheet,
-    TouchableOpacity,
-    ScrollView,
-    Image
+    TouchableOpacity
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import { Tag, AttributeList, LoadingSpinner, InputField, CustomText } from '../../Components';
+import { CustomText } from '../../Components';
 import { withTheme } from 'react-native-elements';
 import { ThemeProp } from '../../Models';
-import { GetAllVotableAttributesAction } from '../../Redux/Actions';
-import { VotableAttribute, MouthfeelState, CreateFoodRequest } from '../../Redux/Models';
-import { Theme } from '@react-navigation/native/lib/typescript/src/types';
 
 interface ButtonProps {
     onPress: () => any;

@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, LayoutChangeEvent } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { Tooltip } from 'react-native-elements';
-import { withTheme, Theme } from 'react-native-elements';
+import { withTheme, Tooltip } from 'react-native-elements';
 import { AttributeType, ThemeProp } from '../../Models';
 import { ConvertHexToRgba, InvertColor } from '../../Common';
 import { AddOrUpdateAttributeRequest, FoodDetails, MouthfeelState, VotableAttribute } from '../../Redux/Models';
@@ -13,7 +12,7 @@ import CustomText from '../CustomText/CustomText';
 type TagSize = 'small' | 'regular';
 
 interface TagProps {
-    userId: number,
+    userId?: number,
     selected: {
         loading: boolean;
         data: FoodDetails | null
@@ -49,7 +48,7 @@ const Tag = (props: TagProps) => {
 
     const dispatch = useDispatch();
 
-    const styles = createStyles(size, disabled);
+    const styles = createStyles(theme);
 
     const currentVoteTotal = useMemo(() => {
         if (isPressed && votes === 1 && sentiment === 1) return 1;
@@ -57,9 +56,11 @@ const Tag = (props: TagProps) => {
         return votes;
     }, [isPressed, votes, sentiment]);
 
+    const WRAPPER_COLOR = 'rgba(80, 80, 80, .6)';
+
     const wrapperStyle = useMemo(() => isPressed
-        ? { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : InvertColor(theme.primaryThemeColor) }
-        : { ...styles.wrapper, backgroundColor: disabled ? 'rgba(80, 80, 80, .6)' : theme.primaryThemeColor }, [name, isPressed])
+        ? { ...styles.wrapper, backgroundColor: disabled ? WRAPPER_COLOR : InvertColor(theme.primaryThemeColor) }
+        : { ...styles.wrapper, backgroundColor: disabled ? WRAPPER_COLOR : theme.primaryThemeColor }, [name, isPressed])
 
     const textStyle = useMemo(() => isPressed
         ? { ...styles.text, color: InvertColor(theme.primaryThemeTextColor), fontSize: fontSize }
@@ -70,11 +71,12 @@ const Tag = (props: TagProps) => {
         : { ...styles.counterContainer, backgroundColor: ConvertHexToRgba(theme.primaryThemeTextColor, .3) }, [name, isPressed, currentVoteTotal])
 
     const handlePress = () => {
-        if (!userId) return;
+        // TODO: Probably add some behavior here
+        if (!userId || !selected.data?.id) return;
 
         const request: AddOrUpdateAttributeRequest = {
             foodId: selected.data?.id,
-            userId: userId,
+            userId,
             attributeId: id
         };
 
@@ -83,7 +85,7 @@ const Tag = (props: TagProps) => {
         setIsPressed(!isPressed);
     }
 
-    const handleTextMount = (e) => {
+    const handleTextMount = (e: LayoutChangeEvent) => {
         const { height, width } = e.nativeEvent.layout;
         setTooltipHeight(height + 30);
         setTooltipWidth(width + 30);
@@ -104,7 +106,7 @@ const Tag = (props: TagProps) => {
 
     return (
         <View style={[wrapperStyle, style]}>
-            <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+            <View style={styles.container}>
                 <TouchableOpacity style={{ flexGrow: 1 }} disabled={disabled} onPress={handlePress}>
                     <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         {votes && <View style={counterContainerStyle}>
@@ -126,7 +128,7 @@ const Tag = (props: TagProps) => {
                         skipAndroidStatusBar
                         width={tooltipWidth}
                         height={tooltipHeight}
-                        popover={<CustomText onLayout={handleTextMount} style={{ color: theme.primaryThemeTextColor, flexWrap: 'wrap' }}>{description.toLowerCase()}</CustomText>}>
+                        popover={<CustomText onLayout={handleTextMount} style={styles.popover}>{description.toLowerCase()}</CustomText>}>
                         <Icon
                             name={'question-circle'}
                             size={fontSize}
@@ -146,7 +148,7 @@ export default withTheme(connect((state: MouthfeelState) => {
     }
 })(Tag));
 
-const createStyles = (size: TagSize, disabled: boolean) => StyleSheet.create({
+const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
         flex: 1,
         alignItems: 'center',
@@ -156,6 +158,12 @@ const createStyles = (size: TagSize, disabled: boolean) => StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 10,
         marginHorizontal: 10
+    },
+    container: {
+        width: '100%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
     text: {
         justifyContent: 'center',
@@ -173,5 +181,9 @@ const createStyles = (size: TagSize, disabled: boolean) => StyleSheet.create({
         justifyContent: 'flex-end',
         marginLeft: 5,
         paddingHorizontal: 7
+    },
+    popover: {
+        color: theme.primaryThemeTextColor,
+        flexWrap: 'wrap'
     }
 });

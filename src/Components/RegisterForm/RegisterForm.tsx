@@ -74,8 +74,8 @@ const RegisterForm = (props: RegisterFormProps) => {
                 placeholderTextColor={theme.loginScreen.textInput.placeholderColor}
                 value={confirmPassword}
                 onTextChange={setConfirmPassword} />
-            {(!passwordsMatch && password.length >= 1 && !createNewUser.error) ? <ErrorText text='Passwords must match!' scheme='dark' style={{ marginTop: 10 }} /> : null}
-            {createNewUser.error ? <ErrorText text={createNewUser.error.Message} scheme='dark' style={{ marginTop: 10 }} /> : null}
+            {(!passwordsMatch && password.length >= 1 && !createNewUser.error) ? <ErrorText text='Passwords must match!' scheme='dark' style={styles.errorText} /> : null}
+            {createNewUser.error ? <ErrorText text={createNewUser.error.Message} scheme='dark' style={styles.errorText} /> : null}
         </>
     )
 }
@@ -95,4 +95,7 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         color: theme.loginScreen.textInput.textColor,
         borderBottomColor: theme.loginScreen.textInput.lineColor
     },
+    errorText: {
+        marginTop: 10
+    }
 })

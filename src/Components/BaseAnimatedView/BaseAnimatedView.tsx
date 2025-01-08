@@ -39,7 +39,7 @@ const BaseAnimatedView = (props: BaseAnimatedViewProps) => {
                 {view}
                 <CustomText style={styles.text}>{text}</CustomText>
             </View>
-            <View style={{ flexDirection: 'column', alignItems: 'center' }}>
+            <View style={styles.buttonsContainer}>
                 {buttonText && <Button style={styles.button} textStyle={styles.buttonText} text={buttonText} onPress={onButtonPress} />}
                 {secondButtonText && <Button style={styles.button} textStyle={styles.buttonText} text={secondButtonText} onPress={onSecondButtonPress} />}
             </View>
@@ -67,6 +67,10 @@ const createStyles = (fullScreen: boolean, windowHeight: number, headerHeight: n
     },
     buttonText: {
         fontSize: 14
+    },
+    buttonsContainer: {
+        flexDirection: 'column', 
+        alignItems: 'center'
     },
     container: {
         marginTop: extraAnimationHeight,

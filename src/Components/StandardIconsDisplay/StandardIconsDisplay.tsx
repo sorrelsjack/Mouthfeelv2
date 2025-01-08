@@ -2,22 +2,17 @@ import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import {
     View,
-    FlatList,
-    Text,
     TouchableOpacity,
-    Image,
     StyleSheet
 } from 'react-native';
 import { ThemeProp } from '../../Models';
 import { FoodDetails } from '../../Redux/Models/FoodDetails';
-import { FormatAsTitleCase, Routes } from '../../Common'
-import { SetSelectedFoodAction, AddOrRemoveFoodToTryAction, ManageFoodSentimentAction } from '../../Redux/Actions';
-import { useNavigation } from '@react-navigation/native';
-import { LoadingSpinner, Tag } from '..';
-import { withTheme, Theme } from 'react-native-elements';
+import { FormatAsTitleCase } from '../../Common'
+import { AddOrRemoveFoodToTryAction, ManageFoodSentimentAction } from '../../Redux/Actions';
+import { withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-simple-toast';
-import _ from 'lodash/fp';
+import _ from 'lodash';
 
 interface StandardIconsDisplayProps {
     theme: ThemeProp,
@@ -46,6 +41,7 @@ const StandardIconsDisplay = (props: StandardIconsDisplayProps) => {
         setMarkedToTry(toTry);
     }, [toTry])
 
+    // TODO: Rework this logic -- could probably be condensed with the disliked function
     const handleLikedPressed = () => {
         const updatedStatus = !markedLiked;
 

@@ -4,16 +4,22 @@ import Accordion from 'react-native-collapsible/Accordion';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import CustomText from '../CustomText/CustomText';
 
+interface Section {
+    title: string, 
+    content: JSX.Element
+}
+
 interface ArrowAccordionProps {
-    sections: { title: string, content: JSX.Element }[]
+    sections: Section[]
 }
 
 const ArrowAccordion = (props: ArrowAccordionProps) => {
     const { sections } = props;
 
-    const [activeSections, setActiveSections] = useState([]);
+    const [activeSections, setActiveSections] = useState<number[]>([]);
 
-    const renderHeader = (section, _, isActive: boolean) => {
+    // _ is for index
+    const renderHeader = (section: Section, _: number, isActive: boolean) => {
         return (
             <View style={styles.header}>
                 <CustomText style={styles.headerText}>{section.title}</CustomText>
@@ -22,7 +28,7 @@ const ArrowAccordion = (props: ArrowAccordionProps) => {
         )
     }
 
-    const renderContent = (section, _, isActive: boolean) => {
+    const renderContent = (section: Section, _: number) => {
         return (
             <View style={{ flex: 1, marginBottom: 10 }}>
                 {section.content}

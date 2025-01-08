@@ -1,11 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { ListRenderItem, StyleSheet, Text, View } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { Colors } from '../../Common';
 import { CustomText } from '../../Components';
 
+interface AppIntroScreenSlide {
+    key: number,
+    title: string,
+    text: string,
+    backgroundColor: string
+}
+
 const AppIntroScreen = () => {
-    const slides = [
+    const slides: AppIntroScreenSlide[] = [
         {
             key: 1,
             title: 'Welcome To Mouthfeel',
@@ -44,7 +51,7 @@ const AppIntroScreen = () => {
         }
     ];
 
-    const renderItem = ({ item }) => {
+    const renderItem: ListRenderItem<AppIntroScreenSlide> = ({ item }) => {
         return (
             <View style={styles.slide}>
                 <CustomText style={[styles.title, { color: Colors.primaryThemeTextColor }]}>{item.title}</CustomText>

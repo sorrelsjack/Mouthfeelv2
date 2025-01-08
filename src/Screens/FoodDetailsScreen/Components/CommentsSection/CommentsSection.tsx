@@ -20,7 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 
 interface CommentsSectionProps {
     theme: ThemeProp,
-    userId: number,
+    userId?: number,
     create: ApiOperation,
     comments: ApiData<CommentModel[]>,
     selected: {
@@ -55,8 +55,11 @@ const CommentsSection = (props: CommentsSectionProps) => {
     }
 
     const handleButtonPressed = () => {
+        // TODO: Need UX for this
+        if (!userId) return;
+
         const request: CreateCommentRequest = {
-            userId: userId,
+            userId,
             foodId: selected?.data?.id,
             body: newComment
         }

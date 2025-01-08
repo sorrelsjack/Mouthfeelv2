@@ -8,7 +8,7 @@ import Toast from 'react-native-simple-toast';
 export const Startup = () => {
     const deauthenticate = async () => {
         await RemoveUserProfile();
-        store.dispatch({ type: Actions.User.Logout });
+        store.dispatch({ type: Actions.User.Logout, data: null, error: null });
         navigate(Routes.Login);
         Toast.show('Logged out due to token expiration');
         return Promise.reject();

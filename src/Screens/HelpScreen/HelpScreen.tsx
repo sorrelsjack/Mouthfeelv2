@@ -18,14 +18,14 @@ const HelpScreen = (props: HelpScreenProps) => {
 
     return (
         <ScrollView
-            style={{ height: '100%' }}
+            style={styles.scrollView}
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={{ flexGrow: 1 }}
+            contentContainerStyle={styles.scrollViewContentContainer}
             contentInsetAdjustmentBehavior="automatic">
             <View style={styles.wrapper}>
                 <View style={styles.container}>
                     <CustomText style={{ fontSize: 20 }}>Not sure what to include here.</CustomText>
-                    <Button text='Contact Us' textStyle={{ fontSize: 14 }} onPress={() => navigation.navigate(Routes.ContactUs)} />
+                    <Button text='Contact Us' textStyle={styles.buttonText} onPress={() => navigation.navigate(Routes.ContactUs)} />
                 </View>
             </View>
         </ScrollView>
@@ -35,6 +35,12 @@ const HelpScreen = (props: HelpScreenProps) => {
 export default withTheme(HelpScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
+    scrollView: {
+        height: '100%'
+    },
+    scrollViewContentContainer: {
+        flexGrow: 1
+    },
     wrapper: {
         padding: 20,
         height: '100%'
@@ -50,7 +56,6 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
         padding: 15
     },
     buttonText: {
-        textAlign: 'center',
-        color: theme.primaryThemeTextColor
+        fontSize: 14
     }
 })

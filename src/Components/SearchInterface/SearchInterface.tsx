@@ -61,7 +61,11 @@ const SearchInterface = (props: SearchInterfaceProps) => {
     }
 
     const NoDataView = () => {
-        if (searchResults.error) return <ErrorView onButtonPress={() => { dispatch(SearchFoodsAction(searchQuery, generateFilterArray())) }} onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
+        if (searchResults.error) return (
+            <ErrorView
+                onButtonPress={() => { dispatch(SearchFoodsAction(searchQuery, generateFilterArray())) }}
+                onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
+        )
         if (!searchResults.loading && !searchResults.data?.length) return <EmptyView text='No results found' />
         return null;
     }
@@ -79,7 +83,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
 
     // Do not remove fontWeight, or font will not be Montserrat: https://github.com/react-native-elements/react-native-elements/issues/2191#issuecomment-557812813
     return (
-        <View style={{ padding: 15 }}>
+        <View style={styles.wrapper}>
             <SearchBar
                 platform={Platform.OS}
                 clearIcon
@@ -97,7 +101,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setNameChecked(!nameChecked)}
                     checkedColor={theme.primaryThemeColor}
-                    textStyle={{ fontWeight: 'normal' }}
+                    textStyle={styles.checkboxText}
                     containerStyle={{ flexShrink: 1, marginLeft: 0, marginRight: 0 }} />
                 <CheckBox
                     fontFamily={GlobalFontName}
@@ -106,7 +110,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setIngredientsChecked(!ingredientsChecked)}
                     checkedColor={theme.primaryThemeColor}
-                    textStyle={{ fontWeight: 'normal' }}
+                    textStyle={styles.checkboxText}
                     containerStyle={{ flexShrink: 1, marginRight: 0 }} />
                 <CheckBox
                     fontFamily={GlobalFontName}
@@ -115,7 +119,7 @@ const SearchInterface = (props: SearchInterfaceProps) => {
                     size={14}
                     onPress={() => setAttributesChecked(!attributesChecked)}
                     checkedColor={theme.primaryThemeColor}
-                    textStyle={{ fontWeight: 'normal' }}
+                    textStyle={styles.checkboxText}
                     containerStyle={{ flexShrink: 1, marginRight: 0 }} />
             </View>
             <View style={styles.buttonsContainer}>
@@ -130,6 +134,12 @@ const SearchInterface = (props: SearchInterfaceProps) => {
 export default withTheme(SearchInterface);
 
 const styles = StyleSheet.create({
+    wrapper: {
+        padding: 15
+    },
+    checkboxText: {
+        fontWeight: 'normal'
+    },
     checkboxContainer: {
         flex: 1,
         flexDirection: 'row',

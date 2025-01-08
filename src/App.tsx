@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import store from './Redux/ConfigureStore';
 import {
@@ -17,14 +17,12 @@ import {
 } from './Screens';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack'
-import { Routes, Urls, Colors, RemoveUserProfile } from './Common';
+import { Routes, Colors } from './Common';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { TouchableOpacity, View } from 'react-native';
-import { ThemeProvider, Button } from 'react-native-elements';
+import { ThemeProvider } from 'react-native-elements';
 import { Startup, navigationRef } from './Config'
 import { GlobalFontName } from './Components/CustomText/CustomText';
-
-console.disableYellowBox = true;
 
 const Stack = createStackNavigator();
 

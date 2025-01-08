@@ -1,17 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect, useDispatch } from 'react-redux';
-import { GetFoodDetailsAction } from '../../Redux/Actions';
 import {
-    SafeAreaView,
-    StyleSheet,
-    ScrollView,
-    View,
-    Text,
-    Image
-} from 'react-native';
-import { FormatAsTitleCase, Routes } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
-import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
+    View} from 'react-native';
+import { Routes } from '../../Common';
+import { LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
+import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { GetDislikedFoodsAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
 

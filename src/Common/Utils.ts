@@ -1,4 +1,4 @@
-import JwtDecode from 'jwt-decode';
+import JwtDecode, { JwtPayload } from 'jwt-decode';
 import { Platform } from 'react-native';
 
 export const InvertColor = (color: string) => {
@@ -52,26 +52,28 @@ export const ConvertHexToRgbaArray = (hex: string, alpha: number = 1) => {
     var r = parseInt(hex.slice(1, 3), 16),
         g = parseInt(hex.slice(3, 5), 16),
         b = parseInt(hex.slice(5, 7), 16);
-    
+
     return [r, g, b, alpha];
 }
 
+// Reference: https://awik.io/determine-color-bright-dark-using-javascript/
 export const DetermineColorBrightness = (color: string) => {
     // Variables for red, green, blue values
-    let r, g, b, hsp;
+    let r, g, b, hsp, segmentedColor;
 
     // Check the format of the color, HEX or RGB?
     if (color.match(/^rgb/)) {
-
         // If RGB --> store the red, green, blue values in separate variables
-        color = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+        // Output of color.match(...) looks like "["rgb(255, 0, 0)", "255", "0", "0", undefined]"
+        segmentedColor = color.match(/^rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*(\d+(?:\.\d+)?))?\)$/);
+        console.log('!!!color')
+        console.log(color)
 
         r = color[1];
         g = color[2];
         b = color[3];
     }
     else {
-
         // If hex --> Convert it to RGB: http://gist.github.com/983661
         color = +("0x" + color.slice(1).replace(
             color.length < 5 && /./g, '$&$&'));
@@ -90,11 +92,9 @@ export const DetermineColorBrightness = (color: string) => {
 
     // Using the HSP value, determine whether the color is light or dark
     if (hsp > 127.5) {
-
         return 'light';
     }
     else {
-
         return 'dark';
     }
 }
@@ -151,7 +151,8 @@ export const GetRgb2Lab = (rgb: number[]) => {
 
 export const JwtIsValid = (jwt: string | null) => {
     const currentTime = (new Date()).getTime() / 1000;
-    const expiration = jwt ? JwtDecode(jwt).exp : 0;
+    // TODO: Update JwtDecode and deal with its breaking changes
+    const expiration = jwt ? JwtDecode<JwtPayload>(jwt).exp ?? 0 : 0;
     const expired = expiration <= currentTime;
     return !expired && !!jwt;
 }

@@ -6,36 +6,23 @@ import {
   StyleSheet,
   ScrollView,
   View,
-  Text,
   Image,
   TouchableOpacity
 } from 'react-native';
 import {
-  IngredientsList,
   CommentsSection,
 } from './Components';
 import {
-  FormatAsTitleCase,
-  GetDefaultPrimaryThemeColor,
-  GetDefaultPrimaryThemeTextColor,
-  DetermineColorBrightness,
-  GetTextColorBasedOnBrightness,
-  InvertColor,
-  GetDeltaE,
-  ConvertHexToRgbaArray,
-  GetDefaultHeartSelectedColor,
-  GetDefaultHeartBrokenSelectedColor
-} from '../../Common';
+  FormatAsTitleCase} from '../../Common';
 import { AttributeList, CircleButton, CustomText, LoadingSpinner } from '../../Components';
 //import { getColorFromURL } from 'rn-dominant-color';
 import { withTheme, UpdateTheme } from 'react-native-elements';
-import { withNavigation } from 'react-navigation';
 import { ThemeProp } from '../../Models';
-import { FoodDetails, VotableAttribute, MouthfeelState } from '../../Redux/Models';
+import { FoodDetails, MouthfeelState } from '../../Redux/Models';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
-import _ from 'lodash/fp';
+import _ from 'lodash';
 
 interface FoodDetailsScreenProps {
   userId: number,

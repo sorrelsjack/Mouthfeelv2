@@ -37,8 +37,8 @@ const LikedScreen = (props: LikedScreenProps) => {
     }
 
     return (
-        <View style={{ justifyContent: 'center', height: '100%' }}>
-            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={{ alignItems: 'center', marginTop: 10 }}><FoodList items={liked.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
+        <View style={styles.wrapper}>
+            {liked.loading ? <LoadingSpinner fullScreen /> : (liked.data?.length) ? <View style={styles.container}><FoodList items={liked.data ? all.filter(f => f.sentiment === 1) : []} /></View> : null}
             <NoDataView />
         </View>
     )
@@ -50,3 +50,14 @@ export default connect((state: MouthfeelState) => {
         liked: state.foods.liked
     }
 })(LikedScreen);
+
+const styles = StyleSheet.create({
+    wrapper: {
+        justifyContent: 'center',
+        height: '100%'
+    },
+    container: {
+        alignItems: 'center', 
+        marginTop: 10
+    }
+})

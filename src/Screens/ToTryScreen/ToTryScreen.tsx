@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 
 interface ToTryScreenProps {
     all: FoodDetails[];
-    toTry: ApiData<FoodDetails[]>;
+    toTry: ApiData<number[]>;
 }
 
 const ToTryScreen = (props: ToTryScreenProps) => {
