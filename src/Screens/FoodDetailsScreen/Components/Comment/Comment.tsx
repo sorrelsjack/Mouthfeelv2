@@ -7,7 +7,7 @@ import { ThemeProp } from '../../../../Models';
 import { Comment as CommentModel, ManageCommentVoteRequest, AuthenticateUserResponse, MouthfeelState } from '../../../../Redux/Models';
 import { GetCurrentUserAction, ManageCommentVoteAction } from '../../../../Redux/Actions';
 import moment from 'moment';
-import _ from 'lodash';
+import _ from 'lodash/fp';
 import { CustomText } from '../../../../Components';
 
 interface CommentProps {

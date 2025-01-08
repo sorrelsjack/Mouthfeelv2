@@ -35,7 +35,7 @@ import { FoodDetails, VotableAttribute, MouthfeelState } from '../../Redux/Model
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
-import _ from 'lodash';
+import _ from 'lodash/fp';
 
 interface FoodDetailsScreenProps {
   userId: number,

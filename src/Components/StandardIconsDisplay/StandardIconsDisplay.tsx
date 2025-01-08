@@ -17,7 +17,7 @@ import { LoadingSpinner, Tag } from '..';
 import { withTheme, Theme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import Toast from 'react-native-simple-toast';
-import _ from 'lodash';
+import _ from 'lodash/fp';
 
 interface StandardIconsDisplayProps {
     theme: ThemeProp,
