@@ -1,36 +1,34 @@
-import React, { useState, useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
-    FlatList,
-    KeyboardAvoidingView
-} from 'react-native';
-import { Comment } from '..';
-import { withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../../../Models';
-import { BaseAnimatedView, LoadingSpinner, InputField, ErrorText, CustomText } from '../../../../Components';
+import { isNil } from 'lodash/fp';
 import LottieView from 'lottie-react-native';
-import { CreateCommentAction, GetCommentsForFoodAction, GetCurrentUserAction } from '../../../../Redux/Actions';
-import { FoodDetails, MouthfeelState, Comment as CommentModel, ApiOperation, CreateCommentRequest, ApiData } from '../../../../Redux/Models';
-import { IsIos } from '../../../../Common';
+import React, { useEffect, useState } from 'react';
+import {
+    FlatList,
+    KeyboardAvoidingView,
+    StyleSheet,
+    TouchableOpacity,
+    View
+} from 'react-native';
+import { withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch } from 'react-redux';
+import { Comment } from '..';
+import { IsIos } from '../../../../Common';
+import { BaseAnimatedView, CustomText, ErrorText, InputField, LoadingSpinner } from '../../../../Components';
+import { useAppStore } from '../../../../Hooks/useAppStore';
+import { ThemeProp } from '../../../../Models';
+import { CreateCommentAction, GetCommentsForFoodAction, GetCurrentUserAction } from '../../../../Redux/Actions';
+import { Comment as CommentModel, CreateCommentRequest } from '../../../../Redux/Models';
 
 interface CommentsSectionProps {
     theme: ThemeProp,
-    userId?: number,
-    create: ApiOperation,
-    comments: ApiData<CommentModel[]>,
-    selected: {
-        loading: boolean,
-        data: FoodDetails
-    },
 }
 
 const CommentsSection = (props: CommentsSectionProps) => {
-    const { theme, create, userId, selected, comments } = props;
+    const { theme } = props;
+    const create = useAppStore(s => s.comments.create);
+    const comments = useAppStore(s => s.comments.byFood);
+    const userId = useAppStore(s => s.user.profile.data?.id);
+    const selected = useAppStore(s => s.foods.selected);
 
     const [isExpanded, setIsExpanded] = useState(false);
     const [componentIsReady, setComponentIsReady] = useState(false);
@@ -48,19 +46,22 @@ const CommentsSection = (props: CommentsSectionProps) => {
         if (create.success) setNewComment('');
     }, [create])
 
+    if (isNil(selected.data)) return null;
+
     const handleHeaderTextPressed = () => {
-        if (!isExpanded) dispatch(GetCommentsForFoodAction(selected?.data?.id));
+        if (!selected.data) return;
+        if (!isExpanded) dispatch(GetCommentsForFoodAction(selected.data?.id));
         setComponentIsReady(!isExpanded ? true : false);
         setIsExpanded(!isExpanded);
     }
 
     const handleButtonPressed = () => {
         // TODO: Need UX for this
-        if (!userId) return;
+        if (!userId || !selected.data) return;
 
         const request: CreateCommentRequest = {
             userId,
-            foodId: selected?.data?.id,
+            foodId: selected.data?.id,
             body: newComment
         }
 
@@ -123,7 +124,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
                             editable={!comments.loading}
                             onBlur={setNewComment}
                             onSubmitEditing={setNewComment}
-                            placeholder={`Describe what ${selected?.data ? selected.data.name : 'this food'} is like!`}
+                            placeholder={`Describe what ${selected.data ? selected.data.name : 'this food'} is like!`}
                             placeholderTextColor={'rgba(0, 0 , 0 , .7)'}
                             style={styles.commentInput} />
                     </View>
@@ -134,22 +135,12 @@ const CommentsSection = (props: CommentsSectionProps) => {
                     </View> : null}
                 </View> : null}
             {isExpanded && create.error ? <ErrorText text='There was an error submitting this comment.' style={{ marginTop: 10 }} /> : null}
-            { isExpanded && <CommentList />}
+            {isExpanded && <CommentList />}
         </KeyboardAvoidingView>
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-    const { selected } = state.foods;
-
-    return {
-        create: state.comments.create,
-        comments: state.comments.byFood,
-        userId: state.user.profile.data?.id,
-        selected
-    }
-
-})(CommentsSection));
+export default withTheme(CommentsSection);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

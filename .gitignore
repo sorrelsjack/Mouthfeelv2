@@ -72,3 +72,4 @@ buck-out/
 /coverage
 
 .env
+.vscode

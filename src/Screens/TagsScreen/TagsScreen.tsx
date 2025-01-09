@@ -1,37 +1,27 @@
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { View, StyleSheet, ScrollView, Dimensions } from 'react-native';
-import { connect, useDispatch, useSelector } from 'react-redux';
-import { ThemeProp } from '../../Models';
-import { AttributeList, Button, ErrorText, LoadingSpinner } from '../../Components';
-import {
-    GetAllFlavorsAction,
-    GetAllTexturesAction,
-    GetAllMiscellaneousAction,
-    AddOrUpdateAttributeAction
-} from '../../Redux/Actions';
-import { useRoute, useNavigation } from '@react-navigation/native';
-import { MouthfeelState, FoodDetails, ApiData, VotableAttribute, AddOrUpdateAttributeRequest, ApiOperation } from '../../Redux/Models';
-import { FormatAsTitleCase } from '../../Common';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
+import { useDispatch } from 'react-redux';
+import { FormatAsTitleCase } from '../../Common';
+import { AttributeList, Button, ErrorText, LoadingSpinner } from '../../Components';
+import { useAppStore } from '../../Hooks/useAppStore';
 import { useAttributeState } from '../../Hooks/useAttributeState';
-
-interface TagsScreenProps {
-    userId: number,
-    selected: {
-        loading: boolean,
-        data: FoodDetails
-    },
-    textures: ApiData<VotableAttribute[]>,
-    flavors: ApiData<VotableAttribute[]>,
-    misc: ApiData<VotableAttribute[]>,
-    addOrUpdate: ApiOperation
-}
+import {
+    AddOrUpdateAttributeAction,
+    GetAllFlavorsAction,
+    GetAllMiscellaneousAction,
+    GetAllTexturesAction
+} from '../../Redux/Actions';
 
 // TODO: fix issue on this screen where if you tap on a tag after already having hit submit, it might throw an error
 // TODO: fix an issue where sometimes the toast shows up erroneously
-const TagsScreen = (props: TagsScreenProps) => {
-    const { userId, selected, addOrUpdate } = props;
-    const { id, name } = selected?.data ?? {};
+const TagsScreen = () => {
+    const userId = useAppStore(s => s.user.profile.data?.id)
+    const selected = useAppStore(s => s.foods.selected)
+    const addOrUpdate = useAppStore(s => s.foods.addOrUpdateAttribute)
+
+    const { id, name = '' } = selected?.data ?? {};
 
     const [selectedAttributes, setSelectedAttributes] = useState<number[]>([]);
 
@@ -69,8 +59,10 @@ const TagsScreen = (props: TagsScreenProps) => {
 
     }, [addOrUpdate.success])
 
+    if (!userId || !id) return;
+
     const handleSubmitPressed = () => {
-        selectedAttributes.forEach(a => dispatch(AddOrUpdateAttributeAction(attributeType, { foodId: id, userId: userId, attributeId: a })));
+        selectedAttributes.forEach(a => dispatch(AddOrUpdateAttributeAction(attributeType, { foodId: id, userId, attributeId: a })));
     }
 
     return (
@@ -96,23 +88,17 @@ const TagsScreen = (props: TagsScreenProps) => {
                             tagStyle={styles.tagStyle}
                             tagSize={'small'}
                             onChange={(ids: number[]) => setSelectedAttributes(ids)} />
-                        <View style={{ padding: 15 }}>
+                        <View style={styles.submitButtonContainer}>
                             <Button text='Submit' disabled={addOrUpdate.loading} onPress={handleSubmitPressed} />
                         </View>
                     </>}
-                {addOrUpdate.error ? <ErrorText style={{ textAlign: 'center' }} scheme='light' text='There was an error updating the attributes.' /> : null}
+                {addOrUpdate.error ? <ErrorText style={styles.errorText} scheme='light' text='There was an error updating the attributes.' /> : null}
             </View>
         </ScrollView>
     )
 }
 
-export default connect((state: MouthfeelState) => {
-    return {
-        userId: state.user.profile.data?.id,
-        selected: state.foods.selected,
-        addOrUpdate: state.foods.addOrUpdateAttribute
-    }
-})(TagsScreen);
+export default TagsScreen;
 
 const styles = StyleSheet.create({
     attributeListContainer: {
@@ -131,4 +117,10 @@ const styles = StyleSheet.create({
     attributeListWrapper: {
         paddingBottom: 0
     },
+    submitButtonContainer: {
+        padding: 15
+    },
+    errorText: {
+        textAlign: 'center'
+    }
 });

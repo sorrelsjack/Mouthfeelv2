@@ -1,42 +1,44 @@
-import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { GetFoodDetailsAction, AddOrRemoveFoodToTryAction, ManageFoodSentimentAction, GetCurrentUserAction } from '../../Redux/Actions';
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
   Image,
-  TouchableOpacity
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View
 } from 'react-native';
+import { useDispatch } from 'react-redux';
+import {
+  FormatAsTitleCase
+} from '../../Common';
+import { AttributeList, CircleButton, CustomText, LoadingSpinner } from '../../Components';
+import { AddOrRemoveFoodToTryAction, GetCurrentUserAction, GetFoodDetailsAction, ManageFoodSentimentAction } from '../../Redux/Actions';
 import {
   CommentsSection,
 } from './Components';
-import {
-  FormatAsTitleCase} from '../../Common';
-import { AttributeList, CircleButton, CustomText, LoadingSpinner } from '../../Components';
 //import { getColorFromURL } from 'rn-dominant-color';
-import { withTheme, UpdateTheme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
-import { FoodDetails, MouthfeelState } from '../../Redux/Models';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import Toast from 'react-native-simple-toast';
 import { useNavigation } from '@react-navigation/native';
 import _ from 'lodash';
+import { UpdateTheme, withTheme } from 'react-native-elements';
+import Toast from 'react-native-simple-toast';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { ThemeProp } from '../../Models';
 
 interface FoodDetailsScreenProps {
-  userId: number,
   theme: ThemeProp,
-  updateTheme: UpdateTheme,
-  selected: {
-    loading: boolean,
-    data: FoodDetails
-  }
+  updateTheme: UpdateTheme
 }
 
 const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
-  const { userId, theme, updateTheme } = props;
-  const { loading } = props.selected || {};
+  const userId = useAppStore(s => s.user.profile.data?.id)
+  const selected = useAppStore(s => s.foods.selected);
+
+  const { theme, updateTheme } = props;
+  const { loading } = selected || {};
+
+  if (!selected?.data) return null;
+
   const {
     id,
     name,
@@ -47,18 +49,20 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
     textures,
     flavors,
     miscellaneous
-  } = props.selected?.data ?? {};
+  } = selected?.data;
 
   const [markedLiked, setMarkedLiked] = useState(false);
   const [markedDisliked, setMarkedDisliked] = useState(false);
   const [markedToTry, setMarkedToTry] = useState(false);
 
   const delayedDispatch = useCallback(_.debounce((foodId: number, sentiment: number) =>
-  dispatch(ManageFoodSentimentAction(foodId, sentiment)), 500), []);
+    dispatch(ManageFoodSentimentAction(foodId, sentiment)), 500), []);
 
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const styles = createStyles(theme);
+
+  if (!id) return null;
 
   const handleLikedPressed = () => {
     const updatedStatus = !markedLiked;
@@ -107,7 +111,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
 
   useEffect(() => {
     dispatch(GetFoodDetailsAction(id));
-  }, [props.selected.data.id])
+  }, [selected.data?.id])
 
   useEffect(() => {
     if (sentiment === 1) setMarkedLiked(true);
@@ -158,14 +162,7 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-
-  return {
-    selected: state.foods.selected,
-    userId: state.user.profile.data?.id
-  }
-
-})(FoodDetailsScreen));
+export default withTheme(FoodDetailsScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
   wrapper: {

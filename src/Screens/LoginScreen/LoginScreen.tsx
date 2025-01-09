@@ -1,27 +1,28 @@
-import React, { useState, useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { View, StyleSheet, Keyboard } from 'react-native';
-import { InputField, RegisterForm, Button, ErrorText, CustomText } from '../../Components';
-import LinearGradient from 'react-native-linear-gradient';
-import { Routes, RetrieveJwt, JwtIsValid, IsIos } from '../../Common';
-import { withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
-import { AuthenticateUserAction, RegisterUserAction } from '../../Redux/Actions';
-import { MouthfeelState, AuthenticateUserResponse, ApiData, CreateUserRequest, ApiOperation } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
+import React, { useEffect, useState } from 'react';
+import { Keyboard, StyleSheet, View } from 'react-native';
+import { withTheme } from 'react-native-elements';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import LinearGradient from 'react-native-linear-gradient';
+import { useDispatch } from 'react-redux';
+import { IsIos, JwtIsValid, RetrieveJwt, Routes } from '../../Common';
+import { Button, CustomText, ErrorText, InputField, RegisterForm } from '../../Components';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { ThemeProp } from '../../Models';
+import { AuthenticateUserAction, RegisterUserAction } from '../../Redux/Actions';
+import { CreateUserRequest } from '../../Redux/Models';
 
 interface LoginScreenProps {
-    theme: ThemeProp,
-    profile: ApiData<AuthenticateUserResponse>,
-    createNewUser: ApiOperation
+    theme: ThemeProp
 }
 
 // TODO: Guest login
 // TODO: Forgot PW
 const LoginScreen = (props: LoginScreenProps) => {
-    const { theme, profile, createNewUser } = props;
+    const { theme } = props;
+    const profile = useAppStore(s => s.user.profile);
+    const createNewUser = useAppStore(s => s.user.createNewUser)
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -159,14 +160,7 @@ const LoginScreen = (props: LoginScreenProps) => {
 
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-
-    return {
-        profile: state.user.profile,
-        createNewUser: state.user.createNewUser
-    }
-
-})(LoginScreen));
+export default withTheme(LoginScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

@@ -1,34 +1,33 @@
+import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
 import {
-    View,
-    Text,
-    TouchableOpacity,
-    StyleSheet,
+    Linking,
     ScrollView,
-    Linking
+    StyleSheet,
+    TouchableOpacity,
+    View
 } from 'react-native';
+import { getBuildNumber, getReadableVersion } from 'react-native-device-info';
 import { withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
+import { useDispatch } from 'react-redux';
 import { Routes } from '../../Common';
 import { ArrowAccordion, Button, CustomText } from '../../Components';
-import { GetCurrentUserAction, LogoutAction } from '../../Redux/Actions';
-import { useNavigation } from '@react-navigation/native';
-import { ApiData, AuthenticateUserResponse, MouthfeelState } from '../../Redux/Models';
-import { getReadableVersion, getBuildNumber } from 'react-native-device-info';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { ThemeProp } from '../../Models';
+import { LogoutAction } from '../../Redux/Actions';
 
 interface SettingsScreenProps {
-    theme: ThemeProp,
-    profile: ApiData<AuthenticateUserResponse>
+    theme: ThemeProp
 }
 
 const SettingsScreen = (props: SettingsScreenProps) => {
-    const { theme, profile } = props;
+    const { theme } = props;
 
     const [logoutPressed, setLogoutPressed] = useState(false);
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const profile = useAppStore(s => s.user.profile)
 
     useEffect(() => {
         if (!profile.data && logoutPressed) navigation.navigate(Routes.Login);
@@ -41,7 +40,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     }
 
     const handleAboutPressed = () => {
-
+        // TODO
     }
 
     const styles = createStyles(theme);
@@ -113,7 +112,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
                     Mouthfeel was made with certain groups in mind, with an aim of improving their quality of life. These include sufferers of ARFID, those on the autism spectrum, those with sensory processing issues, and generally anyone who has difficulty with food.
                 </CustomText>
                 <CustomText style={styles.text}>Tap the sections below to learn more about each condition.</CustomText>
-                <View style={{ flex: 1, height: '100%', marginTop: 20, justifyContent: 'space-between' }}>
+                <View style={styles.container}>
                     <ArrowAccordion sections={Sections} />
                     <View style={{ marginTop: 20 }}>
                         <Button text='Log Out' textStyle={{ fontSize: 14 }} onPress={handleLogOutPressed} />
@@ -127,13 +126,7 @@ const SettingsScreen = (props: SettingsScreenProps) => {
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-
-    return {
-        profile: state.user.profile
-    }
-
-})(SettingsScreen));
+export default withTheme(SettingsScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
@@ -159,5 +152,11 @@ const createStyles = (theme: ThemeProp) => StyleSheet.create({
     buttonText: {
         textAlign: 'center',
         color: theme.primaryThemeTextColor
+    },
+    container: {
+        flex: 1,
+        height: '100%',
+        marginTop: 20,
+        justifyContent: 'space-between'
     }
 });

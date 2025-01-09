@@ -1,26 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import {
-    View,
-    StyleSheet,
-    KeyboardAvoidingView,
-    Text
+    StyleSheet
 } from 'react-native';
 import { InputField } from '..';
 import { ThemeProp } from '../../Models';
 import { withTheme } from 'react-native-elements';
-import { ApiOperation, CreateUserRequest, MouthfeelState } from '../../Redux/Models';
+import { CreateUserRequest, MouthfeelState } from '../../Redux/Models';
 import ErrorText from '../ErrorText';
-import { connect } from 'react-redux';
 import Toast from 'react-native-simple-toast';
+import { useAppStore } from '../../Hooks/useAppStore';
 
 interface RegisterFormProps {
     theme: ThemeProp;
-    createNewUser: ApiOperation;
     onSubmitAllowed: (request: CreateUserRequest) => any;
 }
 
 const RegisterForm = (props: RegisterFormProps) => {
-    const { theme, createNewUser, onSubmitAllowed } = props;
+    const { theme, onSubmitAllowed } = props;
 
     const [email, setEmail] = useState('');
     const [username, setUsername] = useState('');
@@ -29,6 +25,7 @@ const RegisterForm = (props: RegisterFormProps) => {
 
     const passwordsMatch = password === confirmPassword;
     const canSubmit = !!email && !!username && passwordsMatch;
+    const createNewUser = useAppStore(s => s.user.createNewUser)
 
     const styles = createStyles(theme);
 
@@ -80,13 +77,7 @@ const RegisterForm = (props: RegisterFormProps) => {
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-
-    return {
-        createNewUser: state.user.createNewUser
-    }
-
-})(RegisterForm));
+export default withTheme(RegisterForm)
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     inputField: {

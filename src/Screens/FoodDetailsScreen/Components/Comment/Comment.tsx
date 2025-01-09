@@ -1,23 +1,24 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useDispatch, connect } from 'react-redux';
-import { View, StyleSheet, TouchableOpacity } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import { withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../../../Models';
-import { Comment as CommentModel, ManageCommentVoteRequest, AuthenticateUserResponse, MouthfeelState } from '../../../../Redux/Models';
-import { GetCurrentUserAction, ManageCommentVoteAction } from '../../../../Redux/Actions';
-import moment from 'moment';
 import _ from 'lodash';
+import moment from 'moment';
+import React, { useCallback, useEffect, useState } from 'react';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
+import { withTheme } from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { useDispatch } from 'react-redux';
 import { CustomText } from '../../../../Components';
+import { useAppStore } from '../../../../Hooks/useAppStore';
+import { ThemeProp } from '../../../../Models';
+import { GetCurrentUserAction, ManageCommentVoteAction } from '../../../../Redux/Actions';
+import { Comment as CommentModel } from '../../../../Redux/Models';
 
 interface CommentProps {
     theme: ThemeProp,
     details: CommentModel;
-    userId?: number
 }
 
 const Comment = (props: CommentProps) => {
-    const { theme, details, userId } = props;
+    const { theme, details } = props;
+    const userId = useAppStore(s => s.user.profile.data?.id)
     const { id, foodId, sentiment } = details;
 
     const dispatch = useDispatch();
@@ -103,11 +104,7 @@ const Comment = (props: CommentProps) => {
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-    return {
-        userId: state.user.profile.data?.id
-    }
-})(Comment));
+export default withTheme(Comment);
 
 const styles = StyleSheet.create({
     wrapper: {

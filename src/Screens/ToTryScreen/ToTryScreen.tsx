@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { GetFoodDetailsAction } from '../../Redux/Actions';
-import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
-  View,
-  Text,
-  Image
-} from 'react-native';
-import { FormatAsTitleCase, Routes } from '../../Common';
-import { AttributeList, CircleButton, LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
-import { VotableAttribute, MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
-import { GetFoodsToTryAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import {
+    View
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Routes } from '../../Common';
+import { EmptyView, ErrorView, FoodList, LoadingSpinner } from '../../Components';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { GetFoodsToTryAction } from '../../Redux/Actions';
 
-interface ToTryScreenProps {
-    all: FoodDetails[];
-    toTry: ApiData<number[]>;
-}
-
-const ToTryScreen = (props: ToTryScreenProps) => {
-    const { all, toTry } = props;
-
+const ToTryScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const all = useAppStore(s => s.foods.all);
+    const toTry = useAppStore(s => s.foods.toTry)
 
     useEffect(() => {
         dispatch(GetFoodsToTryAction());
@@ -44,9 +33,4 @@ const ToTryScreen = (props: ToTryScreenProps) => {
     )
 }
 
-export default connect((state: MouthfeelState) => {
-    return {
-        all: state.foods.all,
-        toTry: state.foods.toTry
-    }
-})(ToTryScreen);
+export default ToTryScreen;

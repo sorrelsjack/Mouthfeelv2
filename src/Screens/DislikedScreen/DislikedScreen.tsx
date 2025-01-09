@@ -1,30 +1,33 @@
-import React, { useEffect } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import {
-    View} from 'react-native';
-import { Routes } from '../../Common';
-import { LoadingSpinner, FoodList, EmptyView, ErrorView } from '../../Components';
-import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
-import { GetDislikedFoodsAction } from '../../Redux/Actions';
 import { useNavigation } from '@react-navigation/native';
+import React, { useEffect } from 'react';
+import {
+    View
+} from 'react-native';
+import { useDispatch } from 'react-redux';
+import { Routes } from '../../Common';
+import { EmptyView, ErrorView, FoodList, LoadingSpinner } from '../../Components';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { GetDislikedFoodsAction } from '../../Redux/Actions';
 
-interface DislikedScreenProps {
-    all: FoodDetails[],
-    disliked: ApiData<number[]>
-}
-
-const DislikedScreen = (props: DislikedScreenProps) => {
-    const { all, disliked } = props;
-
+const DislikedScreen = () => {
     const dispatch = useDispatch();
     const navigation = useNavigation();
+    const all = useAppStore(s => s.foods.all);
+    const disliked = useAppStore(s => s.foods.disliked)
 
     useEffect(() => {
         dispatch(GetDislikedFoodsAction());
     }, [])
 
+    if (!disliked?.data || !all) return null;
+
     const NoDataView = () => {
-        if (disliked.error) return <ErrorView fullScreen onButtonPress={() => { dispatch(GetDislikedFoodsAction()) }} onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
+        if (disliked.error) return (
+            <ErrorView
+                fullScreen
+                onButtonPress={() => { dispatch(GetDislikedFoodsAction()) }}
+                onSecondButtonPress={() => navigation.navigate(Routes.ContactUs)} />
+        )
         if (!disliked.loading && !disliked.data?.length) return <EmptyView fullScreen text='No Disliked foods found' />
         return null;
     }
@@ -37,9 +40,4 @@ const DislikedScreen = (props: DislikedScreenProps) => {
     )
 }
 
-export default connect((state: MouthfeelState) => {
-    return {
-        all: state.foods.all,
-        disliked: state.foods.disliked
-    }
-})(DislikedScreen);
+export default DislikedScreen

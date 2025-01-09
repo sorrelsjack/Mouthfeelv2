@@ -1,25 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
-import { View, FlatList, StyleSheet, Platform } from 'react-native';
-import { SearchBar, CheckBox } from 'react-native-elements';
-import { Routes, Colors, GetDeltaE, ConvertHexToRgbaArray, ConvertHexToRgba } from '../../Common';
-import { FoodList, SearchInterface, LoadingSpinner, EmptyView, ErrorView } from '../../Components';
-import { HomeListItem } from './Components';
-import { withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
-import { GetLikedFoodsAction, GetDislikedFoodsAction } from '../../Redux/Actions';
-import { MouthfeelState, FoodDetails, ApiData } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import { withTheme } from 'react-native-elements';
 import { ScrollView } from 'react-native-gesture-handler';
+import { ConvertHexToRgba, Routes } from '../../Common';
+import { SearchInterface } from '../../Components';
+import { ThemeProp } from '../../Models';
+import { HomeListItem } from './Components';
 
 interface HomeScreenProps {
-    theme: ThemeProp,
-    all: FoodDetails[]
+    theme: ThemeProp
 }
 
 // TODO: Analytics
 const HomeScreen = (props: HomeScreenProps) => {
-    const { theme, all } = props;
+    const { theme } = props;
 
     const [searchIsActive, setSearchIsActive] = useState(false);
 
@@ -53,12 +48,7 @@ const HomeScreen = (props: HomeScreenProps) => {
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-    return {
-        all: state.foods.all,
-        searchResults: state.foods.searchResults
-    }
-})(HomeScreen));
+export default withTheme(HomeScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

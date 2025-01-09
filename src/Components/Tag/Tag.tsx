@@ -1,22 +1,18 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, LayoutChangeEvent } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import { LayoutChangeEvent, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { Tooltip, withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import { withTheme, Tooltip } from 'react-native-elements';
-import { AttributeType, ThemeProp } from '../../Models';
+import { useDispatch } from 'react-redux';
 import { ConvertHexToRgba, InvertColor } from '../../Common';
-import { AddOrUpdateAttributeRequest, FoodDetails, MouthfeelState, VotableAttribute } from '../../Redux/Models';
-import { connect, useDispatch } from 'react-redux';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { AttributeType, ThemeProp } from '../../Models';
 import { AddOrUpdateAttributeAction } from '../../Redux/Actions';
+import { AddOrUpdateAttributeRequest, VotableAttribute } from '../../Redux/Models';
 import CustomText from '../CustomText/CustomText';
 
 type TagSize = 'small' | 'regular';
 
 interface TagProps {
-    userId?: number,
-    selected: {
-        loading: boolean;
-        data: FoodDetails | null
-    }
     theme: ThemeProp,
     size?: TagSize,
     style?: object,
@@ -28,8 +24,6 @@ interface TagProps {
 
 const Tag = (props: TagProps) => {
     const {
-        userId,
-        selected,
         theme,
         size = 'regular',
         style,
@@ -38,6 +32,9 @@ const Tag = (props: TagProps) => {
         disabled = false,
         onPress
     } = props;
+
+    const userId = useAppStore(s => s.user.profile.data?.id)
+    const selected = useAppStore(s => s.foods.selected);
 
     const { id, name, votes, sentiment, description } = item;
 
@@ -141,12 +138,7 @@ const Tag = (props: TagProps) => {
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-    return {
-        userId: state.user.profile.data?.id,
-        selected: state.foods.selected
-    }
-})(Tag));
+export default withTheme(Tag);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
