@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
 import {
   Image,
+  KeyboardAvoidingView,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -9,7 +10,8 @@ import {
 } from 'react-native';
 import { useDispatch } from 'react-redux';
 import {
-  FormatAsTitleCase
+  FormatAsTitleCase,
+  IsIos
 } from '../../Common';
 import { AttributeList, CircleButton, CustomText, LoadingSpinner } from '../../Components';
 import { AddOrRemoveFoodToTryAction, GetCurrentUserAction, GetFoodDetailsAction, ManageFoodSentimentAction } from '../../Redux/Actions';
@@ -123,42 +125,45 @@ const FoodDetailsScreen = (props: FoodDetailsScreenProps) => {
   }, [toTry]);
 
   return (
-    <SafeAreaView>
-      <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false}>
-        {loading ? <LoadingSpinner fullScreen /> :
-          <>
-            <View style={styles.heartsContainer}>
-              <CircleButton icon='heart' iconSelectedColor={theme.heartSelectedColor} onPress={handleLikedPressed} isActive={markedLiked} />
-              <CircleButton icon='heart-broken' iconSelectedColor={theme.heartBrokenSelectedColor} onPress={handleDislikedPressed} isActive={markedDisliked} />
-            </View>
-            <View style={styles.container}>
-              <View style={[styles.imageContainer, !images[0]?.image ? { opacity: .3 } : {}]}>
-                <Image source={images[0]?.image ? { uri: `data:image/png;base64,${images[0]?.image}` } : require('../../Assets/plate.png')} style={styles.image} />
+    <KeyboardAvoidingView
+      behavior={IsIos() ? 'height' : 'padding'}>
+      <SafeAreaView>
+        <ScrollView style={styles.wrapper} showsVerticalScrollIndicator={false}>
+          {loading ? <LoadingSpinner fullScreen /> :
+            <>
+              <View style={styles.heartsContainer}>
+                <CircleButton icon='heart' iconSelectedColor={theme.heartSelectedColor} onPress={handleLikedPressed} isActive={markedLiked} />
+                <CircleButton icon='heart-broken' iconSelectedColor={theme.heartBrokenSelectedColor} onPress={handleDislikedPressed} isActive={markedDisliked} />
               </View>
-              <View style={styles.titleSection}>
-                <CustomText style={styles.titleText}>{FormatAsTitleCase(name)}</CustomText>
+              <View style={styles.container}>
+                <View style={[styles.imageContainer, !images[0]?.image ? { opacity: .3 } : {}]}>
+                  <Image source={images[0]?.image ? { uri: `data:image/png;base64,${images[0]?.image}` } : require('../../Assets/plate.png')} style={styles.image} />
+                </View>
+                <View style={styles.titleSection}>
+                  <CustomText style={styles.titleText}>{FormatAsTitleCase(name)}</CustomText>
+                </View>
+                {/*<IngredientsList items={ingredients} />*/}
+                <View style={styles.attributeListsContainer}>
+                  <AttributeList
+                    title={`What textures does ${name} have?`}
+                    attributeType='texture'
+                    items={textures ? textures : []} />
+                  <AttributeList
+                    title={`What flavors does ${name} have?`}
+                    attributeType='flavor'
+                    items={flavors ? flavors : []} />
+                  <AttributeList
+                    title={`What makes ${name} unique?`}
+                    attributeType='miscellaneous'
+                    items={miscellaneous ? miscellaneous : []} />
+                </View>
+                <CommentsSection />
               </View>
-              {/*<IngredientsList items={ingredients} />*/}
-              <View style={styles.attributeListsContainer}>
-                <AttributeList
-                  title={`What textures does ${name} have?`}
-                  attributeType='texture'
-                  items={textures ? textures : []} />
-                <AttributeList
-                  title={`What flavors does ${name} have?`}
-                  attributeType='flavor'
-                  items={flavors ? flavors : []} />
-                <AttributeList
-                  title={`What makes ${name} unique?`}
-                  attributeType='miscellaneous'
-                  items={miscellaneous ? miscellaneous : []} />
-              </View>
-              <CommentsSection />
-            </View>
-          </>
-        }
-      </ScrollView>
-    </SafeAreaView>
+            </>
+          }
+        </ScrollView>
+      </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 }
 

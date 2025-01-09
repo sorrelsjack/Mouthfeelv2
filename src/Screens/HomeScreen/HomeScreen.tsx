@@ -2,7 +2,6 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { withTheme } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
 import { ConvertHexToRgba, Routes } from '../../Common';
 import { SearchInterface } from '../../Components';
 import { ThemeProp } from '../../Models';
@@ -35,16 +34,17 @@ const HomeScreen = (props: HomeScreenProps) => {
     ]
 
     return (
-        <ScrollView style={styles.wrapper}>
+        <View style={styles.wrapper}>
             <SearchInterface
                 onSearchStateChange={setSearchIsActive} />
             {!searchIsActive &&
                 (<FlatList
+                    contentContainerStyle={styles.contentContainerStyle}
                     data={items}
                     ItemSeparatorComponent={renderItemSeparator}
                     renderItem={({ item }) => <HomeListItem item={item} onPress={() => navigation.navigate(item.route || Routes.FoodDetails)} />}
                     keyExtractor={item => item.text} />)}
-        </ScrollView>
+        </View>
     )
 }
 
@@ -52,8 +52,12 @@ export default withTheme(HomeScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {
-        height: '100%',
+        flex: 1,
         backgroundColor: ConvertHexToRgba(theme.primaryThemeColor, .6)
+    },
+    contentContainerStyle: {
+        flex: 1,
+        marginTop: 30
     },
     itemSeparator: {
         height: 1,

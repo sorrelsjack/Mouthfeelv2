@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Keyboard, View, FlatList, StyleSheet, Platform } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
-import { SearchBar, CheckBox } from 'react-native-elements';
-import { Routes, ConvertHexToRgba } from '../../Common';
-import { withTheme } from 'react-native-elements';
-import { ThemeProp } from '../../Models';
-import { Button, EmptyView, ErrorView, FoodList, LoadingSpinner } from '../../Components';
-import { SearchFoodsAction, ClearSearchAction } from '../../Redux/Actions';
-import { ApiData, MouthfeelState } from '../../Redux/Models';
 import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Keyboard, Platform, StyleSheet, View } from 'react-native';
+import { CheckBox, SearchBar, withTheme } from 'react-native-elements';
+import { useDispatch, useSelector } from 'react-redux';
+import { Routes } from '../../Common';
+import { Button, EmptyView, ErrorView, FoodList, LoadingSpinner } from '../../Components';
+import { ThemeProp } from '../../Models';
+import { ClearSearchAction, SearchFoodsAction } from '../../Redux/Actions';
+import { MouthfeelState } from '../../Redux/Models';
 import { GlobalFontName } from '../CustomText/CustomText';
 
 interface SearchInterfaceProps {
@@ -141,7 +140,6 @@ const styles = StyleSheet.create({
         fontWeight: 'normal'
     },
     checkboxContainer: {
-        flex: 1,
         flexDirection: 'row',
         justifyContent: 'center',
         marginLeft: 0,

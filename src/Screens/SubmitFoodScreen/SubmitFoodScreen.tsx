@@ -1,70 +1,64 @@
+import { isNil } from 'lodash/fp';
 import React, { useEffect, useMemo, useState } from 'react';
-import { connect, useDispatch } from 'react-redux';
 import {
-    View,
-    Text,
-    TextInput,
+    Image,
+    ScrollView,
+    StyleProp,
     StyleSheet,
     TouchableOpacity,
-    ScrollView,
-    Image,
-    Platform,
-    StyleProp,
+    View,
     ViewStyle
 } from 'react-native';
-import { FlatList } from 'react-native-gesture-handler';
-import {
-    Tag,
-    AttributeList,
-    LoadingSpinner,
-    InputField,
-    Button,
-    ArrowAccordion,
-    SearchInterface,
-    ErrorText,
-    CustomText
-} from '../../Components';
-import { SearchBar, withTheme } from 'react-native-elements';
-import { AttributeType, ImagePickerResponse, ThemeProp } from '../../Models';
-import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction, ResetCreateFoodAction } from '../../Redux/Actions';
-import { VotableAttribute, MouthfeelState, CreateFoodRequest, ApiData, ApiOperation } from '../../Redux/Models';
-import { launchImageLibrary } from 'react-native-image-picker'
-import Carousel from 'react-native-snap-carousel';
+import { withTheme } from 'react-native-elements';
+import { Asset as ImagePickerAsset, launchImageLibrary } from 'react-native-image-picker';
+import { useDispatch } from 'react-redux';
 import { FormatAsTitleCase, IsIos } from '../../Common';
+import {
+    AttributeList,
+    Button,
+    CustomText,
+    ErrorText,
+    InputField,
+    LoadingSpinner
+} from '../../Components';
+import { useAppStore } from '../../Hooks/useAppStore';
+import { useAttributeState } from '../../Hooks/useAttributeState';
+import { AttributeType, ThemeProp } from '../../Models';
+import { CreateFoodAction, GetAllVotableAttributesAction, GetCurrentUserAction, ResetCreateFoodAction } from '../../Redux/Actions';
+import { CreateFoodRequest } from '../../Redux/Models';
 
 interface SubmitFoodScreenProps {
-    theme: ThemeProp,
-    userId: number,
-    createNewFood: ApiOperation,
-    flavors: ApiData<VotableAttribute[]>,
-    textures: ApiData<VotableAttribute[]>,
-    misc: ApiData<VotableAttribute[]>
+    theme: ThemeProp
 }
 
 // TODO: Prevent the attribute lists from re-rendering and losign their selections when an error happens
 // TODO: if you add the Pizza Hut picture, its really big
 // TODO: fix issue where the tag lists re-render their sizes once or twice on initial load
+// TODO: fix issue where loading anim stutters
+// TODO: Add error UX that's better than the current one. Also, fix issue where trying to add a food throws a 500
 const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const {
         theme,
-        userId,
-        createNewFood,
-        flavors,
-        textures,
-        misc
     } = props;
+
+    const userId = useAppStore(s => s.user.profile.data?.id);
+    const createNewFood = useAppStore(s => s.foods.createNewFood)
 
     const [name, setName] = useState('');
     const [usingPlaceholderImage, setUsingPlaceholderImage] = useState(true);
-    const [image, setImage] = useState<ImagePickerResponse>({ base64: '', uri: '', width: 0, height: 0, fileSize: 0, type: '', fileName: '' });
+    const [image, setImage] = useState<ImagePickerAsset>({ base64: '', uri: '', width: 0, height: 0, fileSize: 0, type: '', fileName: '' });
     const [selectedFlavors, setSelectedFlavors] = useState<number[]>([]);
     const [selectedTextures, setSelectedTextures] = useState<number[]>([]);
     const [selectedMisc, setSelectedMisc] = useState<number[]>([]);
 
+    const flavors = useAttributeState('flavor');
+    const textures = useAttributeState('texture');
+    const misc = useAttributeState('miscellaneous');
+
     const styles = createStyles(theme);
     const dispatch = useDispatch();
 
-    const canSubmit = !!name && !createNewFood.error && !createNewFood.loading;
+    const canSubmit = useMemo(() => !!name && !createNewFood.error && !createNewFood.loading, [name, createNewFood.error, createNewFood.loading]);
 
     useEffect(() => {
         if (!userId) dispatch(GetCurrentUserAction());
@@ -73,6 +67,10 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     }, [])
 
     const handleSubmitButtonPress = () => {
+        if (isNil(image.uri)) {
+            // TODO: need error UX here or to at least not allow them to submit if there is no uri
+            return;
+        }
         const request: CreateFoodRequest = {
             name: name,
             image: IsIos() ? image.uri.replace("file://", "") : image.uri,
@@ -86,9 +84,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
 
     const handleImagePlaceholderPressed = () => {
         launchImageLibrary({ mediaType: 'photo' }, response => {
-            if (response.uri) {
+            if (response?.assets?.[0]) {
                 dispatch(ResetCreateFoodAction());
-                setImage(response);
+                setImage(response?.assets?.[0]);
                 setUsingPlaceholderImage(false);
             }
         });
@@ -100,19 +98,20 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     }
 
     const ListOfAttributes = (props: {
-        attribute: ApiData<VotableAttribute[]>,
         columnWrapperStyle: StyleProp<ViewStyle>,
         attributeType: AttributeType,
         onChange: (ids: number[]) => any,
         nominalForm?: string
     }) => {
-        const { attribute, columnWrapperStyle, attributeType, onChange, nominalForm } = props;
+        const { columnWrapperStyle, attributeType, onChange, nominalForm } = props;
         const pluralNoun = nominalForm || `${attributeType}s`;
 
+        const attribute = useAttributeState(attributeType);
+
         return (
-            <View>
+            <View style={{ marginTop: 20 }}>
                 <CustomText style={styles.title}>{FormatAsTitleCase(pluralNoun)}</CustomText>
-                {attribute.loading
+                {attribute?.loading
                     ? <View style={styles.loadingSpinnerContainer}><LoadingSpinner /></View>
                     : <View style={styles.sectionContainer}>
                         <AttributeList
@@ -130,9 +129,9 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                                 dispatch(ResetCreateFoodAction());
                                 onChange(ids);
                             }}
-                            items={attribute.data || []}
+                            items={attribute?.data || []}
                             sortBy={'alphabetically'} /></View>}
-                {attribute.error ? <ErrorText style={{ textAlign: 'center' }} text={`There was an error fetching the ${pluralNoun}.`} /> : null}
+                {attribute?.error ? <ErrorText style={{ textAlign: 'center' }} text={`There was an error fetching the ${pluralNoun}.`} /> : null}
             </View>
         )
     }
@@ -140,7 +139,6 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const flavorsList = useMemo(() => {
         return (
             <ListOfAttributes
-                attribute={flavors}
                 attributeType={'flavor'}
                 columnWrapperStyle={{ flexWrap: 'wrap' }}
                 onChange={(ids: number[]) => setSelectedFlavors(ids)} />
@@ -150,7 +148,6 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const texturesList = useMemo(() => {
         return (
             <ListOfAttributes
-                attribute={textures}
                 attributeType={'texture'}
                 columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
                 onChange={(ids: number[]) => setSelectedTextures(ids)} />
@@ -160,7 +157,6 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     const miscList = useMemo(() => {
         return (
             <ListOfAttributes
-                attribute={misc}
                 attributeType={'miscellaneous'}
                 columnWrapperStyle={{ flexDirection: 'row', flexWrap: 'wrap' }}
                 onChange={(ids: number[]) => setSelectedMisc(ids)}
@@ -194,7 +190,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
                     </View>
                     {createNewFood.loading
                         ? <LoadingSpinner fullScreen={false} />
-                        : (<View>
+                        : (<View style={{ marginHorizontal: -20 }}>
                             {flavorsList}
                             {texturesList}
                             {miscList}
@@ -214,15 +210,7 @@ const SubmitFoodScreen = (props: SubmitFoodScreenProps) => {
     )
 }
 
-export default withTheme(connect((state: MouthfeelState) => {
-    return {
-        userId: state.user.profile.data?.id,
-        createNewFood: state.foods.createNewFood,
-        flavors: state.flavors.all,
-        textures: state.textures.all,
-        misc: state.miscellaneous.all
-    }
-})(SubmitFoodScreen));
+export default withTheme(SubmitFoodScreen);
 
 const createStyles = (theme: ThemeProp) => StyleSheet.create({
     wrapper: {

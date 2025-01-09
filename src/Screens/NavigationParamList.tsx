@@ -10,7 +10,7 @@ export type NavigationParamList = {
     Liked: undefined;
     Login: undefined;
     Settings: undefined;
-    Submit: undefined;
+    SubmitFood: undefined;
     Tags: {
         attributeType: AttributeType,
         preselectedAttributes: number[]

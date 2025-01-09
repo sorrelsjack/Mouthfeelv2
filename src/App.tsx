@@ -77,7 +77,7 @@ export const App = () => {
             <Stack.Screen name={"Liked"} component={LikedScreen} />
             <Stack.Screen name={"Disliked"} component={DislikedScreen} />
             <Stack.Screen name={"ToTry"} component={ToTryScreen} options={{ title: 'To Try' }} />
-            <Stack.Screen name={"Submit"} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
+            <Stack.Screen name={"SubmitFood"} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
             <Stack.Screen name={"Settings"} component={SettingsScreen} options={{ title: 'Settings' }} />
             <Stack.Screen name={"Tags"} component={TagsScreen} options={{ title: 'Tags' }} />
             <Stack.Screen name={"ContactUs"} component={ContactUsScreen} options={{ title: 'Contact Us' }} />

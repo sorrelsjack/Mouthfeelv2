@@ -1,10 +1,11 @@
-import { Actions } from '.';
 import axios from 'axios';
+import 'react-native-get-random-values';
 import { Dispatch, } from 'redux';
-import { IsIos, Urls } from '../../Common';
-import { AddOrUpdateAttributeRequest, CreateFoodRequest, FoodDetails, MouthfeelState } from '../Models';
-import { AttributeType } from '../../Models';
 import { v4 as uuidv4 } from 'uuid';
+import { Actions } from '.';
+import { IsIos, Urls } from '../../Common';
+import { AttributeType } from '../../Models';
+import { AddOrUpdateAttributeRequest, CreateFoodRequest, FoodDetails } from '../Models';
 
 export const SetSelectedFoodAction = (food: FoodDetails) => {
     return async (dispatch: Dispatch) => {

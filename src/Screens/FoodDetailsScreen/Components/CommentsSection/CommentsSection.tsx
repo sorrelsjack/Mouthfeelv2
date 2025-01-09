@@ -1,9 +1,8 @@
+import { FlashList } from '@shopify/flash-list';
 import { isNil } from 'lodash/fp';
 import LottieView from 'lottie-react-native';
 import React, { useEffect, useState } from 'react';
 import {
-    FlatList,
-    KeyboardAvoidingView,
     StyleSheet,
     TouchableOpacity,
     View
@@ -12,7 +11,6 @@ import { withTheme } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome5';
 import { useDispatch } from 'react-redux';
 import { Comment } from '..';
-import { IsIos } from '../../../../Common';
 import { BaseAnimatedView, CustomText, ErrorText, InputField, LoadingSpinner } from '../../../../Components';
 import { useAppStore } from '../../../../Hooks/useAppStore';
 import { ThemeProp } from '../../../../Models';
@@ -23,6 +21,7 @@ interface CommentsSectionProps {
     theme: ThemeProp,
 }
 
+// TODO: Fix error here with virtualizedlists. seems to have to do with CommentList
 const CommentsSection = (props: CommentsSectionProps) => {
     const { theme } = props;
     const create = useAppStore(s => s.comments.create);
@@ -94,25 +93,24 @@ const CommentsSection = (props: CommentsSectionProps) => {
 
     const CommentList = () => {
         return (
-            <View>
+            <View style={{ flex: 1, flexGrow: 1, minHeight: 2 }}>
                 {comments?.loading
                     ? <LoadingSpinner fontSize={16} />
                     : <View>
-                        <FlatList
+                        <FlashList
+                            estimatedItemSize={100}
+                            ListEmptyComponent={<NoCommentsView />}
                             data={comments?.data ? sortItems(comments.data) : []}
                             renderItem={({ item }) => <Comment details={item} />}
                             keyExtractor={item => item.id.toString()} />
                     </View>}
-                {(!comments?.loading && !comments?.data?.length && componentIsReady) && <NoCommentsView />}
             </View>
 
         )
     }
 
     return (
-        <KeyboardAvoidingView
-            behavior={IsIos() ? 'height' : 'height'}
-            style={styles.wrapper}>
+        <View style={styles.wrapper}>
             <TouchableOpacity onPress={handleHeaderTextPressed}>
                 <CustomText style={styles.headerText}>{isExpanded ? `- COMMENTS` : '+ COMMENTS'}</CustomText>
             </TouchableOpacity>
@@ -136,7 +134,7 @@ const CommentsSection = (props: CommentsSectionProps) => {
                 </View> : null}
             {isExpanded && create.error ? <ErrorText text='There was an error submitting this comment.' style={{ marginTop: 10 }} /> : null}
             {isExpanded && <CommentList />}
-        </KeyboardAvoidingView>
+        </View>
     )
 }
 
