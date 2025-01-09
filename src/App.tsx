@@ -1,30 +1,31 @@
-import React from 'react';
-import { Provider } from 'react-redux';
-import store from './Redux/ConfigureStore';
-import {
-  LoginScreen,
-  HomeScreen,
-  FoodDetailsScreen,
-  SubmitFoodScreen,
-  SettingsScreen,
-  TagsScreen,
-  ContactUsScreen,
-  LikedScreen,
-  DislikedScreen,
-  ToTryScreen,
-  AppIntroScreen,
-  HelpScreen
-} from './Screens';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack'
-import { Routes, Colors } from './Common';
-import Icon from 'react-native-vector-icons/FontAwesome5';
+import { createStackNavigator } from '@react-navigation/stack';
+import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
-import { Startup, navigationRef } from './Config'
+import Icon from 'react-native-vector-icons/FontAwesome5';
+import { Provider } from 'react-redux';
+import { Colors, Routes } from './Common';
 import { GlobalFontName } from './Components/CustomText/CustomText';
+import { Startup, navigationRef } from './Config';
+import store from './Redux/ConfigureStore';
+import {
+  AppIntroScreen,
+  ContactUsScreen,
+  DislikedScreen,
+  FoodDetailsScreen,
+  HelpScreen,
+  HomeScreen,
+  LikedScreen,
+  LoginScreen,
+  SettingsScreen,
+  SubmitFoodScreen,
+  TagsScreen,
+  ToTryScreen
+} from './Screens';
+import { NavigationParamList } from './Screens/NavigationParamList';
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<NavigationParamList>();
 
 const forFade = ({ current }) => ({
   cardStyle: {

@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { Dimensions, ScrollView, StyleSheet, View } from 'react-native';
 import Toast from 'react-native-simple-toast';
@@ -13,6 +13,7 @@ import {
     GetAllMiscellaneousAction,
     GetAllTexturesAction
 } from '../../Redux/Actions';
+import { NavigationParamList } from '../NavigationParamList';
 
 // TODO: fix issue on this screen where if you tap on a tag after already having hit submit, it might throw an error
 // TODO: fix an issue where sometimes the toast shows up erroneously
@@ -27,7 +28,7 @@ const TagsScreen = () => {
 
     const dispatch = useDispatch();
     const navigation = useNavigation();
-    const route = useRoute();
+    const route = useRoute<RouteProp<NavigationParamList, 'Tags'>>();
 
     const { attributeType, preselectedAttributes } = route.params;
 
