@@ -1,5 +1,5 @@
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { createStackNavigator, StackCardInterpolationProps } from '@react-navigation/stack';
 import React from 'react';
 import { TouchableOpacity, View } from 'react-native';
 import { ThemeProvider } from 'react-native-elements';
@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5';
 import { Provider } from 'react-redux';
 import { Colors, Routes } from './Common';
 import { GlobalFontName } from './Components/CustomText/CustomText';
-import { Startup, navigationRef } from './Config';
+import { navigationRef, Startup } from './Config';
 import store from './Redux/ConfigureStore';
 import {
   AppIntroScreen,
@@ -27,7 +27,7 @@ import { NavigationParamList } from './Screens/NavigationParamList';
 
 const Stack = createStackNavigator<NavigationParamList>();
 
-const forFade = ({ current }) => ({
+const forFade = ({ current }: StackCardInterpolationProps) => ({
   cardStyle: {
     opacity: current.progress,
   },
@@ -49,11 +49,11 @@ export const App = () => {
                 fontFamily: GlobalFontName
               }
             }}
-            initialRouteName={Routes.Login}>
-            <Stack.Screen name={Routes.AppIntro} component={AppIntroScreen} options={{ headerShown: false }} />
-            <Stack.Screen name={Routes.Login} component={LoginScreen} options={{ headerShown: false }} />
+            initialRouteName={"Login"}>
+            <Stack.Screen name={"AppIntro"} component={AppIntroScreen} options={{ headerShown: false }} />
+            <Stack.Screen name={"Login"} component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen
-              name={Routes.Home}
+              name={"Home"}
               component={HomeScreen}
               options={({ navigation }) =>
               ({
@@ -73,15 +73,15 @@ export const App = () => {
                 )
               })}
             />
-            <Stack.Screen name={Routes.FoodDetails} component={FoodDetailsScreen} />
-            <Stack.Screen name={Routes.Liked} component={LikedScreen} />
-            <Stack.Screen name={Routes.Disliked} component={DislikedScreen} />
-            <Stack.Screen name={Routes.ToTry} component={ToTryScreen} options={{ title: 'To Try' }} />
-            <Stack.Screen name={Routes.SubmitFood} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
-            <Stack.Screen name={Routes.Settings} component={SettingsScreen} options={{ title: 'Settings' }} />
-            <Stack.Screen name={Routes.Tags} component={TagsScreen} options={{ title: 'Tags' }} />
-            <Stack.Screen name={Routes.ContactUs} component={ContactUsScreen} options={{ title: 'Contact Us' }} />
-            <Stack.Screen name={Routes.Help} component={HelpScreen} options={{ title: 'Help' }} />
+            <Stack.Screen name={"FoodDetails"} component={FoodDetailsScreen} />
+            <Stack.Screen name={"Liked"} component={LikedScreen} />
+            <Stack.Screen name={"Disliked"} component={DislikedScreen} />
+            <Stack.Screen name={"ToTry"} component={ToTryScreen} options={{ title: 'To Try' }} />
+            <Stack.Screen name={"Submit"} component={SubmitFoodScreen} options={{ title: 'Submit Food' }} />
+            <Stack.Screen name={"Settings"} component={SettingsScreen} options={{ title: 'Settings' }} />
+            <Stack.Screen name={"Tags"} component={TagsScreen} options={{ title: 'Tags' }} />
+            <Stack.Screen name={"ContactUs"} component={ContactUsScreen} options={{ title: 'Contact Us' }} />
+            <Stack.Screen name={"Help"} component={HelpScreen} options={{ title: 'Help' }} />
           </Stack.Navigator>
         </NavigationContainer>
       </Provider>
